@@ -1,58 +1,118 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🐧 LinuxLab — Platform Belajar Linux Interaktif Berbasis Web
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+[![Laravel](https://img.shields.io/badge/Laravel-11-FF2D20?style=flat&logo=laravel&logoColor=white)](https://laravel.com)
+[![Vue 3](https://img.shields.io/badge/Vue.js-3-4FC08D?style=flat&logo=vuedotjs&logoColor=white)](https://vuejs.org)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=flat&logo=typescript&logoColor=white)](https://www.typescriptlang.org)
+[![Inertia.js](https://img.shields.io/badge/Inertia.js-v1-9553E9?style=flat&logo=inertia&logoColor=white)](https://inertiajs.com)
+[![Docker](https://img.shields.io/badge/Docker-Terminal%20Isolation-2496ED?style=flat&logo=docker&logoColor=white)](https://www.docker.com)
+[![Tests](https://img.shields.io/badge/Pest%20Tests-94%20passed-brightgreen?style=flat)](tests)
 
-## About Laravel
+**LinuxLab** adalah platform pembelajaran sistem operasi Linux interaktif berbasis web yang dirancang khusus untuk pemula. Platform ini menyediakan materi terstruktur, terminal Linux nyata di dalam container terisolasi, latihan praktik dengan mesin penilaian otomatis (*auto-grading*), pelacakan progres, lencana penghargaan (*badges*), papan peringkat (*leaderboard*), forum diskusi terikat pelajaran, penerbitan & verifikasi sertifikat PDF, serta panel administrator lengkap.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+> 📖 **Panduan Ramah Pemula:** Untuk penjelasan lengkap yang mudah dipahami orang awam (dilengkapi analogi, alur detail, penjelasan kode, dan FAQ), silakan baca **[DOKUMENTASI.md](DOKUMENTASI.md)**.  
+> 🛠️ **Panduan Arsitektur & Kode (Teknis):** Penjelasan mendalam struktur backend, frontend, service layer, integrasi terminal Docker, dan aliran data dapat dibaca di **[DOKUMENTASI_TEKNIS.md](DOKUMENTASI_TEKNIS.md)**.  
+> 🌐 **Panduan Hosting & Deployment:** Panduan langkah demi langkah menyewa VPS, setup domain, SSL HTTPS, Nginx, Docker, dan PM2 untuk publikasi dapat dibaca di **[PANDUAN_HOSTING.md](PANDUAN_HOSTING.md)**.  
+> 🎯 **Spesifikasi Kebutuhan Teknis:** Sumber kebenaran fitur (*Single Source of Truth*) dan aturan arsitektur tersedia di **[SPEC.md](SPEC.md)**.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 🚀 Fitur Utama
 
-## Learning Laravel
+- **Terminal Linux Nyata di Browser**: Berinteraksi langsung dengan shell Linux asli (bukan simulasi teks) melalui emulator xterm.js dan WebSocket gateway internal.
+- **Isolasi Penuh & Aman**: Setiap sesi terminal berjalan di dalam container Docker tersendiri yang dibatasi CPU, memori (256MB), proses, non-root (`student`), dan tanpa akses jaringan keluar (`--network none`).
+- **Penilaian Otomatis (Auto-Grading)**: Memeriksa hasil latihan secara riil di dalam container (`system_state`, `output`, atau `combined`) dengan umpan balik langsung.
+- **Gamifikasi & Capaian**: Sistem lencana otomatis (*Badges*), pencatatan progres per modul & pelajaran, serta papan peringkat (*Leaderboard*) publik sepanjang waktu.
+- **Sertifikat Kelulusan Resmi**: Terbit otomatis satu kali setelah menyelesaikan 100% seluruh modul terbitan, berformat PDF, dan dapat diverifikasi secara publik via kode unik.
+- **Forum Diskusi Terintegrasi**: Diskusi tanya-jawab yang terikat langsung pada bab materi pelajaran dengan dukungan upvote dan penanda jawaban terbaik.
+- **Panel Administrator**: Manajemen penuh modul, pelajaran, latihan, hint, validator JSON, moderasi forum, kelola pengguna, dan statistik sistem.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+---
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## 🛠️ Tech Stack
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+- **Backend**: Laravel 11 (PHP 8.2+), Eloquent ORM, Sesi Laravel
+- **Frontend**: Vue 3 (Composition API), TypeScript, Inertia.js, Tailwind CSS
+- **Terminal Emulator**: xterm.js + fit-addon
+- **Terminal Transport**: WebSocket Gateway (Node.js daemon di port 3001)
+- **Containerization**: Docker (Linux Container)
+- **Database**: MySQL (15 tabel terstruktur)
+- **PDF Generation**: dompdf (Sertifikat kelulusan)
+- **Testing**: Pest PHP (94 feature & unit tests)
 
-## Agentic Development
+---
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+## ⚡ Panduan Instalasi Cepat (NFR-05)
+
+### Prasyarat
+- PHP 8.2+ dengan ekstensi `pdo_mysql`, `mbstring`, `gd`, `curl`
+- Composer
+- Node.js 18+ & npm
+- MySQL 8.0+
+- Docker daemon berjalan
+
+### Langkah Pemasangan:
 
 ```bash
-composer require laravel/boost --dev
+# 1. Kloning repositori & masuk ke direktori
+git clone <url-repo-anda> linuxlab
+cd linuxlab
 
-php artisan boost:install
+# 2. Pasang dependensi PHP dan JavaScript
+composer install
+npm install
+
+# 3. Siapkan file konfigurasi lingkungan (.env)
+cp .env.example .env
+php artisan key:generate
+
+# 4. Sesuaikan konfigurasi database dan kredensial di file .env:
+# DB_DATABASE=linuxlab, DB_USERNAME=..., DB_PASSWORD=...
+
+# 5. Bangun image Docker untuk container praktik terminal
+docker build -t linuxlab-terminal:latest docker/terminal/
+
+# 6. Jalankan migrasi tabel database dan masukkan konten awal (seeders)
+php artisan migrate --seed
+
+# 7. Bangun aset frontend
+npm run build
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+---
 
-## Contributing
+## 🖥️ Menjalankan Layanan (Development)
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Buka 3 jendela terminal terpisah untuk menjalankan seluruh komponen:
 
-## Code of Conduct
+```bash
+# Terminal 1: Jalankan Web Server Laravel
+php artisan serve
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+# Terminal 2: Jalankan WebSocket Terminal Gateway (Port 3001)
+node bin/terminal-gateway.mjs
 
-## Security Vulnerabilities
+# Terminal 3 (Opsional): Jalankan Vite untuk hot-reload frontend saat koding
+npm run dev
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Aplikasi dapat langsung diakses di peramban Anda melalui:
+👉 **`http://127.0.0.1:8000`**
 
-## License
+---
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## 🧪 Menjalankan Pengujian
+
+```bash
+# Menjalankan seluruh test backend (Pest PHP)
+php artisan test
+
+# Memeriksa kompilasi TypeScript dan build frontend
+npm run build
+```
+
+---
+
+## 📄 Lisensi & Hak Cipta
+
+Proyek ini dibangun untuk tujuan edukasi platform pembelajaran Linux interaktif.  
+Dokumentasi lengkap: **[DOKUMENTASI.md](DOKUMENTASI.md)**.
