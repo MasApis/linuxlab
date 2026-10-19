@@ -14,18 +14,21 @@ use Inertia\Response;
 class AuthenticatedSessionController extends Controller
 {
     /**
-     * Display the login view.
+     * Menampilkan halaman login.
      */
     public function create(): Response
     {
         return Inertia::render('Auth/Login', [
             'canResetPassword' => Route::has('password.request'),
             'status' => session('status'),
+            'success' => session('success'),
         ]);
     }
 
     /**
-     * Handle an incoming authentication request.
+     * Memproses permintaan login (sesi Laravel).
+     * Sesuai FR-AUTH-02: login berhasil membuat sesi Laravel dan
+     * mengarahkan user ke dashboard pengguna serta admin ke dashboard admin.
      */
     public function store(LoginRequest $request): RedirectResponse
     {
@@ -33,11 +36,16 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        if ($request->user()->isAdmin()) {
+            return redirect()->intended(route('admin.dashboard', absolute: false));
+        }
+
         return redirect()->intended(route('dashboard', absolute: false));
     }
 
     /**
-     * Destroy an authenticated session.
+     * Mengakhiri sesi login (logout).
+     * Sesuai FR-AUTH-02: logout menghapus sesi dan mengarahkan ke halaman utama.
      */
     public function destroy(Request $request): RedirectResponse
     {
@@ -47,6 +55,6 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect()->route('home');
     }
 }

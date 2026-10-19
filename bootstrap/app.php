@@ -17,19 +17,23 @@ return Application::configure(basePath: dirname(__DIR__))
             \Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class,
         ]);
 
-        //
+        $middleware->alias([
+            'admin' => \App\Http\Middleware\EnsureAdmin::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(
             fn (Request $request) => $request->is('api/*') || $request->expectsJson(),
         );
 
-        $exceptions->render(function (\Symfony\Component\HttpKernel\Exception\NotFoundHttpException $e, Request $request) {
-            if (! $request->expectsJson()) {
+        $exceptions->render(function (\Symfony\Component\HttpKernel\Exception\HttpException $e, Request $request) {
+            if (! $request->expectsJson() && in_array($e->getStatusCode(), [403, 404, 500, 503])) {
+                $status = $e->getStatusCode();
+
                 return \Inertia\Inertia::render('Error', [
-                    'status' => 404,
-                    'message' => 'Halaman Tidak Ditemukan',
-                ])->toResponse($request)->setStatusCode(404);
+                    'status' => $status,
+                    'message' => $e->getMessage() ?: null,
+                ])->toResponse($request)->setStatusCode($status);
             }
         });
     })->create();
