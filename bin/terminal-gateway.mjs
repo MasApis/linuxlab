@@ -13,8 +13,8 @@ import http from 'http';
 import url from 'url';
 
 const PORT = parseInt(process.env.TERMINAL_WS_PORT || '3001', 10);
-const HOST = '127.0.0.1'; // Hanya bind ke localhost (SEC-TERM-01)
-const APP_URL = process.env.APP_URL || 'http://127.0.0.1:8000';
+const HOST = process.env.TERMINAL_WS_HOST || '0.0.0.0';
+const APP_URL = process.env.APP_INTERNAL_URL || process.env.APP_URL || 'http://127.0.0.1:8000';
 
 const server = http.createServer((req, res) => {
     // Health check endpoint untuk backend
@@ -48,13 +48,15 @@ server.on('upgrade', async (request, socket, head) => {
     }
 
     try {
-        // Validasi token sesi ke backend Laravel internal
-        const verifyUrl = `${APP_URL}/internal/terminal/verify?token=${encodeURIComponent(token)}`;
+        // Validasi token sesi ke backend Laravel internal (gunakan 127.0.0.1 untuk keandalan IPv4)
+        const baseAppUrl = APP_URL.replace('localhost', '127.0.0.1');
+        const verifyUrl = `${baseAppUrl}/internal/terminal/verify?token=${encodeURIComponent(token)}`;
         const response = await fetch(verifyUrl, {
             headers: {
                 'Accept': 'application/json',
             },
         });
+
 
         if (!response.ok) {
             console.warn(`[Gateway] Token sesi tidak valid: ${token}`);

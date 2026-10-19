@@ -74,14 +74,19 @@ const remainingSeconds = ref<number>(props.initialSession?.remaining_seconds || 
 const terminalRef = ref<InstanceType<typeof Terminal> | null>(null);
 const isLoading = ref(false);
 const errorMessage = ref<string | null>(null);
-const isTerminalConnected = ref(false);
 const isFullscreen = ref(false);
+
+// Status koneksi WebSocket terminal: 'disconnected' | 'connecting' | 'connected' | 'error'
+const connectionStatus = ref<'disconnected' | 'connecting' | 'connected' | 'error'>('disconnected');
+const connectionErrorDetail = ref<string | null>(null);
 
 // State Latihan & Penilaian (Fase 4: FR-EX-01 s.d. 04)
 const exercisesList = ref<ExerciseItem[]>([...props.exercises]);
 const activeExerciseIndex = ref(0);
 const isChecking = ref(false);
 const isRequestingHint = ref(false);
+const isHintAccordionOpen = ref(true);
+
 const lastCheckResult = ref<{
     is_correct: boolean;
     score: number;
@@ -137,7 +142,7 @@ const handleSessionExpired = () => {
     if (currentSession.value) {
         currentSession.value.status = 'expired';
     }
-    isTerminalConnected.value = false;
+    connectionStatus.value = 'disconnected';
     errorMessage.value = 'Masa berlaku sesi terminal Anda telah habis (kedaluwarsa). Silakan mulai sesi baru.';
 };
 
@@ -145,6 +150,7 @@ const handleSessionExpired = () => {
 const startSession = async () => {
     isLoading.value = true;
     errorMessage.value = null;
+    connectionErrorDetail.value = null;
 
     try {
         const response = await axios.post('/terminal/sessions', {
@@ -178,7 +184,7 @@ const startSession = async () => {
 const resetSession = async () => {
     if (!currentSession.value) return;
 
-    if (!confirm('Apakah Anda yakin ingin mengatur ulang (reset) sesi ini? Seluruh perubahan file sementara akan dibuang.')) {
+    if (!confirm('Apakah Anda yakin ingin mengatur ulang (reset) sesi ini? Seluruh berkas latihan sementara akan dibuang.')) {
         return;
     }
 
@@ -190,7 +196,7 @@ const resetSession = async () => {
         stopTimer();
         currentSession.value = null;
         remainingSeconds.value = 0;
-        isTerminalConnected.value = false;
+        connectionStatus.value = 'disconnected';
 
         await startSession();
     } catch (err: any) {
@@ -203,7 +209,7 @@ const resetSession = async () => {
 const endSession = async () => {
     if (!currentSession.value) return;
 
-    if (!confirm('Akhiri sesi terminal ini? File sementara yang dibuat akan dibuang secara permanen.')) {
+    if (!confirm('Akhiri sesi terminal ini? Berkas sementara yang dibuat akan dibuang secara permanen.')) {
         return;
     }
 
@@ -213,7 +219,7 @@ const endSession = async () => {
         stopTimer();
         currentSession.value = null;
         remainingSeconds.value = 0;
-        isTerminalConnected.value = false;
+        connectionStatus.value = 'disconnected';
     } catch (err: any) {
         errorMessage.value = 'Gagal mengakhiri sesi.';
     } finally {
@@ -227,6 +233,30 @@ const toggleFullscreen = () => {
 
 const clearTerminal = () => {
     terminalRef.value?.clear();
+};
+
+const retryTerminalConnection = () => {
+    connectionErrorDetail.value = null;
+    terminalRef.value?.reconnect();
+};
+
+// Handler event koneksi Terminal.vue
+const onTerminalConnected = () => {
+    connectionStatus.value = 'connected';
+    connectionErrorDetail.value = null;
+};
+
+const onTerminalConnecting = () => {
+    connectionStatus.value = 'connecting';
+};
+
+const onTerminalDisconnected = () => {
+    connectionStatus.value = 'disconnected';
+};
+
+const onTerminalError = (msg: string) => {
+    connectionStatus.value = 'error';
+    connectionErrorDetail.value = msg;
 };
 
 // Ganti tab latihan yang aktif
@@ -245,6 +275,7 @@ const requestHint = async () => {
         const response = await axios.post(`/exercises/${currentExercise.value.id}/hints`);
         if (response.data.success) {
             currentExercise.value.unlocked_hints = response.data.unlocked_hints;
+            isHintAccordionOpen.value = true;
         }
     } catch (err: any) {
         errorMessage.value = err.response?.data?.message || 'Gagal meminta petunjuk latihan.';
@@ -273,7 +304,6 @@ const checkAnswer = async () => {
             currentExercise.value.has_passed = true;
         }
     } catch (err: any) {
-        // Penolakan VAL-06 & D-08 (Tidak ada sesi aktif) atau kegagalan pemeriksaan lainnya
         const data = err.response?.data;
         if (data && typeof data === 'object') {
             lastCheckResult.value = {
@@ -302,8 +332,7 @@ const goToNextExercise = () => {
 // Helper format teks instruksi dengan tag code sederhana
 const formatInstruction = (text: string) => {
     if (!text) return '';
-    // Format `code` menjadi <code> styled tag
-    return text.replace(/`([^`]+)`/g, '<code class="px-1.5 py-0.5 rounded bg-surface-elevated text-brand-primary-light font-mono text-[11px] border border-border/80">$1</code>');
+    return text.replace(/`([^`]+)`/g, '<code class="px-1.5 py-0.5 rounded bg-surface-card text-brand-primary-light font-mono text-xs border border-border/70 font-semibold">$1</code>');
 };
 
 onMounted(() => {
@@ -323,264 +352,337 @@ onBeforeUnmount(() => {
     <UserLayout>
         <Head :title="`Praktik: ${lesson.title} - LinuxLab`" />
 
-        <div class="py-6 space-y-5 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <!-- Breadcrumbs Navigasi -->
-            <nav class="flex items-center gap-2 text-xs sm:text-sm text-text-muted font-medium overflow-x-auto whitespace-nowrap py-1">
-                <Link :href="route('dashboard')" class="hover:text-brand-primary transition-colors flex items-center gap-1">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                    </svg>
-                    <span>Dashboard</span>
-                </Link>
-                <span class="text-text-dim">/</span>
-                <Link :href="route('modules.show', module.slug)" class="hover:text-brand-primary transition-colors">
-                    {{ module.title }}
-                </Link>
-                <span class="text-text-dim">/</span>
-                <Link :href="route('lessons.show', [module.slug, lesson.slug])" class="hover:text-brand-primary transition-colors">
-                    {{ lesson.title }}
-                </Link>
-                <span class="text-text-dim">/</span>
-                <span class="text-white font-semibold flex items-center gap-1.5">
-                    <span class="w-2 h-2 rounded-full bg-brand-primary inline-block animate-pulse"></span>
-                    <span>Praktik Terminal & Latihan</span>
-                </span>
+        <!-- Container Utama: Lebih lega, ergonomis, dan tidak mepet -->
+        <div class="py-5 lg:py-7 space-y-6 max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Breadcrumbs Navigasi yang Elegan -->
+            <nav class="flex items-center justify-between gap-3 text-xs sm:text-sm text-text-muted font-medium pb-1 border-b border-border/40">
+                <div class="flex items-center gap-2 overflow-x-auto whitespace-nowrap py-0.5">
+                    <Link :href="route('dashboard')" class="hover:text-brand-primary transition-colors flex items-center gap-1.5">
+                        <svg class="w-4 h-4 text-text-dim" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                        </svg>
+                        <span>Dashboard</span>
+                    </Link>
+                    <span class="text-text-dim">/</span>
+                    <Link :href="route('modules.show', module.slug)" class="hover:text-brand-primary transition-colors">
+                        {{ module.title }}
+                    </Link>
+                    <span class="text-text-dim">/</span>
+                    <Link :href="route('lessons.show', [module.slug, lesson.slug])" class="hover:text-brand-primary transition-colors">
+                        {{ lesson.title }}
+                    </Link>
+                    <span class="text-text-dim">/</span>
+                    <span class="text-white font-semibold flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-brand-primary inline-block animate-pulse"></span>
+                        <span>Ruang Praktik & Latihan</span>
+                    </span>
+                </div>
+
+                <div class="hidden md:flex items-center gap-3">
+                    <Link
+                        :href="route('lessons.show', [module.slug, lesson.slug])"
+                        class="text-xs text-text-muted hover:text-white transition-colors flex items-center gap-1.5"
+                    >
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                        </svg>
+                        <span>Baca Materi Pelajaran</span>
+                    </Link>
+                </div>
             </nav>
 
-            <!-- Error Banner -->
+            <!-- Error Banner Global -->
             <div
                 v-if="errorMessage"
-                class="p-4 rounded-xl bg-red-950/60 border border-red-500/40 text-red-200 text-sm flex items-start justify-between gap-3 shadow-lg"
+                class="p-4 rounded-xl bg-red-950/60 border border-red-500/40 text-red-200 text-sm flex items-start justify-between gap-4 shadow-lg"
             >
-                <div class="flex items-center gap-2.5">
-                    <svg class="w-5 h-5 text-red-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="flex items-center gap-3">
+                    <svg class="w-5 h-5 text-red-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                     </svg>
-                    <span>{{ errorMessage }}</span>
+                    <span class="leading-relaxed">{{ errorMessage }}</span>
                 </div>
                 <button
                     v-if="!currentSession || currentSession.status !== 'active'"
                     @click="startSession"
-                    class="px-3 py-1 bg-red-800 hover:bg-red-700 text-white rounded text-xs font-semibold shrink-0 transition-colors"
+                    class="px-3.5 py-1.5 bg-red-800 hover:bg-red-700 text-white rounded-lg text-xs font-semibold shrink-0 transition-colors shadow-sm"
                 >
-                    Mulai Sesi
+                    Mulai Sesi Baru
                 </button>
             </div>
 
-            <!-- Workspace 2 Kolom (Split Screen: Kiri 35%, Kanan 65%) Sesuai Wireframe -->
-            <div class="flex flex-col lg:flex-row gap-6 items-stretch" :class="{ 'fixed inset-0 z-50 bg-surface-base p-4': isFullscreen }">
-                <!-- PANEL KIRI: Latihan, Instruksi, Hint & Tombol Periksa (35%) -->
-                <aside class="w-full lg:w-[35%] flex flex-col gap-4" :class="{ 'hidden lg:flex': isFullscreen }">
-                    <!-- Tab Pemilih Latihan (Jika ada lebih dari 1 latihan) -->
-                    <div v-if="exercisesList.length > 1" class="flex items-center gap-1.5 p-1 bg-surface-card rounded-xl border border-border">
-                        <button
-                            v-for="(ex, idx) in exercisesList"
-                            :key="ex.id"
-                            @click="selectExercise(idx)"
-                            class="flex-1 py-1.5 px-3 rounded-lg text-xs font-semibold transition-all flex items-center justify-center gap-1.5"
-                            :class="[
-                                activeExerciseIndex === idx
-                                    ? 'bg-brand-primary text-black shadow-sm'
-                                    : 'text-text-muted hover:text-white hover:bg-surface-elevated'
-                            ]"
-                        >
-                            <span>Latihan {{ ex.order }}</span>
-                            <span v-if="ex.has_passed" class="text-xs" title="Telah Selesai">✓</span>
-                        </button>
+            <!-- Warning Gateway Offline Banner Jika Koneksi WebSocket Gagal -->
+            <div
+                v-if="connectionStatus === 'error' && currentSession?.status === 'active'"
+                class="p-4 rounded-xl bg-amber-950/40 border border-amber-500/40 text-amber-200 text-xs sm:text-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-md"
+            >
+                <div class="flex items-start gap-3">
+                    <svg class="w-5 h-5 text-amber-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <div class="space-y-1">
+                        <div class="font-bold text-amber-300">Layanan Terminal Gateway (WebSocket Port 3001) Belum Aktif</div>
+                        <p class="text-text-muted text-xs leading-relaxed">
+                            Container sudah aktif di latar belakang, namun shell belum terhubung ke browser. Jalankan perintah berikut pada terminal server Anda:
+                            <code class="px-2 py-0.5 ml-1 bg-surface-base text-brand-primary-light font-mono rounded border border-border/80 font-bold">npm run terminal-gateway</code>
+                        </p>
                     </div>
+                </div>
+                <button
+                    @click="retryTerminalConnection"
+                    class="px-3.5 py-1.5 bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 rounded-lg text-xs font-semibold shrink-0 transition-colors flex items-center justify-center gap-1.5"
+                >
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                    <span>Coba Sambungkan Lagi</span>
+                </button>
+            </div>
 
-                    <!-- Kartu Detail Latihan Aktif -->
-                    <AppCard v-if="currentExercise" class="p-5 border-border space-y-4">
-                        <div class="flex items-center justify-between">
-                            <span class="px-2.5 py-0.5 rounded text-xs font-mono font-semibold bg-brand-primary/10 text-brand-primary border border-brand-primary/20">
-                                Tingkat: Pemula
-                            </span>
-                            <div class="flex items-center gap-1 text-amber-400 font-mono text-xs font-semibold">
-                                <svg class="w-4 h-4 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" />
-                                </svg>
-                                <span>+{{ currentExercise.points }} Poin</span>
-                            </div>
+            <!-- Workspace 2 Kolom (Split Screen: Kiri 38%, Kanan 62%) Sesuai Wireframe Ergonomis -->
+            <div class="flex flex-col lg:flex-row gap-6 lg:gap-8 items-stretch" :class="{ 'fixed inset-0 z-50 bg-surface-base p-4': isFullscreen }">
+                <!-- PANEL KIRI: Latihan, Instruksi, Hint & Tombol Periksa (Ergonomis & Bernapas) -->
+                <aside class="w-full lg:w-[40%] xl:w-[37%] flex flex-col gap-5 justify-between" :class="{ 'hidden lg:flex': isFullscreen }">
+                    <div class="flex flex-col gap-5">
+                        <!-- Tab Pemilih Latihan (Jika ada lebih dari 1 latihan) -->
+                        <div v-if="exercisesList.length > 1" class="flex items-center gap-2 p-1.5 bg-surface-card rounded-xl border border-border">
+                            <button
+                                v-for="(ex, idx) in exercisesList"
+                                :key="ex.id"
+                                @click="selectExercise(idx)"
+                                class="flex-1 py-2 px-3 rounded-lg text-xs font-semibold transition-all flex items-center justify-center gap-2"
+                                :class="[
+                                    activeExerciseIndex === idx
+                                        ? 'bg-brand-primary text-black shadow-md font-bold'
+                                        : 'text-text-muted hover:text-white hover:bg-surface-elevated'
+                                ]"
+                            >
+                                <span>Latihan {{ ex.order }}</span>
+                                <span
+                                    v-if="ex.has_passed"
+                                    class="w-4 h-4 rounded-full flex items-center justify-center text-[10px]"
+                                    :class="activeExerciseIndex === idx ? 'bg-black text-brand-primary' : 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'"
+                                    title="Latihan ini telah selesai"
+                                >
+                                    ✓
+                                </span>
+                            </button>
                         </div>
 
-                        <div>
-                            <div class="flex items-center gap-2">
-                                <h1 class="text-base sm:text-lg font-bold text-white tracking-tight">
+                        <!-- Kartu Header Latihan Aktif -->
+                        <AppCard v-if="currentExercise" class="p-6 border-border space-y-5">
+                            <!-- Baris Tag Tingkat & XP/Poin -->
+                            <div class="flex items-center justify-between">
+                                <span class="px-2.5 py-1 rounded-md text-xs font-mono font-semibold bg-brand-primary/10 text-brand-primary border border-brand-primary/20">
+                                    Tingkat: Pemula
+                                </span>
+                                <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-amber-500/10 border border-amber-500/20 text-amber-400 font-mono text-xs font-semibold">
+                                    <svg class="w-4 h-4 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" />
+                                    </svg>
+                                    <span>+{{ currentExercise.points }} Poin</span>
+                                </div>
+                            </div>
+
+                            <!-- Judul & Status Selesai -->
+                            <div class="space-y-1.5">
+                                <h1 class="text-lg sm:text-xl font-bold text-white tracking-tight leading-snug">
                                     Latihan {{ currentExercise.order }}: {{ currentExercise.title }}
                                 </h1>
+                                <div v-if="currentExercise.has_passed" class="inline-flex items-center gap-1.5 text-xs text-emerald-400 font-medium">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                                    <span>Latihan ini telah Anda selesaikan dengan benar</span>
+                                </div>
                             </div>
-                            <span v-if="currentExercise.has_passed" class="inline-flex items-center gap-1 text-[11px] text-emerald-400 font-medium mt-0.5">
-                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                                </svg>
-                                <span>Telah Anda selesaikan dengan benar</span>
-                            </span>
-                        </div>
 
-                        <!-- Kotak Instruksi Tugas (FR-EX-01) -->
-                        <div class="p-3.5 rounded-lg bg-surface-elevated border border-border/80 space-y-2">
-                            <div class="flex items-center gap-1.5 text-brand-primary font-semibold text-xs">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                                </svg>
-                                <span>Instruksi Tugas:</span>
-                            </div>
-                            <div
-                                class="text-xs text-text-muted leading-relaxed"
-                                v-html="formatInstruction(currentExercise.instruction)"
-                            ></div>
-                        </div>
-
-                        <!-- Section Hint Bertahap (FR-EX-03, D-06) -->
-                        <div class="p-3.5 rounded-lg bg-surface-card border border-border space-y-2.5">
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center gap-1.5 text-amber-300 font-semibold text-xs">
+                            <!-- Kotak Tujuan & Instruksi Tugas (FR-EX-01) -->
+                            <div class="p-4 sm:p-5 rounded-xl bg-surface-elevated border border-border/80 space-y-3">
+                                <div class="flex items-center gap-2 text-brand-primary font-semibold text-xs tracking-wide uppercase">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                                     </svg>
-                                    <span>Petunjuk Bantuan (Hint)</span>
+                                    <span>Tujuan & Instruksi Praktik:</span>
                                 </div>
-                                <span class="text-[11px] font-mono text-text-dim">
-                                    {{ currentExercise.unlocked_hints.length }} / {{ currentExercise.total_hints }} dibuka
-                                </span>
-                            </div>
-
-                            <!-- Daftar Hint yang Sudah Dibuka -->
-                            <div v-if="currentExercise.unlocked_hints.length > 0" class="space-y-2 pt-1">
                                 <div
-                                    v-for="h in currentExercise.unlocked_hints"
-                                    :key="h.id"
-                                    class="p-2.5 rounded bg-surface-elevated border border-border text-xs text-text-muted space-y-1"
+                                    class="text-xs sm:text-sm text-text-primary/90 leading-relaxed font-sans"
+                                    v-html="formatInstruction(currentExercise.instruction)"
+                                ></div>
+                            </div>
+
+                            <!-- Accordion Petunjuk (Hint) Bertahap Sesuai Wireframe -->
+                            <div class="rounded-xl bg-surface-card border border-border overflow-hidden transition-all">
+                                <!-- Accordion Header -->
+                                <button
+                                    type="button"
+                                    @click="isHintAccordionOpen = !isHintAccordionOpen"
+                                    class="w-full flex items-center justify-between p-4 hover:bg-surface-elevated/70 transition-colors text-left"
                                 >
-                                    <div class="font-bold text-amber-300 text-[11px]">
-                                        Petunjuk #{{ h.order }}:
+                                    <div class="flex items-center gap-2.5 text-amber-300 font-semibold text-xs sm:text-sm">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                                        </svg>
+                                        <span>Petunjuk Latihan (Hint)</span>
                                     </div>
-                                    <div class="leading-relaxed" v-html="formatInstruction(h.content)"></div>
+
+                                    <div class="flex items-center gap-3">
+                                        <span class="text-xs font-mono text-text-dim px-2 py-0.5 rounded bg-surface-base border border-border/60">
+                                            {{ currentExercise.unlocked_hints.length }} / {{ currentExercise.total_hints }} dibuka
+                                        </span>
+                                        <svg
+                                            class="w-4 h-4 text-text-dim transition-transform duration-200"
+                                            :class="{ 'rotate-180': isHintAccordionOpen }"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                        </svg>
+                                    </div>
+                                </button>
+
+                                <!-- Accordion Body -->
+                                <div v-if="isHintAccordionOpen" class="px-4 pb-4 pt-1 space-y-3 border-t border-border/50">
+                                    <!-- Daftar Hint yang Telah Dibuka -->
+                                    <div v-if="currentExercise.unlocked_hints.length > 0" class="space-y-2.5 pt-1">
+                                        <div
+                                            v-for="h in currentExercise.unlocked_hints"
+                                            :key="h.id"
+                                            class="p-3.5 rounded-lg bg-surface-elevated border border-amber-500/20 text-xs sm:text-sm text-text-muted space-y-1.5"
+                                        >
+                                            <div class="font-bold text-amber-300 text-xs flex items-center gap-1.5">
+                                                <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+                                                <span>Petunjuk #{{ h.order }}</span>
+                                            </div>
+                                            <div class="leading-relaxed pl-3" v-html="formatInstruction(h.content)"></div>
+                                        </div>
+                                    </div>
+                                    <div v-else class="text-xs text-text-dim italic py-1">
+                                        Belum ada petunjuk yang dibuka. Tekan tombol di bawah apabila Anda membutuhkan bantuan.
+                                    </div>
+
+                                    <!-- Footer Baris Minta Hint -->
+                                    <div class="pt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-t border-border/40">
+                                        <span class="text-[11px] text-text-dim">
+                                            Petunjuk tidak mengurangi perolehan skor nilai Anda.
+                                        </span>
+                                        <button
+                                            v-if="remainingHintsCount > 0"
+                                            @click="requestHint"
+                                            :disabled="isRequestingHint"
+                                            class="px-3 py-1.5 rounded-lg bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 border border-amber-500/30 text-xs font-semibold transition-all disabled:opacity-50 flex items-center justify-center gap-1.5 shrink-0 active:scale-95 shadow-sm"
+                                        >
+                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                            </svg>
+                                            <span>{{ isRequestingHint ? 'Membuka...' : `Buka Petunjuk (${remainingHintsCount} tersisa)` }}</span>
+                                        </button>
+                                        <span v-else class="text-xs text-text-dim font-medium text-right">
+                                            Seluruh petunjuk telah dibuka
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
-                            <div v-else class="text-[11px] text-text-dim italic">
-                                Belum ada petunjuk yang dibuka. Anda dapat meminta petunjuk bila menemui kesulitan.
-                            </div>
 
-                            <!-- Tombol Minta Hint Bertahap -->
-                            <div class="pt-1 flex items-center justify-between gap-2 border-t border-border/50">
-                                <span class="text-[10px] text-text-dim">
-                                    Hint tidak mengurangi skor (D-06).
-                                </span>
-                                <button
-                                    v-if="remainingHintsCount > 0"
-                                    @click="requestHint"
-                                    :disabled="isRequestingHint"
-                                    class="px-2.5 py-1 rounded bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs font-semibold transition-colors disabled:opacity-50 flex items-center gap-1"
-                                >
-                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                    </svg>
-                                    <span>{{ isRequestingHint ? 'Membuka...' : `Minta Hint (${remainingHintsCount} tersisa)` }}</span>
-                                </button>
-                                <span v-else class="text-[11px] text-text-dim font-medium">
-                                    Semua petunjuk telah dibuka.
-                                </span>
-                            </div>
-                        </div>
-
-                        <!-- Feedback Penilaian Real-Time (VAL-03, VAL-04, UI-03) -->
-                        <div
-                            v-if="lastCheckResult"
-                            class="p-4 rounded-xl border space-y-3 transition-all"
-                            :class="[
-                                lastCheckResult.is_correct
-                                    ? 'bg-emerald-950/40 border-emerald-500/40 text-emerald-200'
-                                    : 'bg-red-950/40 border-red-500/40 text-red-200'
-                            ]"
-                        >
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center gap-2">
+                            <!-- Feedback Penilaian Real-Time (VAL-03, VAL-04, UI-03) -->
+                            <div
+                                v-if="lastCheckResult"
+                                class="p-5 rounded-xl border space-y-3.5 transition-all shadow-md"
+                                :class="[
+                                    lastCheckResult.is_correct
+                                        ? 'bg-emerald-950/40 border-emerald-500/40 text-emerald-200'
+                                        : 'bg-red-950/40 border-red-500/40 text-red-200'
+                                ]"
+                            >
+                                <div class="flex items-center justify-between gap-3">
+                                    <div class="flex items-center gap-2.5">
+                                        <span
+                                            class="w-7 h-7 rounded-full flex items-center justify-center font-bold text-sm shadow-sm"
+                                            :class="[
+                                                lastCheckResult.is_correct ? 'bg-emerald-500 text-black' : 'bg-red-500 text-white'
+                                            ]"
+                                        >
+                                            {{ lastCheckResult.is_correct ? '✓' : '✗' }}
+                                        </span>
+                                        <span class="font-bold text-sm sm:text-base text-white">
+                                            {{ lastCheckResult.is_correct ? 'Jawaban Benar! Latihan Selesai' : 'Jawaban Belum Sesuai' }}
+                                        </span>
+                                    </div>
                                     <span
-                                        class="w-6 h-6 rounded-full flex items-center justify-center font-bold text-xs"
-                                        :class="[
-                                            lastCheckResult.is_correct ? 'bg-emerald-500 text-black' : 'bg-red-500 text-white'
-                                        ]"
+                                        v-if="lastCheckResult.is_correct"
+                                        class="px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 font-mono text-xs font-bold border border-emerald-500/30 shrink-0"
                                     >
-                                        {{ lastCheckResult.is_correct ? '✓' : '✗' }}
-                                    </span>
-                                    <span class="font-bold text-sm text-white">
-                                        {{ lastCheckResult.is_correct ? 'Jawaban Benar! Selesai' : 'Jawaban Belum Sesuai' }}
+                                        +{{ lastCheckResult.score }} Poin
                                     </span>
                                 </div>
-                                <span
-                                    v-if="lastCheckResult.is_correct"
-                                    class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-mono text-xs font-bold border border-emerald-500/30"
-                                >
-                                    +{{ lastCheckResult.score }} Poin
-                                </span>
-                            </div>
 
-                            <!-- Rincian Feedback Bahasa Indonesia -->
-                            <div class="text-xs space-y-1 font-mono whitespace-pre-line leading-relaxed text-text-muted">
-                                {{ lastCheckResult.feedback }}
-                            </div>
+                                <!-- Rincian Feedback Bahasa Indonesia -->
+                                <div class="text-xs sm:text-sm space-y-1 font-mono whitespace-pre-line leading-relaxed text-text-muted pl-1">
+                                    {{ lastCheckResult.feedback }}
+                                </div>
 
-                            <!-- Tombol Lanjut ke Latihan Berikutnya -->
-                            <div v-if="lastCheckResult.is_correct && activeExerciseIndex < exercisesList.length - 1" class="pt-1">
-                                <button
-                                    @click="goToNextExercise"
-                                    class="w-full py-2 px-3 bg-emerald-500 hover:bg-emerald-400 text-black font-semibold rounded-lg text-xs transition-colors flex items-center justify-center gap-1.5 shadow-sm"
-                                >
-                                    <span>Lanjut ke Latihan {{ exercisesList[activeExerciseIndex + 1].order }}</span>
-                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                                    </svg>
-                                </button>
+                                <!-- Tombol Lanjut ke Latihan Berikutnya -->
+                                <div v-if="lastCheckResult.is_correct && activeExerciseIndex < exercisesList.length - 1" class="pt-2">
+                                    <button
+                                        @click="goToNextExercise"
+                                        class="w-full py-2.5 px-4 bg-emerald-500 hover:bg-emerald-400 text-black font-bold rounded-lg text-xs sm:text-sm transition-all flex items-center justify-center gap-2 shadow-md active:scale-98"
+                                    >
+                                        <span>Lanjut ke Latihan {{ exercisesList[activeExerciseIndex + 1].order }}</span>
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                        </svg>
+                                    </button>
+                                </div>
                             </div>
-                        </div>
+                        </AppCard>
 
-                        <!-- Peringatan Berkas Non-Persisten (FR-TERM-05) -->
-                        <div class="p-3 rounded-lg bg-amber-950/20 border border-amber-500/20 text-amber-200/80 text-[11px] space-y-1">
-                            <div class="flex items-center gap-1 font-bold text-amber-400">
-                                <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <!-- Empty State Bila Tidak Ada Latihan -->
+                        <AppCard v-else class="p-8 border-border text-center text-text-muted text-sm">
+                            Belum ada latihan yang tersedia pada pelajaran ini.
+                        </AppCard>
+
+                        <!-- Peringatan Berkas Non-Persisten (FR-TERM-05) yang Bersahabat -->
+                        <div class="p-3.5 rounded-xl bg-amber-950/20 border border-amber-500/20 text-amber-200/80 text-xs space-y-1">
+                            <div class="flex items-center gap-1.5 font-bold text-amber-400">
+                                <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
-                                <span>Lingkungan Praktik Non-Persisten</span>
+                                <span>Lingkungan Praktik Terisolasi & Non-Persisten</span>
                             </div>
-                            <p class="leading-relaxed">
-                                Seluruh berkas yang Anda buat di dalam terminal hanya berlaku selama sesi aktif. Saat sesi berakhir, container dihancurkan dan lingkungan dikembalikan bersih.
+                            <p class="leading-relaxed text-[11px] text-text-muted">
+                                Berkas yang Anda buat di dalam terminal tersimpan selama sesi aktif. Saat sesi di-reset atau berakhir, container dihancurkan dan lingkungan dikembalikan bersih.
                             </p>
                         </div>
-                    </AppCard>
+                    </div>
 
-                    <!-- Empty State Bila Tidak Ada Latihan -->
-                    <AppCard v-else class="p-5 border-border text-center text-text-muted text-xs">
-                        Belum ada latihan yang tersedia pada pelajaran ini.
-                    </AppCard>
-
-                    <!-- Tombol Aksi Utama: Periksa Jawaban (FR-EX-01 s.d. 02) -->
-                    <div class="flex flex-col gap-2.5">
+                    <!-- Panel Aksi Utama: Tombol Periksa Jawaban & Reset Sesi -->
+                    <div class="flex flex-col gap-3 pt-2">
+                        <!-- Primary CTA Button (Tegas dan Menarik) -->
                         <AppButton
                             v-if="currentExercise"
                             variant="primary"
-                            size="md"
-                            class="w-full justify-center font-bold shadow-md"
+                            size="lg"
+                            class="w-full justify-center font-bold text-sm sm:text-base py-3.5 shadow-xl hover:shadow-brand-primary/20 active:scale-98"
                             :loading="isChecking"
                             :disabled="isChecking || !currentSession || currentSession.status !== 'active'"
                             @click="checkAnswer"
                         >
-                            <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
-                            <span>Periksa Jawaban</span>
+                            <span>Periksa Jawaban Saya</span>
                         </AppButton>
 
-                        <div v-if="currentSession && currentSession.status === 'active'" class="grid grid-cols-2 gap-2">
+                        <!-- Baris Tombol Sekunder -->
+                        <div v-if="currentSession && currentSession.status === 'active'" class="grid grid-cols-2 gap-3">
                             <AppButton
                                 variant="secondary"
-                                size="sm"
+                                size="md"
                                 class="w-full justify-center text-xs"
                                 :disabled="isLoading"
                                 @click="resetSession"
-                                title="Reset sesi terminal dan bersihkan file latihan"
+                                title="Reset sesi terminal dan bersihkan berkas latihan"
                             >
-                                <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class="w-3.5 h-3.5 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                                 </svg>
                                 <span>Reset Sesi</span>
@@ -588,12 +690,12 @@ onBeforeUnmount(() => {
 
                             <AppButton
                                 variant="secondary"
-                                size="sm"
+                                size="md"
                                 class="w-full justify-center text-xs text-red-400 hover:text-red-300 hover:border-red-500/50"
                                 :disabled="isLoading"
                                 @click="endSession"
                             >
-                                <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class="w-3.5 h-3.5 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                 </svg>
                                 <span>Akhiri Sesi</span>
@@ -603,40 +705,30 @@ onBeforeUnmount(() => {
                         <AppButton
                             v-else
                             variant="primary"
-                            size="md"
-                            class="w-full justify-center"
+                            size="lg"
+                            class="w-full justify-center font-bold text-sm py-3.5"
                             :loading="isLoading"
                             @click="startSession"
                         >
-                            <span>Mulai Sesi Praktik</span>
+                            <span>Mulai Sesi Praktik Baru</span>
                         </AppButton>
-
-                        <Link
-                            :href="route('lessons.show', [module.slug, lesson.slug])"
-                            class="inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded-button border border-border text-xs text-text-muted hover:text-white hover:bg-surface-elevated transition-colors text-center"
-                        >
-                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                            </svg>
-                            <span>Kembali ke Materi Pelajaran</span>
-                        </Link>
                     </div>
                 </aside>
 
-                <!-- PANEL KANAN: Terminal Linux Interaktif (65%) Sesuai Wireframe -->
+                <!-- PANEL KANAN: Terminal Linux Interaktif (60%) Sesuai Wireframe -->
                 <section
-                    class="w-full flex flex-col rounded-xl overflow-hidden border border-border bg-[#060e20] shadow-2xl transition-all"
+                    class="w-full flex flex-col rounded-2xl overflow-hidden border border-border bg-[#060e20] shadow-2xl transition-all"
                     :class="[
-                        isFullscreen ? 'fixed inset-4 z-50 h-[calc(100vh-2rem)]' : 'lg:w-[65%] min-h-[580px] h-full flex-1'
+                        isFullscreen ? 'fixed inset-4 z-50 h-[calc(100vh-2rem)]' : 'lg:w-[60%] xl:w-[63%] min-h-[600px] h-full flex-1'
                     ]"
                 >
-                    <!-- Header Bar Window Terminal -->
-                    <div class="bg-surface-elevated px-4 py-2.5 flex items-center justify-between border-b border-border select-none shrink-0">
+                    <!-- macOS/Linux Window Header Bar -->
+                    <div class="bg-surface-elevated px-4 py-3 flex items-center justify-between border-b border-border select-none shrink-0">
                         <div class="flex items-center gap-3">
                             <div class="flex items-center gap-1.5">
-                                <button @click="endSession" title="Tutup / Akhiri Sesi" class="w-3 h-3 rounded-full bg-red-500/90 hover:opacity-80 transition-opacity"></button>
-                                <button @click="resetSession" title="Reset Sesi" class="w-3 h-3 rounded-full bg-yellow-500/90 hover:opacity-80 transition-opacity"></button>
-                                <button @click="toggleFullscreen" title="Layar Penuh" class="w-3 h-3 rounded-full bg-green-500/90 hover:opacity-80 transition-opacity"></button>
+                                <button @click="endSession" title="Tutup / Akhiri Sesi" class="w-3 h-3 rounded-full bg-red-500/90 hover:opacity-80 transition-opacity cursor-pointer"></button>
+                                <button @click="resetSession" title="Reset Sesi" class="w-3 h-3 rounded-full bg-yellow-500/90 hover:opacity-80 transition-opacity cursor-pointer"></button>
+                                <button @click="toggleFullscreen" title="Layar Penuh" class="w-3 h-3 rounded-full bg-green-500/90 hover:opacity-80 transition-opacity cursor-pointer"></button>
                             </div>
                             <div class="h-4 w-px bg-border"></div>
                             <span class="font-mono text-xs text-text-muted flex items-center gap-1.5">
@@ -648,8 +740,8 @@ onBeforeUnmount(() => {
                         <div class="flex items-center gap-2 text-text-dim">
                             <button
                                 @click="clearTerminal"
-                                class="p-1 hover:text-brand-primary hover:bg-surface-card rounded transition-colors text-xs flex items-center gap-1"
-                                title="Bersihkan Layar Terminal"
+                                class="p-1.5 hover:text-brand-primary hover:bg-surface-card rounded-md transition-colors text-xs flex items-center gap-1.5"
+                                title="Bersihkan Layar Terminal (Ctrl + L)"
                             >
                                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -659,7 +751,7 @@ onBeforeUnmount(() => {
 
                             <button
                                 @click="toggleFullscreen"
-                                class="p-1 hover:text-brand-primary hover:bg-surface-card rounded transition-colors"
+                                class="p-1.5 hover:text-brand-primary hover:bg-surface-card rounded-md transition-colors"
                                 :title="isFullscreen ? 'Keluar Layar Penuh' : 'Layar Penuh'"
                             >
                                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -670,25 +762,38 @@ onBeforeUnmount(() => {
                         </div>
                     </div>
 
-                    <!-- Status & Countdown Timer Bar (Sub-header) -->
-                    <div class="bg-surface-card/60 px-4 py-2 border-b border-border/80 flex items-center justify-between text-xs font-mono shrink-0">
-                        <div class="flex items-center gap-2">
+                    <!-- Sub-Header: Indikator Status Koneksi Real-Time & Countdown Timer -->
+                    <div class="bg-surface-card/60 px-4 py-2.5 border-b border-border/80 flex items-center justify-between text-xs font-mono shrink-0">
+                        <!-- Indikator Status Akurat (Tidak Macet di 'Menghubungkan') -->
+                        <div class="flex items-center gap-2.5">
                             <span
                                 class="w-2.5 h-2.5 rounded-full"
                                 :class="[
-                                    isTerminalConnected
+                                    connectionStatus === 'connected'
                                         ? 'bg-emerald-400 animate-pulse'
-                                        : currentSession?.status === 'active'
-                                        ? 'bg-amber-400'
-                                        : 'bg-red-400'
+                                        : connectionStatus === 'connecting'
+                                        ? 'bg-amber-400 animate-pulse'
+                                        : connectionStatus === 'error'
+                                        ? 'bg-red-400'
+                                        : 'bg-zinc-500'
                                 ]"
                             ></span>
                             <span class="text-text-muted">
-                                Status:
-                                <strong v-if="isTerminalConnected" class="text-emerald-400 font-semibold">Tersambung (Aktif)</strong>
-                                <strong v-else-if="currentSession?.status === 'active'" class="text-amber-300">Menghubungkan...</strong>
-                                <strong v-else class="text-red-400">Tidak Aktif</strong>
+                                Status Terminal:
+                                <strong v-if="connectionStatus === 'connected'" class="text-emerald-400 font-semibold">Tersambung (Aktif)</strong>
+                                <strong v-else-if="connectionStatus === 'connecting'" class="text-amber-300">Menghubungkan...</strong>
+                                <strong v-else-if="connectionStatus === 'error'" class="text-red-400">Gateway Offline (Port 3001)</strong>
+                                <strong v-else class="text-text-dim">Tidak Aktif</strong>
                             </span>
+
+                            <button
+                                v-if="connectionStatus === 'error'"
+                                @click="retryTerminalConnection"
+                                class="text-[11px] text-amber-300 hover:text-white underline ml-1 cursor-pointer"
+                                title="Klik untuk mencoba sambungkan kembali"
+                            >
+                                Hubungkan Ulang
+                            </button>
                         </div>
 
                         <!-- Real-time Countdown Timer (SEC-TERM-05) -->
@@ -697,7 +802,7 @@ onBeforeUnmount(() => {
                                 <svg class="w-3.5 h-3.5 text-text-dim" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
-                                <span>Sisa Waktu Sesi:</span>
+                                <span>Sisa Waktu:</span>
                                 <span class="font-bold text-white bg-surface-elevated px-2 py-0.5 rounded border border-border">
                                     {{ formattedTime }}
                                 </span>
@@ -717,23 +822,24 @@ onBeforeUnmount(() => {
                     </div>
 
                     <!-- xterm.js Terminal Canvas Component -->
-                    <div class="flex-1 w-full relative min-h-[420px] bg-[#060e20]">
+                    <div class="flex-1 w-full relative min-h-[440px] bg-[#060e20]">
                         <Terminal
                             ref="terminalRef"
                             :wsToken="currentSession?.status === 'active' ? currentSession?.ws_token : null"
                             :wsPort="currentSession?.ws_port || 3001"
-                            @connected="isTerminalConnected = true"
-                            @disconnected="isTerminalConnected = false"
-                            @error="(msg) => { isTerminalConnected = false; errorMessage = msg; }"
+                            @connected="onTerminalConnected"
+                            @connecting="onTerminalConnecting"
+                            @disconnected="onTerminalDisconnected"
+                            @error="onTerminalError"
                         />
                     </div>
 
-                    <!-- Footer Status Bar Terminal -->
-                    <div class="bg-surface-elevated px-4 py-2 border-t border-border flex items-center justify-between text-xs font-mono text-text-dim select-none shrink-0">
+                    <!-- Footer Status Bar Terminal Sesuai Wireframe -->
+                    <div class="bg-surface-elevated px-4 py-2.5 border-t border-border flex items-center justify-between text-xs font-mono text-text-dim select-none shrink-0">
                         <div class="flex items-center gap-3">
-                            <span class="text-emerald-400/90 flex items-center gap-1">
+                            <span class="text-emerald-400/90 flex items-center gap-1.5">
                                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-                                <span>Sandbox Terisolasi (Ubuntu 22.04 LTS)</span>
+                                <span>Container Sandbox Terisolasi (Ubuntu 22.04 LTS)</span>
                             </span>
                             <span class="hidden sm:inline text-border">|</span>
                             <span class="hidden sm:inline">Shell: /bin/bash</span>
@@ -743,7 +849,7 @@ onBeforeUnmount(() => {
                             <span class="hidden md:inline">User: student (non-root)</span>
                             <span class="hidden md:inline text-border">|</span>
                             <span class="text-[11px] text-text-muted">
-                                Tips: <kbd class="px-1 py-0.5 bg-surface-card rounded border border-border text-white">Ctrl</kbd> + <kbd class="px-1 py-0.5 bg-surface-card rounded border border-border text-white">L</kbd> untuk bersihkan
+                                Tips: <kbd class="px-1.5 py-0.5 bg-surface-card rounded border border-border text-white font-sans font-semibold">Ctrl</kbd> + <kbd class="px-1.5 py-0.5 bg-surface-card rounded border border-border text-white font-sans font-semibold">L</kbd> untuk bersihkan
                             </span>
                         </div>
                     </div>

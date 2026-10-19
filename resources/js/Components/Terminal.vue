@@ -19,6 +19,7 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits<{
     (e: 'connected'): void;
     (e: 'disconnected'): void;
+    (e: 'connecting'): void;
     (e: 'error', message: string): void;
 }>();
 
@@ -122,6 +123,7 @@ const connectWebSocket = () => {
 
     isConnecting.value = true;
     isConnected.value = false;
+    emit('connecting');
 
     if (terminal) {
         terminal.writeln('\x1b[36m[Menghubungkan ke container terminal terisolasi...]\x1b[0m');
@@ -161,19 +163,20 @@ const connectWebSocket = () => {
             isConnected.value = false;
             emit('disconnected');
 
-            if (terminal) {
-                terminal.writeln(`\r\n\x1b[33m[Koneksi terminal ditutup (kode: ${event.code})]\x1b[0m\r\n`);
+            if (terminal && event.code !== 1000) {
+                terminal.writeln(`\r\n\x1b[33m[Koneksi terminal terputus (kode: ${event.code})]\x1b[0m\r\n`);
             }
         };
 
         socket.onerror = () => {
             isConnecting.value = false;
             isConnected.value = false;
-            const errorMsg = 'Gagal terhubung ke layanan terminal gateway.';
+            const errorMsg = 'Layanan terminal gateway belum aktif pada port ' + props.wsPort + '. Jalankan "npm run terminal-gateway" di terminal server.';
             emit('error', errorMsg);
 
             if (terminal) {
-                terminal.writeln(`\r\n\x1b[31m[Kesalahan: ${errorMsg}]\x1b[0m\r\n`);
+                terminal.writeln(`\r\n\x1b[31m[Gagal terhubung ke layanan terminal gateway pada port ${props.wsPort}]\x1b[0m`);
+                terminal.writeln(`\x1b[33mSilakan jalankan di terminal: npm run terminal-gateway\x1b[0m\r\n`);
             }
         };
     } catch (err) {
@@ -182,6 +185,7 @@ const connectWebSocket = () => {
         emit('error', 'Tidak dapat menginisialisasi WebSocket.');
     }
 };
+
 
 const clear = () => {
     terminal?.clear();
