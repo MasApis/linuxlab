@@ -286,6 +286,7 @@ const user = page.props.auth?.user as { name?: string; username?: string; email?
                         :description="badge.description"
                         :is-unlocked="true"
                         :unlocked-at="badge.awarded_at"
+                        :icon="badge.icon"
                     />
                 </div>
                 <div v-else class="rounded-card border border-dashed border-border p-8 text-center text-text-muted text-sm">

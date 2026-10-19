@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import BadgeIcon from '@/Components/BadgeIcon.vue';
+
 interface Props {
     name: string;
     description: string;
@@ -12,7 +14,7 @@ withDefaults(defineProps<Props>(), {
     criteria: undefined,
     isUnlocked: false,
     unlockedAt: undefined,
-    icon: 'star',
+    icon: 'trophy',
 });
 </script>
 
@@ -35,16 +37,12 @@ withDefaults(defineProps<Props>(), {
                         : 'border-border bg-surface-high text-text-dim',
                 ]"
             >
-                <!-- Unlocked Icon (Star/Award) -->
-                <svg
+                <!-- Unlocked Icon -->
+                <BadgeIcon
                     v-if="isUnlocked"
-                    class="w-8 h-8"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                >
-                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                </svg>
+                    :icon="icon"
+                    size="lg"
+                />
 
                 <!-- Locked Icon (Padlock) -->
                 <svg
