@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Pencapaian &amp; Lencana SysAdmin - LinuxStart</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "primary-container": "#10b981",
+            "primary-fixed-dim": "#4edea3",
+            "tertiary-fixed": "#c4e7ff",
+            "tertiary-fixed-dim": "#7bd0ff",
+            "on-secondary-fixed": "#2a1700",
+            "surface-container-lowest": "#060e20",
+            "on-error-container": "#ffdad6",
+            "on-primary-fixed-variant": "#005236",
+            "surface-container-highest": "#2d3449",
+            "primary-fixed": "#6ffbbe",
+            "on-surface": "#dae2fd",
+            "on-secondary-container": "#5b3800",
+            "on-primary": "#003824",
+            "on-error": "#690005",
+            "surface-tint": "#4edea3",
+            "primary": "#4edea3",
+            "surface-container": "#171f33",
+            "inverse-on-surface": "#283044",
+            "on-secondary-fixed-variant": "#653e00",
+            "surface-variant": "#2d3449",
+            "inverse-primary": "#006c49",
+            "on-tertiary-fixed": "#001e2c",
+            "surface-container-high": "#222a3d",
+            "tertiary": "#7bd0ff",
+            "surface-container-low": "#131b2e",
+            "error": "#ffb4ab",
+            "secondary": "#ffb95f",
+            "outline": "#86948a",
+            "tertiary-container": "#19aee8",
+            "on-primary-container": "#00422b",
+            "on-surface-variant": "#bbcabf",
+            "secondary-fixed": "#ffddb8",
+            "on-background": "#dae2fd",
+            "on-primary-fixed": "#002113",
+            "surface-dim": "#0b1326",
+            "on-tertiary-container": "#003e55",
+            "secondary-fixed-dim": "#ffb95f",
+            "error-container": "#93000a",
+            "inverse-surface": "#dae2fd",
+            "on-secondary": "#472a00",
+            "secondary-container": "#ee9800",
+            "outline-variant": "#3c4a42",
+            "surface-bright": "#31394d",
+            "on-tertiary": "#00354a",
+            "background": "#0b1326",
+            "on-tertiary-fixed-variant": "#004c69",
+            "surface": "#0b1326"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "gutter": "1.5rem",
+            "space-md": "1rem",
+            "space-lg": "1.5rem",
+            "margin-mobile": "1rem",
+            "space-xl": "2rem",
+            "gutter-mobile": "1rem",
+            "space-xs": "0.25rem",
+            "space-sm": "0.5rem",
+            "margin": "2rem"
+          },
+          "fontFamily": {
+            "label-ui": ["Inter"],
+            "headline-lg": ["Inter"],
+            "display-hero": ["Inter"],
+            "code-inline": ["JetBrains Mono"],
+            "label-mono": ["JetBrains Mono"],
+            "display-hero-mobile": ["Inter"],
+            "body-sm": ["Inter"],
+            "headline-lg-mobile": ["Inter"],
+            "headline-md": ["Inter"],
+            "headline-sm": ["Inter"],
+            "body-lg": ["Inter"],
+            "code-terminal": ["JetBrains Mono"],
+            "body-md": ["Inter"]
+          },
+          "fontSize": {
+            "label-ui": ["12px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "600" }],
+            "headline-lg": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "display-hero": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+            "code-inline": ["13px", { "lineHeight": "18px", "fontWeight": "500" }],
+            "label-mono": ["11px", { "lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+            "display-hero-mobile": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+            "body-sm": ["12px", { "lineHeight": "18px", "fontWeight": "400" }],
+            "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "headline-md": ["22px", { "lineHeight": "28px", "fontWeight": "600" }],
+            "headline-sm": ["18px", { "lineHeight": "24px", "fontWeight": "600" }],
+            "body-lg": ["16px", { "lineHeight": "26px", "fontWeight": "400" }],
+            "code-terminal": ["14px", { "lineHeight": "22px", "fontWeight": "500" }],
+            "body-md": ["14px", { "lineHeight": "22px", "fontWeight": "400" }]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .badge-glow {
+      box-shadow: 0 0 20px -3px rgba(16, 185, 129, 0.25);
+    }
+    .amber-glow {
+      box-shadow: 0 0 20px -3px rgba(245, 158, 11, 0.25);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface min-h-screen flex flex-col font-body-md antialiased selection:bg-primary-container selection:text-on-primary">
+<!-- TopNavBar (Shared Component Anchor) -->
+<header class="bg-surface-container-lowest dark:bg-surface-container-lowest docked full-width top-0 sticky z-50 h-[68px] border-b border-surface-variant dark:border-surface-variant shadow-sm dark:shadow-none backdrop-blur-md">
+<div class="flex justify-between items-center w-full px-gutter max-w-7xl mx-auto h-full">
+<!-- Brand Logo -->
+<div class="flex items-center gap-space-md">
+<a class="flex items-center gap-2 group" href="#">
+<div class="w-9 h-9 rounded-lg bg-surface-container-high border border-outline-variant flex items-center justify-center text-primary group-hover:border-primary transition-colors">
+<span class="font-code-terminal text-code-terminal font-bold">&gt;_</span>
+</div>
+<span class="text-headline-sm font-headline-sm font-bold text-primary dark:text-primary tracking-tight">LinuxStart</span>
+</a>
+</div>
+<!-- Navigation Links -->
+<nav class="hidden md:flex items-center space-x-6">
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface dark:hover:text-on-surface transition-colors font-label-ui text-label-ui" href="#">Modul</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface dark:hover:text-on-surface transition-colors font-label-ui text-label-ui" href="#">Taman Bermain Terminal</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface dark:hover:text-on-surface transition-colors font-label-ui text-label-ui" href="#">Forum Diskusi</a>
+<a class="border-b-2 border-primary dark:border-primary text-on-surface dark:text-on-surface font-semibold pb-1 font-label-ui text-label-ui" href="#">Pencapaian</a>
+</nav>
+<!-- Trailing Gamification Status Actions -->
+<div class="flex items-center gap-space-sm sm:gap-space-md">
+<!-- Streak Pill -->
+<div class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container-high border border-outline-variant text-secondary">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+<span class="font-label-mono text-label-mono font-bold">7 Hari</span>
+</div>
+<!-- Total XP Pill -->
+<div class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container-high border border-outline-variant text-primary">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">military_tech</span>
+<span class="font-label-mono text-label-mono font-bold">1.450 XP</span>
+</div>
+<!-- User Profile Pill -->
+<div class="flex items-center gap-2 pl-1 cursor-pointer">
+<div class="relative">
+<img class="w-9 h-9 rounded-full object-cover border-2 border-primary-container p-0.5 bg-surface-container" data-alt="Avatar digital pengguna bergaya tech developer pemula di lingkungan Linux bersudut gelap dengan aksen hijau neon dan rambut rapi." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBh0jilJLS5P8-qNgqbJMLJVQMZXU-i8Vx7ERbL3dt_0JO2i7NkxIFW304Ixnngr61Qr1bK3Ss8uHkk9QAN3ojjy-mYa05W-cpcDi7_jUrLrNDgVBXRMwPL0sydjGGgqNXJ3vILQ_63muaK0OMJCkekk4a9ni1LnKB4D-QmnmEKTMzbIT_xOyTURvk5TIjWezUg2zrZIxAEpMnVf4BATrYC1KkdmnlN4E2g8jZvVUz1QSIu2RxQLS-06Q"/>
+<span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-primary rounded-full ring-2 ring-surface-container-lowest"></span>
+</div>
+<span class="hidden lg:inline-block font-label-ui text-label-ui text-on-surface font-medium">Alex Pratama</span>
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]">keyboard_arrow_down</span>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content Layout -->
+<main class="flex-1 w-full max-w-7xl mx-auto px-gutter py-space-xl space-y-space-xl">
+<!-- Top Headline Banner -->
+<section class="flex flex-col md:flex-row md:items-end justify-between gap-space-md pb-2">
+<div>
+<div class="flex items-center gap-2 mb-2">
+<span class="px-2.5 py-0.5 rounded text-primary bg-surface-container-high border border-outline-variant font-label-mono text-label-mono uppercase tracking-wider">
+            PORTFOLIO REPUTASI SYSADMIN
+          </span>
+<span class="text-outline font-label-mono text-label-mono">• Linux Kernel 6.8 vFS</span>
+</div>
+<h1 class="text-headline-lg font-headline-lg text-on-surface tracking-tight">
+          Pencapaian &amp; Lencana SysAdmin
+        </h1>
+<p class="text-body-md font-body-md text-on-surface-variant mt-1 max-w-2xl">
+          Bukti kecakapan teknis shell, otomatisasi skrip bash, dan manajemen berkas Unix. Buka lencana langka untuk meningkatkan reputasi devops Anda.
+        </p>
+</div>
+<div class="flex items-center gap-3">
+<button class="flex items-center gap-2 px-4 py-2 rounded-lg bg-surface-container-high border border-outline-variant hover:border-outline text-on-surface font-label-ui text-label-ui transition-colors">
+<span class="material-symbols-outlined text-[18px]">share</span>
+<span>Bagikan Profil</span>
+</button>
+<button class="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary-container hover:bg-opacity-90 text-on-primary-container font-label-ui text-label-ui font-semibold transition-colors">
+<span class="material-symbols-outlined text-[18px]">terminal</span>
+<span>Buka Terminal Lab</span>
+</button>
+</div>
+</section>
+<!-- Bento Grid Summary Stats -->
+<section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md">
+<!-- Card 1: Total XP & Level -->
+<div class="p-space-lg rounded-xl bg-surface-container border border-surface-variant flex flex-col justify-between relative overflow-hidden group hover:border-outline-variant transition-all">
+<div class="absolute -right-6 -bottom-6 w-24 h-24 bg-primary-container opacity-5 rounded-full blur-2xl group-hover:opacity-10 transition-opacity"></div>
+<div>
+<div class="flex justify-between items-start mb-3">
+<span class="font-label-ui text-label-ui text-on-surface-variant">TOTAL PENGALAMAN</span>
+<span class="material-symbols-outlined text-primary text-[20px]">bolt</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="text-headline-lg font-headline-lg text-on-surface font-extrabold tracking-tight">1.450</span>
+<span class="font-label-mono text-label-mono text-primary font-bold">XP</span>
+</div>
+<div class="mt-2 inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-surface-container-high text-primary font-label-mono text-label-mono border border-outline-variant">
+<span>Level 4 - Sysadmin Pemula</span>
+</div>
+</div>
+<div class="mt-4 pt-3 border-t border-surface-variant space-y-1.5">
+<div class="flex justify-between text-label-mono font-label-mono text-[11px] text-on-surface-variant">
+<span>Menuju Level 5</span>
+<span class="text-primary font-semibold">75% (350 XP lagi)</span>
+</div>
+<div class="w-full bg-surface-container-highest h-2 rounded-full overflow-hidden">
+<div class="bg-primary-container h-full rounded-full w-3/4"></div>
+</div>
+</div>
+</div>
+<!-- Card 2: Badges Count -->
+<div class="p-space-lg rounded-xl bg-surface-container border border-surface-variant flex flex-col justify-between relative overflow-hidden group hover:border-outline-variant transition-all">
+<div class="absolute -right-6 -bottom-6 w-24 h-24 bg-secondary opacity-5 rounded-full blur-2xl group-hover:opacity-10 transition-opacity"></div>
+<div>
+<div class="flex justify-between items-start mb-3">
+<span class="font-label-ui text-label-ui text-on-surface-variant">KOLEKSI LENCANA</span>
+<span class="material-symbols-outlined text-secondary text-[20px]">military_tech</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="text-headline-lg font-headline-lg text-on-surface font-extrabold tracking-tight">8</span>
+<span class="font-label-mono text-label-mono text-on-surface-variant">/ 16 Terkumpul</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+            50% dari total trofi modul berhasil dikuasai.
+          </p>
+</div>
+<div class="mt-4 pt-3 border-t border-surface-variant space-y-1.5">
+<div class="flex justify-between text-label-mono font-label-mono text-[11px] text-on-surface-variant">
+<span>Kelengkapan Koleksi</span>
+<span class="text-secondary font-semibold">8 Selesai • 8 Terkunci</span>
+</div>
+<div class="w-full bg-surface-container-highest h-2 rounded-full overflow-hidden flex">
+<div class="bg-secondary-container h-full rounded-full w-1/2"></div>
+</div>
+</div>
+</div>
+<!-- Card 3: Streak & Consistency -->
+<div class="p-space-lg rounded-xl bg-surface-container border border-surface-variant flex flex-col justify-between relative overflow-hidden group hover:border-outline-variant transition-all">
+<div>
+<div class="flex justify-between items-start mb-3">
+<span class="font-label-ui text-label-ui text-on-surface-variant">KONSISTENSI BELAJAR</span>
+<span class="material-symbols-outlined text-secondary text-[20px]" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="text-headline-lg font-headline-lg text-secondary font-extrabold tracking-tight">7 Hari</span>
+<span class="font-label-mono text-label-mono text-on-surface-variant">Beruntun</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+            Rekor terbaik Anda: <span class="text-on-surface font-semibold">14 Hari</span>.
+          </p>
+</div>
+<div class="mt-4 pt-3 border-t border-surface-variant flex items-center justify-between">
+<div class="flex items-center gap-1.5 text-primary text-label-mono font-label-mono text-[11px]">
+<span class="material-symbols-outlined text-[15px]">verified_user</span>
+<span>Streak Freeze Aktif</span>
+</div>
+<span class="font-label-mono text-label-mono text-[11px] text-on-surface-variant">+20 XP Besok</span>
+</div>
+</div>
+<!-- Card 4: Terminal Lab Success Rate -->
+<div class="p-space-lg rounded-xl bg-surface-container border border-surface-variant flex flex-col justify-between relative overflow-hidden group hover:border-outline-variant transition-all">
+<div>
+<div class="flex justify-between items-start mb-3">
+<span class="font-label-ui text-label-ui text-on-surface-variant">AKURASI SINTAKS SHELL</span>
+<span class="material-symbols-outlined text-tertiary text-[20px]">check_circle</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="text-headline-lg font-headline-lg text-on-surface font-extrabold tracking-tight">94%</span>
+<span class="font-label-mono text-label-mono text-primary font-bold">Akurasi</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+            Dari 42 skenario lab interaktif terminal.
+          </p>
+</div>
+<div class="mt-4 pt-3 border-t border-surface-variant flex items-center justify-between text-label-mono font-label-mono text-[11px]">
+<span class="text-on-surface-variant">Exit Code: 0</span>
+<span class="text-tertiary font-semibold">39 Selesai Bersih</span>
+</div>
+</div>
+</section>
+<!-- Filters, Category Tabs, and Search Bar -->
+<section class="space-y-space-md">
+<div class="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-space-md bg-surface-container-low p-space-md rounded-xl border border-surface-variant">
+<!-- Status Tabs (Semua / Diraih / Belum Terbuka) -->
+<div class="flex items-center gap-1.5 overflow-x-auto pb-1 lg:pb-0" id="status-filter">
+<button class="px-4 py-2 rounded-lg bg-surface-container-high text-primary font-semibold text-label-ui font-label-ui border border-outline-variant whitespace-nowrap">
+            Semua Lencana (16)
+          </button>
+<button class="px-4 py-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high text-label-ui font-label-ui transition-colors whitespace-nowrap">
+            Sudah Diraih (8)
+          </button>
+<button class="px-4 py-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high text-label-ui font-label-ui transition-colors whitespace-nowrap">
+            Belum Terbuka (8)
+          </button>
+</div>
+<!-- Search input -->
+<div class="relative w-full lg:w-72">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]">search</span>
+<input class="w-full pl-9 pr-4 py-2 rounded-lg bg-surface-container-lowest border border-surface-variant focus:border-primary focus:ring-1 focus:ring-primary text-body-sm font-code-terminal text-on-surface placeholder:text-outline outline-none transition-all" placeholder="Cari lencana atau perintah..." type="text"/>
+</div>
+</div>
+<!-- Topic Pills -->
+<div class="flex items-center gap-2 overflow-x-auto text-label-ui font-label-ui">
+<span class="text-outline text-label-mono font-label-mono mr-1">Topik:</span>
+<button class="px-3 py-1.5 rounded-full bg-surface-container border border-primary text-primary whitespace-nowrap">
+          Semua Topik
+        </button>
+<button class="px-3 py-1.5 rounded-full bg-surface-container border border-surface-variant text-on-surface-variant hover:text-on-surface hover:border-outline transition-colors whitespace-nowrap">
+          Dasar &amp; Navigasi
+        </button>
+<button class="px-3 py-1.5 rounded-full bg-surface-container border border-surface-variant text-on-surface-variant hover:text-on-surface hover:border-outline transition-colors whitespace-nowrap">
+          Hak Akses &amp; Pengguna
+        </button>
+<button class="px-3 py-1.5 rounded-full bg-surface-container border border-surface-variant text-on-surface-variant hover:text-on-surface hover:border-outline transition-colors whitespace-nowrap">
+          Manipulasi File &amp; Pipe
+        </button>
+<button class="px-3 py-1.5 rounded-full bg-surface-container border border-surface-variant text-on-surface-variant hover:text-on-surface hover:border-outline transition-colors whitespace-nowrap">
+          Skrip Bash &amp; Otomasi
+        </button>
+</div>
+</section>
+<!-- Badges Bento Grid (12 Badges: 6 Earned + 6 Locked) -->
+<section class="space-y-space-md">
+<div class="flex items-center justify-between">
+<h2 class="text-headline-sm font-headline-sm text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[22px]">verified</span>
+          Lencana Terbuka &amp; Tantangan Mendatang
+        </h2>
+<span class="font-label-mono text-label-mono text-on-surface-variant">Menampilkan 12 dari 16 Lencana</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-space-md">
+<!-- BADGE 1 (EARNED): Perintah Pertama -->
+<div class="p-space-lg rounded-xl bg-surface-container border border-surface-variant hover:border-primary-container transition-all flex flex-col justify-between badge-glow relative">
+<div class="flex items-start justify-between gap-3">
+<div class="w-14 h-14 rounded-xl bg-surface-container-high border-2 border-primary-container flex items-center justify-center text-primary shadow-sm flex-shrink-0">
+<span class="font-code-terminal text-[22px] font-bold">&gt;_</span>
+</div>
+<div class="flex flex-col items-end">
+<span class="px-2 py-0.5 rounded bg-surface-container-high border border-outline-variant font-label-mono text-label-mono text-secondary font-bold">+50 XP</span>
+<span class="mt-1 flex items-center gap-1 text-[11px] font-label-mono text-primary font-medium">
+<span class="material-symbols-outlined text-[13px]">check_circle</span> Terbuka
+              </span>
+</div>
+</div>
+<div class="mt-4">
+<h3 class="text-headline-sm font-headline-sm text-on-surface font-semibold">Perintah Pertama</h3>
+<p class="font-label-mono text-label-mono text-on-surface-variant text-[11px] mt-0.5">First Command • echo &amp; pwd</p>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-2">
+              Berhasil menjalankan perintah shell pertama di Linux tanpa kesalahan sintaks.
+            </p>
+</div>
+<div class="mt-4 pt-3 border-t border-surface-variant flex items-center justify-between">
+<span class="font-label-mono text-label-mono text-[11px] text-outline">12 Okt 2024</span>
+<button class="text-primary hover:text-primary-fixed text-label-ui font-label-ui flex items-center gap-1 transition-colors">
+<span>Pamerkan</span>
+<span class="material-symbols-outlined text-[14px]">share</span>
+</button>
+</div>
+</div>
+<!-- BADGE 2 (EARNED): File Master -->
+<div class="p-space-lg rounded-xl bg-surface-container border border-surface-variant hover:border-primary-container transition-all flex flex-col justify-between badge-glow relative">
+<div class="flex items-start justify-between gap-3">
+<div class="w-14 h-14 rounded-xl bg-surface-container-high border-2 border-primary-container flex items-center justify-center text-primary shadow-sm flex-shrink-0">
+<span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">folder_special</span>
+</div>
+<div class="flex flex-col items-end">
+<span class="px-2 py-0.5 rounded bg-surface-container-high border border-outline-variant font-label-mono text-label-mono text-secondary font-bold">+100 XP</span>
+<span class="mt-1 flex items-center gap-1 text-[11px] font-label-mono text-primary font-medium">
+<span class="material-symbols-outlined text-[13px]">check_circle</span> Terbuka
+              </span>
+</div>
+</div>
+<div class="mt-4">
+<h3 class="text-headline-sm font-headline-sm text-on-surface font-semibold">File Master</h3>
+<p class="font-label-mono text-label-mono text-on-surface-variant text-[11px] mt-0.5">Filesystem Hierarchy Standard</p>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-2">
+              Menuntaskan seluruh navigasi direktori dan eksplorasi berkas FHS seperti /etc, /var, dan /home.
+            </p>
+</div>
+<div class="mt-4 pt-3 border-t border-surface-variant flex items-center justify-between">
+<span class="font-label-mono text-label-mono text-[11px] text-outline">18 Okt 2024</span>
+<button class="text-primary hover:text-primary-fixed text-label-ui font-label-ui flex items-center gap-1 transition-colors">
+<span>Pamerkan</span>
+<span class="material-symbols-outlined text-[14px]">share</span>
+</button>
+</div>
+</div>
+<!-- BADGE 3 (EARNED): Penjelajah Root -->
+<div class="p-space-lg rounded-xl bg-surface-container border border-surface-variant hover:border-primary-container transition-all flex flex-col justify-between badge-glow relative">
+<div class="flex items-start justify-between gap-3">
+<div class="w-14 h-14 rounded-xl bg-surface-container-high border-2 border-primary-container flex items-center justify-center text-primary shadow-sm flex-shrink-0">
+<span class="material-symbols-outlined text-[28px]">explore</span>
+</div>
+<div class="flex flex-col items-end">
+<span class="px-2 py-0.5 rounded bg-surface-container-high border border-outline-variant font-label-mono text-label-mono text-secondary font-bold">+75 XP</span>
+<span class="mt-1 flex items-center gap-1 text-[11px] font-label-mono text-primary font-medium">
+<span class="material-symbols-outlined text-[13px]">check_circle</span> Terbuka
+              </span>
+</div>
+</div>
+<div class="mt-4">
+<h3 class="text-headline-sm font-headline-sm text-on-surface font-semibold">Penjelajah Root</h3>
+<p class="font-label-mono text-label-mono text-on-surface-variant text-[11px] mt-0.5">Root Navigator • cd, ls -la &amp; find</p>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-2">
+              Menguasai perbedaan path absolut dan relatif tanpa pernah tersesat di direktori root linux.
+            </p>
+</div>
+<div class="mt-4 pt-3 border-t border-surface-variant flex items-center justify-between">
+<span class="font-label-mono text-label-mono text-[11px] text-outline">22 Okt 2024</span>
+<button class="text-primary hover:text-primary-fixed text-label-ui font-label-ui flex items-center gap-1 transition-colors">
+<span>Pamerkan</span>
+<span class="material-symbols-outlined text-[14px]">share</span>
+</button>
+</div>
+</div>
+<!-- BADGE 4 (EARNED): Penyunting Kilat -->
+<div class="p-space-lg rounded-xl bg-surface-container border border-surface-variant hover:border-primary-container transition-all flex flex-col justify-between badge-glow relative">
+<div class="flex items-start justify-between gap-3">
+<div class="w-14 h-14 rounded-xl bg-surface-container-high border-2 border-primary-container flex items-center justify-center text-primary shadow-sm flex-shrink-0">
+<span class="material-symbols-outlined text-[28px]">edit_note</span>
+</div>
+<div class="flex flex-col items-end">
+<span class="px-2 py-0.5 rounded bg-surface-container-high border border-outline-variant font-label-mono text-label-mono text-secondary font-bold">+80 XP</span>
+<span class="mt-1 flex items-center gap-1 text-[11px] font-label-mono text-primary font-medium">
+<span class="material-symbols-outlined text-[13px]">check_circle</span> Terbuka
+              </span>
+</div>
+</div>
+<div class="mt-4">
+<h3 class="text-headline-sm font-headline-sm text-on-surface font-semibold">Penyunting Kilat</h3>
+<p class="font-label-mono text-label-mono text-on-surface-variant text-[11px] mt-0.5">Nano &amp; Vim Initiate</p>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-2">
+              Membuat dan mengedit berkas teks konfigurasi langsung di terminal tanpa GUI mouse.
+            </p>
+</div>
+<div class="mt-4 pt-3 border-t border-surface-variant flex items-center justify-between">
+<span class="font-label-mono text-label-mono text-[11px] text-outline">25 Okt 2024</span>
+<button class="text-primary hover:text-primary-fixed text-label-ui font-label-ui flex items-center gap-1 transition-colors">
+<span>Pamerkan</span>
+<span class="material-symbols-outlined text-[14px]">share</span>
+</button>
+</div>
+</div>
+<!-- BADGE 5 (EARNED): Pipa Aliran Data -->
+<div class="p-space-lg rounded-xl bg-surface-container border border-surface-variant hover:border-primary-container transition-all flex flex-col justify-between badge-glow relative">
+<div class="flex items-start justify-between gap-3">
+<div class="w-14 h-14 rounded-xl bg-surface-container-high border-2 border-primary-container flex items-center justify-center text-primary shadow-sm flex-shrink-0">
+<span class="material-symbols-outlined text-[28px]">alt_route</span>
+</div>
+<div class="flex flex-col items-end">
+<span class="px-2 py-0.5 rounded bg-surface-container-high border border-outline-variant font-label-mono text-label-mono text-secondary font-bold">+120 XP</span>
+<span class="mt-1 flex items-center gap-1 text-[11px] font-label-mono text-primary font-medium">
+<span class="material-symbols-outlined text-[13px]">check_circle</span> Terbuka
+              </span>
+</div>
+</div>
+<div class="mt-4">
+<h3 class="text-headline-sm font-headline-sm text-on-surface font-semibold">Pipa Aliran Data</h3>
+<p class="font-label-mono text-label-mono text-on-surface-variant text-[11px] mt-0.5">Pipes &amp; Redirection • grep, sort</p>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-2">
+              Menggabungkan dua perintah atau lebih menggunakan pipeline stdout, stdin, dan stderr redirection.
+            </p>
+</div>
+<div class="mt-4 pt-3 border-t border-surface-variant flex items-center justify-between">
+<span class="font-label-mono text-label-mono text-[11px] text-outline">29 Okt 2024</span>
+<button class="text-primary hover:text-primary-fixed text-label-ui font-label-ui flex items-center gap-1 transition-colors">
+<span>Pamerkan</span>
+<span class="material-symbols-outlined text-[14px]">share</span>
+</button>
+</div>
+</div>
+<!-- BADGE 6 (EARNED): 7 Hari Tak Terhentikan -->
+<div class="p-space-lg rounded-xl bg-surface-container border border-surface-variant hover:border-secondary transition-all flex flex-col justify-between amber-glow relative">
+<div class="flex items-start justify-between gap-3">
+<div class="w-14 h-14 rounded-xl bg-surface-container-high border-2 border-secondary flex items-center justify-center text-secondary shadow-sm flex-shrink-0">
+<span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+</div>
+<div class="flex flex-col items-end">
+<span class="px-2 py-0.5 rounded bg-surface-container-high border border-outline-variant font-label-mono text-label-mono text-secondary font-bold">+150 XP</span>
+<span class="mt-1 flex items-center gap-1 text-[11px] font-label-mono text-secondary font-medium">
+<span class="material-symbols-outlined text-[13px]" style="font-variation-settings: 'FILL' 1;">stars</span> Spesial
+              </span>
+</div>
+</div>
+<div class="mt-4">
+<h3 class="text-headline-sm font-headline-sm text-on-surface font-semibold">7 Hari Tak Terhentikan</h3>
+<p class="font-label-mono text-label-mono text-on-surface-variant text-[11px] mt-0.5">Week Streak Master</p>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-2">
+              Belajar dan mempraktikkan perintah Linux setiap hari selama seminggu penuh tanpa absen.
+            </p>
+</div>
+<div class="mt-4 pt-3 border-t border-surface-variant flex items-center justify-between">
+<span class="font-label-mono text-label-mono text-[11px] text-outline">31 Okt 2024</span>
+<button class="text-secondary hover:text-secondary-fixed text-label-ui font-label-ui flex items-center gap-1 transition-colors">
+<span>Pamerkan</span>
+<span class="material-symbols-outlined text-[14px]">share</span>
+</button>
+</div>
+</div>
+<!-- BADGE 7 (LOCKED): Permission Guru -->
+<div class="p-space-lg rounded-xl bg-surface-container-low border border-surface-variant/60 flex flex-col justify-between opacity-80 hover:opacity-100 transition-all">
+<div>
+<div class="flex items-start justify-between gap-3">
+<div class="w-14 h-14 rounded-xl bg-surface-container border border-surface-variant flex items-center justify-center text-outline flex-shrink-0">
+<span class="material-symbols-outlined text-[26px]">lock</span>
+</div>
+<div class="flex flex-col items-end">
+<span class="px-2 py-0.5 rounded bg-surface-container-high font-label-mono text-label-mono text-on-surface-variant">+150 XP</span>
+<span class="mt-1 flex items-center gap-1 text-[11px] font-label-mono text-outline">
+<span class="material-symbols-outlined text-[13px]">lock</span> Terkunci
+                </span>
+</div>
+</div>
+<div class="mt-4">
+<h3 class="text-headline-sm font-headline-sm text-on-surface font-semibold">Permission Guru</h3>
+<p class="font-label-mono text-label-mono text-outline text-[11px] mt-0.5">chmod, chown &amp; rwxr-xr-x</p>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-2">
+                Kuasai pengelolaan hak akses UNIX berkas dan direktori untuk perlindungan sistem file.
+              </p>
+</div>
+</div>
+<div class="mt-4 pt-3 border-t border-surface-variant/60 space-y-2">
+<div class="flex justify-between text-label-mono font-label-mono text-[11px] text-on-surface-variant">
+<span>Modul 03: Izin Berkas</span>
+<span class="text-primary">2/5 Latihan</span>
+</div>
+<div class="w-full bg-surface-container-highest h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary-container h-full rounded-full w-2/5"></div>
+</div>
+</div>
+</div>
+<!-- BADGE 8 (LOCKED): Process Hunter -->
+<div class="p-space-lg rounded-xl bg-surface-container-low border border-surface-variant/60 flex flex-col justify-between opacity-80 hover:opacity-100 transition-all">
+<div>
+<div class="flex items-start justify-between gap-3">
+<div class="w-14 h-14 rounded-xl bg-surface-container border border-surface-variant flex items-center justify-center text-outline flex-shrink-0">
+<span class="material-symbols-outlined text-[26px]">memory</span>
+</div>
+<div class="flex flex-col items-end">
+<span class="px-2 py-0.5 rounded bg-surface-container-high font-label-mono text-label-mono text-on-surface-variant">+100 XP</span>
+<span class="mt-1 flex items-center gap-1 text-[11px] font-label-mono text-outline">
+<span class="material-symbols-outlined text-[13px]">lock</span> Terkunci
+                </span>
+</div>
+</div>
+<div class="mt-4">
+<h3 class="text-headline-sm font-headline-sm text-on-surface font-semibold">Process Hunter</h3>
+<p class="font-label-mono text-label-mono text-outline text-[11px] mt-0.5">ps aux, top &amp; pkill</p>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-2">
+                Lacak dan matikan background process bermasalah yang membebani CPU dan memory server.
+              </p>
+</div>
+</div>
+<div class="mt-4 pt-3 border-t border-surface-variant/60">
+<div class="flex items-center gap-1.5 text-label-mono font-label-mono text-[11px] text-outline">
+<span class="material-symbols-outlined text-[14px]">flag</span>
+<span>Syarat: Selesaikan Lab Manajemen Proses</span>
+</div>
+</div>
+</div>
+<!-- BADGE 9 (LOCKED): Bash Alchemist -->
+<div class="p-space-lg rounded-xl bg-surface-container-low border border-surface-variant/60 flex flex-col justify-between opacity-80 hover:opacity-100 transition-all">
+<div>
+<div class="flex items-start justify-between gap-3">
+<div class="w-14 h-14 rounded-xl bg-surface-container border border-surface-variant flex items-center justify-center text-outline flex-shrink-0">
+<span class="material-symbols-outlined text-[26px]">science</span>
+</div>
+<div class="flex flex-col items-end">
+<span class="px-2 py-0.5 rounded bg-surface-container-high font-label-mono text-label-mono text-on-surface-variant">+200 XP</span>
+<span class="mt-1 flex items-center gap-1 text-[11px] font-label-mono text-outline">
+<span class="material-symbols-outlined text-[13px]">lock</span> Terkunci
+                </span>
+</div>
+</div>
+<div class="mt-4">
+<h3 class="text-headline-sm font-headline-sm text-on-surface font-semibold">Bash Alchemist</h3>
+<p class="font-label-mono text-label-mono text-outline text-[11px] mt-0.5">Shell Scripting #!/bin/bash</p>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-2">
+                Buat skrip otomatisasi bash pertama dengan variabel, looping for/while, dan percabangan logic.
+              </p>
+</div>
+</div>
+<div class="mt-4 pt-3 border-t border-surface-variant/60">
+<div class="flex items-center gap-1.5 text-label-mono font-label-mono text-[11px] text-outline">
+<span class="material-symbols-outlined text-[14px]">school</span>
+<span>Syarat: Buka Modul 05 Dasar Shell Scripting</span>
+</div>
+</div>
+</div>
+<!-- BADGE 10 (LOCKED): Penjaga Firewall -->
+<div class="p-space-lg rounded-xl bg-surface-container-low border border-surface-variant/60 flex flex-col justify-between opacity-80 hover:opacity-100 transition-all">
+<div>
+<div class="flex items-start justify-between gap-3">
+<div class="w-14 h-14 rounded-xl bg-surface-container border border-surface-variant flex items-center justify-center text-outline flex-shrink-0">
+<span class="material-symbols-outlined text-[26px]">shield</span>
+</div>
+<div class="flex flex-col items-end">
+<span class="px-2 py-0.5 rounded bg-surface-container-high font-label-mono text-label-mono text-on-surface-variant">+250 XP</span>
+<span class="mt-1 flex items-center gap-1 text-[11px] font-label-mono text-outline">
+<span class="material-symbols-outlined text-[13px]">lock</span> Terkunci
+                </span>
+</div>
+</div>
+<div class="mt-4">
+<h3 class="text-headline-sm font-headline-sm text-on-surface font-semibold">Penjaga Firewall</h3>
+<p class="font-label-mono text-label-mono text-outline text-[11px] mt-0.5">Network Sentinel • ufw &amp; netstat</p>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-2">
+                Konfigurasi port aman dan pantau transmisi paket jaringan dengan alat analisis Linux.
+              </p>
+</div>
+</div>
+<div class="mt-4 pt-3 border-t border-surface-variant/60">
+<div class="flex items-center gap-1.5 text-label-mono font-label-mono text-[11px] text-secondary">
+<span class="material-symbols-outlined text-[14px]">lock_clock</span>
+<span>Terbuka saat mencapai Level 6 Sysadmin</span>
+</div>
+</div>
+</div>
+<!-- BADGE 11 (LOCKED): Master Arsip -->
+<div class="p-space-lg rounded-xl bg-surface-container-low border border-surface-variant/60 flex flex-col justify-between opacity-80 hover:opacity-100 transition-all">
+<div>
+<div class="flex items-start justify-between gap-3">
+<div class="w-14 h-14 rounded-xl bg-surface-container border border-surface-variant flex items-center justify-center text-outline flex-shrink-0">
+<span class="material-symbols-outlined text-[26px]">inventory_2</span>
+</div>
+<div class="flex flex-col items-end">
+<span class="px-2 py-0.5 rounded bg-surface-container-high font-label-mono text-label-mono text-on-surface-variant">+120 XP</span>
+<span class="mt-1 flex items-center gap-1 text-[11px] font-label-mono text-outline">
+<span class="material-symbols-outlined text-[13px]">lock</span> Terkunci
+                </span>
+</div>
+</div>
+<div class="mt-4">
+<h3 class="text-headline-sm font-headline-sm text-on-surface font-semibold">Master Arsip</h3>
+<p class="font-label-mono text-label-mono text-outline text-[11px] mt-0.5">Tar &amp; Gzip Sorcerer</p>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-2">
+                Ekstrak dan kompresi arsip tarball multifolder tanpa error integritas data.
+              </p>
+</div>
+</div>
+<div class="mt-4 pt-3 border-t border-surface-variant/60">
+<div class="flex items-center gap-1.5 text-label-mono font-label-mono text-[11px] text-outline">
+<span class="material-symbols-outlined text-[14px]">flag</span>
+<span>Syarat: Selesaikan Lab Backup Skrip Otomatis</span>
+</div>
+</div>
+</div>
+<!-- BADGE 12 (LOCKED): Crontab Scheduler -->
+<div class="p-space-lg rounded-xl bg-surface-container-low border border-surface-variant/60 flex flex-col justify-between opacity-80 hover:opacity-100 transition-all">
+<div>
+<div class="flex items-start justify-between gap-3">
+<div class="w-14 h-14 rounded-xl bg-surface-container border border-surface-variant flex items-center justify-center text-outline flex-shrink-0">
+<span class="material-symbols-outlined text-[26px]">schedule</span>
+</div>
+<div class="flex flex-col items-end">
+<span class="px-2 py-0.5 rounded bg-surface-container-high font-label-mono text-label-mono text-on-surface-variant">+180 XP</span>
+<span class="mt-1 flex items-center gap-1 text-[11px] font-label-mono text-outline">
+<span class="material-symbols-outlined text-[13px]">lock</span> Terkunci
+                </span>
+</div>
+</div>
+<div class="mt-4">
+<h3 class="text-headline-sm font-headline-sm text-on-surface font-semibold">Crontab Scheduler</h3>
+<p class="font-label-mono text-label-mono text-outline text-[11px] mt-0.5">Daemon Automation • cron</p>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-2">
+                Jadwalkan pemeliharaan sistem otomatis pada background daemon tanpa intervensi manual.
+              </p>
+</div>
+</div>
+<div class="mt-4 pt-3 border-t border-surface-variant/60">
+<div class="flex items-center gap-1.5 text-label-mono font-label-mono text-[11px] text-outline">
+<span class="material-symbols-outlined text-[14px]">school</span>
+<span>Syarat: Selesaikan Modul Otomasi Cron</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Next Level Milestone Callout Banner -->
+<section class="p-space-xl rounded-2xl bg-surface-container border border-primary-container/40 relative overflow-hidden">
+<div class="absolute top-0 right-0 w-96 h-96 bg-primary-container opacity-10 rounded-full blur-3xl pointer-events-none"></div>
+<div class="relative z-10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-space-lg">
+<div class="space-y-2 max-w-2xl">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-container-high border border-outline-variant font-label-mono text-label-mono text-primary">
+<span class="material-symbols-outlined text-[16px]">workspace_premium</span>
+<span>Target Level Berikutnya: Level 5 Sysadmin Madya</span>
+</div>
+<h2 class="text-headline-md font-headline-md text-on-surface font-bold">
+            Tingkatkan ke Level 5 untuk Membuka Sertifikat Digital Fondasi LinuxStart!
+          </h2>
+<p class="text-body-md font-body-md text-on-surface-variant">
+            Tinggal 350 XP lagi untuk membuktikan kecakapan terminal Anda dan mengklaim sertifikat kelulusan yang dapat diunggah langsung ke LinkedIn.
+          </p>
+</div>
+<div class="flex flex-col sm:flex-row items-center gap-3 w-full lg:w-auto flex-shrink-0">
+<a class="w-full sm:w-auto text-center px-6 py-3 rounded-lg bg-surface-container-high border border-outline-variant hover:border-outline text-on-surface font-label-ui text-label-ui font-semibold transition-colors" href="#">
+            Uji Coba Terminal Sandbox
+          </a>
+<a class="w-full sm:w-auto text-center px-6 py-3 rounded-lg bg-primary-container hover:bg-opacity-90 text-on-primary-container font-label-ui text-label-ui font-bold transition-all shadow-md" href="#">
+            Lanjutkan Modul 03 (+150 XP)
+          </a>
+</div>
+</div>
+</section>
+</main>
+<!-- Global Footer -->
+<footer class="mt-auto border-t border-surface-variant bg-surface-container-lowest text-on-surface-variant py-space-xl">
+<div class="max-w-7xl mx-auto px-gutter flex flex-col md:flex-row justify-between items-center gap-space-md">
+<div class="flex items-center gap-3">
+<div class="w-7 h-7 rounded bg-surface-container border border-outline-variant flex items-center justify-center text-primary font-code-terminal text-code-terminal font-bold">
+          &gt;_
+        </div>
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface">LinuxStart Indonesia</span>
+<span class="text-outline text-body-sm font-body-sm">| Platform Belajar Interaktif SysAdmin Pemula</span>
+</div>
+<div class="flex items-center gap-6 font-label-ui text-label-ui">
+<a class="hover:text-primary transition-colors" href="#">Dokumentasi</a>
+<a class="hover:text-primary transition-colors" href="#">Taman Bermain</a>
+<a class="hover:text-primary transition-colors" href="#">Komunitas Discord</a>
+<a class="hover:text-primary transition-colors" href="#">Privasi</a>
+</div>
+</div>
+</footer>
+</body></html>

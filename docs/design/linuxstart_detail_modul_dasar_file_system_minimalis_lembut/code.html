@@ -1,0 +1,331 @@
+<!DOCTYPE html><html class="dark" lang="id"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>LinuxStart - Detail Modul: Dasar File System</title>
+<!-- Google Fonts: Inter & JetBrains Mono -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Tailwind CSS with Forms and Container Queries -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface-dim": "#0b1326",
+            "tertiary-container": "#19aee8",
+            "on-surface": "#dae2fd",
+            "on-surface-variant": "#bbcabf",
+            "surface-container-high": "#222a3d",
+            "on-primary-fixed": "#002113",
+            "primary-container": "#10b981",
+            "on-background": "#dae2fd",
+            "background": "#0b1326",
+            "on-secondary": "#472a00",
+            "tertiary-fixed": "#c4e7ff",
+            "on-error-container": "#ffdad6",
+            "outline-variant": "#3c4a42",
+            "tertiary": "#7bd0ff",
+            "primary-fixed": "#6ffbbe",
+            "surface-container-low": "#131b2e",
+            "on-tertiary-fixed": "#001e2c",
+            "secondary-fixed": "#ffddb8",
+            "error": "#ffb4ab",
+            "error-container": "#93000a",
+            "surface-bright": "#31394d",
+            "secondary-container": "#ee9800",
+            "surface-container-highest": "#2d3449",
+            "surface-variant": "#2d3449",
+            "surface-container": "#171f33",
+            "on-error": "#690005",
+            "on-primary-container": "#00422b",
+            "on-tertiary-fixed-variant": "#004c69",
+            "on-secondary-fixed-variant": "#653e00",
+            "on-tertiary-container": "#003e55",
+            "on-secondary-fixed": "#2a1700",
+            "surface-container-lowest": "#060e20",
+            "on-primary-fixed-variant": "#005236",
+            "primary-fixed-dim": "#4edea3",
+            "surface": "#0b1326",
+            "secondary": "#ffb95f",
+            "inverse-primary": "#006c49",
+            "on-secondary-container": "#5b3800",
+            "on-tertiary": "#00354a",
+            "on-primary": "#003824",
+            "tertiary-fixed-dim": "#7bd0ff",
+            "secondary-fixed-dim": "#ffb95f",
+            "inverse-surface": "#dae2fd",
+            "inverse-on-surface": "#283044",
+            "primary": "#4edea3",
+            "surface-tint": "#4edea3",
+            "outline": "#86948a"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-lg": "1.5rem",
+            "space-xs": "0.25rem",
+            "gutter-mobile": "1rem",
+            "gutter": "1.5rem",
+            "space-sm": "0.5rem",
+            "margin-mobile": "1rem",
+            "space-md": "1rem",
+            "space-xl": "2rem",
+            "margin": "2rem"
+          },
+          "fontFamily": {
+            "headline-lg-mobile": ["Inter"],
+            "label-mono": ["JetBrains Mono"],
+            "code-terminal": ["JetBrains Mono"],
+            "headline-md": ["Inter"],
+            "body-sm": ["Inter"],
+            "headline-lg": ["Inter"],
+            "display-hero": ["Inter"],
+            "label-ui": ["Inter"],
+            "body-lg": ["Inter"],
+            "code-inline": ["JetBrains Mono"],
+            "body-md": ["Inter"],
+            "headline-sm": ["Inter"],
+            "display-hero-mobile": ["Inter"]
+          },
+          "fontSize": {
+            "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "label-mono": ["11px", { "lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+            "code-terminal": ["14px", { "lineHeight": "22px", "fontWeight": "500" }],
+            "headline-md": ["22px", { "lineHeight": "28px", "fontWeight": "600" }],
+            "body-sm": ["12px", { "lineHeight": "18px", "fontWeight": "400" }],
+            "headline-lg": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "display-hero": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+            "label-ui": ["12px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "600" }],
+            "body-lg": ["16px", { "lineHeight": "26px", "fontWeight": "400" }],
+            "code-inline": ["13px", { "lineHeight": "18px", "fontWeight": "500" }],
+            "body-md": ["14px", { "lineHeight": "22px", "fontWeight": "400" }],
+            "headline-sm": ["18px", { "lineHeight": "24px", "fontWeight": "600" }],
+            "display-hero-mobile": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "800" }]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface font-body-md antialiased min-h-screen flex flex-col selection:bg-primary selection:text-on-primary-fixed">
+<!-- TopNavBar Anchor Execution -->
+<header class="bg-surface-container-lowest dark:bg-surface-container-lowest docked full-width top-0 sticky z-50 h-[68px] border-b border-surface-variant dark:border-surface-variant shadow-sm dark:shadow-none backdrop-blur-md flex items-center">
+<div class="flex justify-between items-center w-full px-gutter max-w-7xl mx-auto">
+<!-- Brand & Left Navigation Links -->
+<div class="flex items-center space-x-8">
+<a class="flex items-center space-x-2.5 group" href="#">
+<div class="w-8 h-8 rounded-lg bg-surface-container-highest border border-outline-variant flex items-center justify-center text-primary group-hover:border-primary transition-colors">
+<span class="font-code-terminal text-code-terminal font-bold">&gt;_</span>
+</div>
+<span class="text-headline-sm font-headline-sm font-bold text-primary dark:text-primary tracking-tight">LinuxStart</span>
+</a>
+<!-- Desktop Navigation Items -->
+<nav class="hidden lg:flex items-center space-x-6 text-label-ui font-label-ui">
+<a class="border-b-2 border-primary dark:border-primary text-on-surface dark:text-on-surface font-semibold pb-1" href="#">Modul</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface dark:hover:text-on-surface transition-colors pb-1" href="#">Taman Bermain Terminal</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface dark:hover:text-on-surface transition-colors pb-1" href="#">Forum Diskusi</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface dark:hover:text-on-surface transition-colors pb-1" href="#">Pencapaian</a>
+</nav>
+</div>
+<!-- Right Trailing Controls & Gamification Pill -->
+<div class="flex items-center space-x-4">
+<!-- Quick Search Bar -->
+<div class="hidden md:flex items-center bg-surface-container-low border border-outline-variant rounded-lg px-3 py-1.5 focus-within:border-primary transition-colors w-52">
+<span class="material-symbols-outlined text-outline text-lg mr-2" data-icon="search">search</span>
+<input class="bg-transparent border-0 p-0 text-body-sm font-body-sm text-on-surface placeholder:text-outline focus:ring-0 w-full focus:outline-none" placeholder="Cari perintah atau topik..." type="text">
+<kbd class="hidden xl:inline-block text-[10px] font-label-mono text-outline border border-outline-variant rounded px-1.5 py-0.5 ml-1">Ctrl+K</kbd>
+</div>
+<!-- Gamification Counters -->
+<div class="flex items-center space-x-2">
+<!-- Streak Indicator -->
+<div class="flex items-center bg-surface-container-low border border-outline-variant px-2.5 py-1 rounded-full text-label-ui font-label-ui text-secondary space-x-1.5">
+<span class="material-symbols-outlined text-secondary" data-icon="local_fire_department" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+<span class="font-bold">7 Hari</span>
+</div>
+<!-- XP Counter -->
+<div class="flex items-center bg-surface-container-low border border-outline-variant px-2.5 py-1 rounded-full text-label-ui font-label-ui text-primary space-x-1.5">
+<span class="material-symbols-outlined text-primary" data-icon="military_tech" style="font-variation-settings: 'FILL' 1;">military_tech</span>
+<span class="font-bold">1.450 XP</span>
+</div>
+</div>
+<div class="h-6 w-px bg-surface-variant"></div>
+<!-- User Profile Pill -->
+<div class="flex items-center space-x-3 cursor-pointer group p-1 pl-2 rounded-lg hover:bg-surface-container transition-colors">
+<div class="relative">
+<img alt="Avatar profil pengguna LinuxStart dengan bingkai status hijau aktif" class="w-8 h-8 rounded-full border-2 border-primary object-cover" data-alt="Potret digital ramah dari pengguna muda Indonesia Alex Pratama dengan pencahayaan neon bernuansa hijau emerald dan latar belakang antarmuka terminal kode gelap profesional berteknologi tinggi." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0-KuO_fe8JuFEqv4yPOOlL0wEYCmoOfSOtfqz4FeZpIxsyKmCCSIR5FBDHDHdzRliD2G5I2PbzNS4GRlEACOvqX0OpO8zN5l2xYM1rC7UYRGLrU9K5UWmCLPoLFsXvFE5N8G17JtLhBbOhjmlXDRZZxrv5XBcRLbA63rTXd8ufMToW8zE7o6w0bcgj--vetJCt9p659NEfI41ReELHOB36MdWS4CbkF1SySefbPi3_CYzvajLT2yJaw">
+<div class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-primary rounded-full border-2 border-surface-container-lowest"></div>
+</div>
+<div class="hidden xl:flex flex-col text-left">
+<span class="text-label-ui font-label-ui font-semibold text-on-surface leading-tight">Alex Pratama</span>
+<span class="text-label-mono font-label-mono text-[10px] text-primary">Lv. 4 Sysadmin</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-on-surface text-base" data-icon="keyboard_arrow_down">keyboard_arrow_down</span>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Container View -->
+<main class="flex-1 max-w-7xl w-full mx-auto px-gutter py-space-lg space-y-space-lg">
+<!-- Breadcrumb Navigation -->
+<nav class="flex items-center space-x-2 text-label-ui font-label-ui text-on-surface-variant">
+<a class="hover:text-primary transition-colors flex items-center space-x-1" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="home">home</span>
+<span class="">Beranda</span>
+</a>
+<span class="material-symbols-outlined text-xs" data-icon="chevron_right">chevron_right</span>
+<a class="hover:text-primary transition-colors" href="#">Modul</a>
+<span class="material-symbols-outlined text-xs" data-icon="chevron_right">chevron_right</span>
+<span class="text-on-surface font-semibold">Dasar File System</span>
+</nav>
+<!-- Module Hero & Header Section -->
+<section class="bg-surface-container border border-surface-variant rounded-xl p-space-lg lg:p-space-xl relative overflow-hidden mb-8">
+<!-- Glow Accent Backdrop -->
+<div class="absolute -right-24 -top-24 w-96 h-96 bg-primary/5 rounded-full blur-3xl pointer-events-none opacity-40"></div>
+<div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-center">
+<!-- Title and Metadata -->
+<div class="lg:col-span-7 space-y-space-md">
+<div class="flex flex-wrap items-center gap-2">
+<span class="bg-primary/10 text-primary border border-primary/30 text-label-mono font-label-mono px-2.5 py-0.5 rounded">MODUL 01</span>
+<span class="bg-surface-container-high text-on-surface-variant border border-outline-variant text-label-mono font-label-mono px-2.5 py-0.5 rounded">Tingkat: Pemula</span>
+<span class="bg-surface-container-high text-on-surface-variant border border-outline-variant text-label-mono font-label-mono px-2.5 py-0.5 rounded flex items-center space-x-1">
+<span class="material-symbols-outlined text-xs" data-icon="schedule">schedule</span>
+<span class="">Estimasi: ~2 Jam</span>
+</span>
+<span class="bg-secondary-container/20 text-secondary border border-secondary/30 text-label-mono font-label-mono px-2.5 py-0.5 rounded font-bold">Total: +450 XP</span>
+<span class="bg-surface-container-high text-on-surface-variant border border-outline-variant text-label-mono font-label-mono px-2.5 py-0.5 rounded">Linux / POSIX Standard</span>
+</div>
+<h1 class="text-headline-lg font-headline-lg font-bold text-on-surface tracking-tight leading-snug">
+            Dasar File System &amp; Navigasi Linux
+          </h1>
+<p class="text-body-md font-body-md text-on-surface-variant leading-relaxed max-w-2xl">
+            Pahami arsitektur pohon direktori Linux (FHS), navigasi mutlak vs relatif, serta kuasai perintah dasar penjelajahan berkas seperti <code class="bg-surface-container-lowest text-primary px-1.5 py-0.5 rounded font-code-inline text-code-inline border border-outline-variant">pwd</code>, <code class="bg-surface-container-lowest text-primary px-1.5 py-0.5 rounded font-code-inline text-code-inline border border-outline-variant">ls</code>, <code class="bg-surface-container-lowest text-primary px-1.5 py-0.5 rounded font-code-inline text-code-inline border border-outline-variant">cd</code>, <code class="bg-surface-container-lowest text-primary px-1.5 py-0.5 rounded font-code-inline text-code-inline border border-outline-variant">mkdir</code>, dan <code class="bg-surface-container-lowest text-primary px-1.5 py-0.5 rounded font-code-inline text-code-inline border border-outline-variant">touch</code> langsung melalui browser tanpa instalasi OS.
+          </p>
+<!-- Primary CTA Buttons -->
+<div class="flex flex-wrap items-center gap-space-md pt-space-xs">
+<button class="bg-primary text-on-primary font-headline-sm text-label-ui px-6 py-3 rounded-lg flex items-center space-x-2.5 hover:bg-primary-fixed-dim transition-all active:scale-95 shadow-lg shadow-primary/10">
+<span class="material-symbols-outlined text-lg" data-icon="terminal">terminal</span>
+<span class="font-bold">Lanjutkan Latihan Terakhir</span>
+</button>
+<button class="bg-surface-container-high border border-outline-variant text-on-surface hover:bg-surface-container-highest px-5 py-3 rounded-lg flex items-center space-x-2 transition-all active:scale-95 font-label-ui text-label-ui">
+<span class="material-symbols-outlined text-lg text-outline" data-icon="open_in_new">open_in_new</span>
+<span class="">Buka Terminal Sandbox</span>
+</button>
+</div>
+</div>
+<!-- Module Progress Overview Card -->
+<div class="lg:col-span-5 bg-surface-container-lowest/80 border border-outline-variant rounded-xl p-space-lg backdrop-blur-sm shadow-xl space-y-space-md"><div class="flex items-center justify-between">
+<span class="text-label-mono font-label-mono text-on-surface-variant text-[11px] tracking-wider">STATUS KEMAJUAN MODUL</span>
+<span class="text-label-mono font-label-mono font-semibold text-primary bg-primary/10 px-2.5 py-0.5 rounded border border-primary/20">65% SELESAI</span>
+</div>
+<div class="space-y-1.5">
+<div class="w-full bg-surface-variant h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full transition-all duration-500 opacity-90" style="width: 65%;"></div>
+</div>
+<div class="flex justify-between text-body-sm font-body-sm text-on-surface-variant">
+<span class="">5 dari 8 Pelajaran diselesaikan</span>
+<span class="font-medium text-on-surface">3 Sisa</span>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-2 pt-2 border-t border-surface-variant/50">
+<div class="bg-surface-container-low/40 p-2.5 rounded-lg border border-outline-variant/30 text-center">
+<div class="text-headline-sm font-headline-sm font-bold text-on-surface">18/24</div>
+<div class="text-label-mono font-label-mono text-[10px] text-on-surface-variant mt-0.5">LATIHAN TUNTAS</div>
+</div>
+<div class="bg-surface-container-low/40 p-2.5 rounded-lg border border-outline-variant/30 text-center">
+<div class="text-headline-sm font-headline-sm font-bold text-secondary">290<span class="text-xs font-normal text-on-surface-variant">/450</span></div>
+<div class="text-label-mono font-label-mono text-[10px] text-on-surface-variant mt-0.5">XP TERKUMPUL</div>
+</div>
+<div class="bg-surface-container-low/40 p-2.5 rounded-lg border border-outline-variant/30 text-center">
+<div class="text-headline-sm font-headline-sm font-bold text-tertiary">1j 15m</div>
+<div class="text-label-mono font-label-mono text-[10px] text-on-surface-variant mt-0.5">WAKTU BELAJAR</div>
+</div>
+</div>
+<div class="flex items-center space-x-2 text-body-sm font-body-sm text-on-surface-variant bg-surface-container/40 px-3 py-2 rounded-lg border border-outline-variant/30">
+<span class="material-symbols-outlined text-secondary text-sm" data-icon="offline_bolt" style="font-variation-settings: 'FILL' 1;">offline_bolt</span>
+<span class="">Selesaikan bab ini sebelum hari ini usai untuk bonus <strong class="text-secondary font-medium">+50 XP Streak</strong>!</span>
+</div></div>
+</div>
+</section>
+<!-- Main Dual-Pane Content Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
+<!-- LEFT COLUMN: Expandable Lessons List (7 Cols) -->
+<div class="lg:col-span-8 space-y-space-md">
+<div class="flex items-center justify-between mb-space-xs">
+<h2 class="text-headline-sm font-headline-sm font-bold text-on-surface flex items-center space-x-2">
+<span class="">Daftar Pelajaran &amp; Kurikulum Praktikum</span>
+</h2>
+<span class="text-body-sm font-body-sm text-on-surface-variant">5 Pelajaran Utama</span>
+</div>
+<!-- LESSON 1: COMPLETED (Accordion collapsed or minimal view) -->
+<div class="bg-surface-container border border-surface-variant rounded-xl overflow-hidden transition-all duration-200">
+<div class="p-6 flex items-center justify-between bg-surface-container cursor-pointer hover:bg-surface-container-high transition-colors"><div class="flex items-center space-x-3.5"><div class="w-8 h-8 rounded-full bg-primary/20 text-primary border border-primary/40 flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-lg" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span></div><div><div class="flex items-center space-x-2"><span class="text-label-mono font-label-mono text-primary text-[11px] font-bold">SELESAI (100%)</span><span class="text-outline text-xs">•</span><span class="text-body-sm font-body-sm text-outline">3 Latihan</span></div><h3 class="text-headline-sm font-headline-sm text-on-surface text-base lg:text-headline-sm font-semibold">01. Memahami Pohon Direktori Linux (/ root &amp; FHS)</h3></div></div><div class="flex items-center space-x-3"><span class="text-label-mono font-label-mono text-outline text-xs hidden sm:inline">+50 XP Diraih</span><span class="material-symbols-outlined text-outline" data-icon="expand_more">expand_more</span></div></div>
+<!-- Exercises Sub-list (Completed) -->
+<div class="border-t border-surface-variant bg-surface-container-low/60 divide-y divide-surface-variant/50 p-2 space-y-2"><div class="py-3 px-4 flex items-center justify-between hover:bg-surface-container-high/40 rounded-lg transition-colors pl-8 lg:pl-10"><div class="flex items-center space-x-3"><span class="material-symbols-outlined text-primary text-base" data-icon="check">check</span><span class="text-body-md font-body-md text-on-surface">Latihan 1.1: Melihat Direktori Saat Ini dengan <code class="text-primary font-code-inline text-code-inline bg-surface-container-lowest px-1.5 py-0.5 rounded">pwd</code></span></div><div class="flex items-center space-x-3"><span class="text-label-mono font-label-mono text-xs text-outline font-semibold">15 XP</span><span class="text-label-mono font-label-mono text-[10px] text-primary bg-primary/10 px-2 py-0.5 rounded border border-primary/20">TUNTAS</span></div></div><div class="py-3 px-4 flex items-center justify-between hover:bg-surface-container-high/40 rounded-lg transition-colors pl-8 lg:pl-10"><div class="flex items-center space-x-3"><span class="material-symbols-outlined text-primary text-base" data-icon="check">check</span><span class="text-body-md font-body-md text-on-surface">Latihan 1.2: Memahami Hirarki /bin, /etc, /home, dan /var</span></div><div class="flex items-center space-x-3"><span class="text-label-mono font-label-mono text-xs text-outline font-semibold">20 XP</span><span class="text-label-mono font-label-mono text-[10px] text-primary bg-primary/10 px-2 py-0.5 rounded border border-primary/20">TUNTAS</span></div></div><div class="py-3 px-4 flex items-center justify-between hover:bg-surface-container-high/40 rounded-lg transition-colors pl-8 lg:pl-10"><div class="flex items-center space-x-3"><span class="material-symbols-outlined text-primary text-base" data-icon="check">check</span><span class="text-body-md font-body-md text-on-surface">Latihan 1.3: Eksplorasi Root Direktori (<code class="text-primary font-code-inline text-code-inline bg-surface-container-lowest px-1.5 py-0.5 rounded">cd /</code>)</span></div><div class="flex items-center space-x-3"><span class="text-label-mono font-label-mono text-xs text-outline font-semibold">15 XP</span><span class="text-label-mono font-label-mono text-[10px] text-primary bg-primary/10 px-2 py-0.5 rounded border border-primary/20">TUNTAS</span></div></div></div>
+</div>
+<!-- LESSON 2: IN PROGRESS (Expanded by Default) -->
+<div class="bg-surface-container border border-primary/30 rounded-xl overflow-hidden shadow-sm">
+<div class="p-6 flex items-center justify-between bg-surface-container-high/40 cursor-pointer"><div class="flex items-center space-x-3.5"><div class="w-8 h-8 rounded-full bg-secondary-container/20 text-secondary border border-secondary/30 flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-lg" data-icon="timelapse">timelapse</span></div><div><div class="flex items-center space-x-2"><span class="text-label-mono font-label-mono text-secondary text-[11px] font-semibold">SEDANG BERJALAN (66%)</span><span class="text-outline text-xs">•</span><span class="bg-primary/10 text-primary border border-primary/20 text-label-mono font-label-mono text-[10px] px-2 py-0.2 rounded font-medium">PELAJARAN AKTIF</span></div><h3 class="text-headline-sm font-headline-sm text-on-surface text-base lg:text-headline-sm font-semibold">02. Navigasi Direktori: Path Absolut vs Relatif</h3></div></div><div class="flex items-center space-x-3"><span class="text-label-mono font-label-mono text-secondary text-xs font-medium hidden sm:inline">+90 XP Potensial</span><span class="material-symbols-outlined text-primary" data-icon="expand_less">expand_less</span></div></div>
+<div class="border-t border-surface-variant/40 bg-surface-container-lowest/40 p-2 space-y-2"><div class="py-3 px-4 flex items-center justify-between hover:bg-surface-container-high/20 rounded-lg transition-colors pl-8 lg:pl-10"><div class="flex items-center space-x-3"><span class="material-symbols-outlined text-primary text-base opacity-90" data-icon="check_circle">check_circle</span><span class="text-body-md font-body-md text-on-surface">Latihan 2.1: Pindah ke Direktori Pengguna (<code class="text-primary font-code-inline text-code-inline bg-surface-container px-1 py-0.5 rounded border border-outline-variant/30">cd ~</code> atau <code class="text-primary font-code-inline text-code-inline bg-surface-container px-1 py-0.5 rounded border border-outline-variant/30">cd</code>)</span></div><div class="flex items-center space-x-2"><span class="text-label-mono font-label-mono text-xs text-outline">15 XP</span><span class="material-symbols-outlined text-primary text-sm opacity-80" data-icon="done_all">done_all</span></div></div><div class="py-3 px-4 flex items-center justify-between hover:bg-surface-container-high/20 rounded-lg transition-colors pl-8 lg:pl-10"><div class="flex items-center space-x-3"><span class="material-symbols-outlined text-primary text-base opacity-90" data-icon="check_circle">check_circle</span><span class="text-body-md font-body-md text-on-surface">Latihan 2.2: Navigasi Naik Satu Tingkat (<code class="text-primary font-code-inline text-code-inline bg-surface-container px-1 py-0.5 rounded border border-outline-variant/30">cd ..</code>) dan Simbol Dot (<code class="text-primary font-code-inline text-code-inline bg-surface-container px-1 py-0.5 rounded border border-outline-variant/30">.</code> &amp; <code class="text-primary font-code-inline text-code-inline bg-surface-container px-1 py-0.5 rounded border border-outline-variant/30">..</code>)</span></div><div class="flex items-center space-x-2"><span class="text-label-mono font-label-mono text-xs text-outline">20 XP</span><span class="material-symbols-outlined text-primary text-sm opacity-80" data-icon="done_all">done_all</span></div></div><div class="py-3 px-4 flex flex-col sm:flex-row sm:items-center justify-between bg-primary/10 border-l-4 border-primary rounded-r-lg pl-7 lg:pl-9 gap-3"><div class="flex items-center space-x-3"><div class="w-6 h-6 rounded-full bg-primary text-on-primary-fixed flex items-center justify-center font-bold text-xs shrink-0"><span class="material-symbols-outlined text-sm" data-icon="play_arrow">play_arrow</span></div><div><div class="text-body-md font-body-md font-semibold text-on-surface">Latihan 2.3: Kombinasi Path Panjang &amp; Jalur Absolut (<code class="text-primary font-code-inline text-code-inline bg-surface-container-lowest px-1 py-0.5 rounded border border-outline-variant/40">cd /var/log</code>)</div><div class="text-body-sm font-body-sm text-on-surface-variant mt-0.5">Terminal emulator menunggu instruksi baris perintah Anda</div></div></div><div class="flex items-center space-x-3 self-end sm:self-auto"><span class="text-label-mono font-label-mono text-xs font-semibold text-secondary">+25 XP</span><button class="bg-primary text-on-primary font-label-ui text-label-ui px-4 py-2 rounded-lg flex items-center space-x-1.5 hover:bg-primary-fixed-dim transition-all active:scale-95 shadow-sm"><span class="material-symbols-outlined text-sm" data-icon="terminal">terminal</span><span class="font-medium">Mulai Latihan</span></button></div></div><div class="py-3 px-4 flex items-center justify-between opacity-60 hover:opacity-80 rounded-lg transition-opacity pl-8 lg:pl-10"><div class="flex items-center space-x-3"><span class="material-symbols-outlined text-outline text-base" data-icon="lock">lock</span><span class="text-body-md font-body-md text-on-surface-variant">Latihan 2.4: Tantangan Lab: Labirin Direktori Linux</span></div><div class="flex items-center space-x-2"><span class="text-label-mono font-label-mono text-xs text-outline">30 XP</span><span class="text-label-mono font-label-mono text-[10px] text-outline bg-surface-container-highest px-2 py-0.5 rounded">TERKUNCI</span></div></div></div>
+</div>
+<!-- LESSON 3: READY TO START (Unlocked) -->
+<div class="bg-surface-container border border-surface-variant rounded-xl overflow-hidden hover:border-outline-variant transition-colors">
+<div class="p-6 flex items-center justify-between bg-surface-container cursor-pointer"><div class="flex items-center space-x-3.5"><div class="w-8 h-8 rounded-full bg-surface-container-highest text-tertiary border border-outline-variant flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-lg" data-icon="lock_open">lock_open</span></div><div><div class="flex items-center space-x-2"><span class="text-label-mono font-label-mono text-tertiary text-[11px] font-bold">SIAP DIMULAI</span><span class="text-outline text-xs">•</span><span class="text-body-sm font-body-sm text-outline">4 Latihan Eksplorasi</span></div><h3 class="text-headline-sm font-headline-sm text-on-surface text-base lg:text-headline-sm font-semibold">03. Eksplorasi &amp; Membaca Berkas dengan <code class="text-primary font-code-inline text-code-inline font-normal">ls</code></h3></div></div><div class="flex items-center space-x-3"><span class="text-label-mono font-label-mono text-outline text-xs hidden sm:inline">+110 XP</span><span class="material-symbols-outlined text-outline" data-icon="expand_more">expand_more</span></div></div>
+<!-- Exercises Sub-list Preview -->
+<div class="border-t border-surface-variant bg-surface-container-low/40 p-2 space-y-2"><div class="py-3 px-4 flex items-center justify-between hover:bg-surface-container-high/40 rounded-lg transition-colors pl-8 lg:pl-10"><div class="flex items-center space-x-3"><span class="material-symbols-outlined text-outline text-base" data-icon="radio_button_unchecked">radio_button_unchecked</span><span class="text-body-md font-body-md text-on-surface">Latihan 3.1: Daftar Berkas Standar (<code class="text-on-surface font-code-inline text-code-inline bg-surface-container px-1 py-0.5 rounded">ls</code>)</span></div><span class="text-label-mono font-label-mono text-xs text-outline">20 XP</span></div><div class="py-3 px-4 flex items-center justify-between rounded-lg pl-8 lg:pl-10 opacity-50"><div class="flex items-center space-x-3"><span class="material-symbols-outlined text-outline text-base" data-icon="lock">lock</span><span class="text-body-md font-body-md text-on-surface-variant">Latihan 3.2: Menampilkan Atribut Lengkap &amp; Izin (<code class="font-code-inline text-code-inline bg-surface-container px-1 py-0.5 rounded">ls -l</code>)</span></div><span class="text-label-mono font-label-mono text-xs text-outline">25 XP</span></div><div class="py-3 px-4 flex items-center justify-between rounded-lg pl-8 lg:pl-10 opacity-50"><div class="flex items-center space-x-3"><span class="material-symbols-outlined text-outline text-base" data-icon="lock">lock</span><span class="text-body-md font-body-md text-on-surface-variant">Latihan 3.3: Membongkar File Tersembunyi Dotfiles (<code class="font-code-inline text-code-inline bg-surface-container px-1 py-0.5 rounded">ls -la</code>)</span></div><span class="text-label-mono font-label-mono text-xs text-outline">30 XP</span></div><div class="py-3 px-4 flex items-center justify-between rounded-lg pl-8 lg:pl-10 opacity-50"><div class="flex items-center space-x-3"><span class="material-symbols-outlined text-outline text-base" data-icon="lock">lock</span><span class="text-body-md font-body-md text-on-surface-variant">Latihan 3.4: Format Ukuran Ramah Manusia (<code class="font-code-inline text-code-inline bg-surface-container px-1 py-0.5 rounded">ls -lh -S</code>)</span></div><span class="text-label-mono font-label-mono text-xs text-outline">35 XP</span></div></div>
+</div>
+<!-- LESSON 4: LOCKED -->
+<div class="bg-surface-container/60 border border-surface-variant rounded-xl p-6 flex items-center justify-between opacity-50"><div class="flex items-center space-x-3.5"><div class="w-8 h-8 rounded-full bg-surface-container-highest text-outline border border-outline-variant flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-lg" data-icon="lock">lock</span></div><div><div class="flex items-center space-x-2"><span class="text-label-mono font-label-mono text-outline text-[11px] font-bold">TERKUNCI</span><span class="text-outline text-xs">•</span><span class="text-body-sm font-body-sm text-outline">Preview: <code class="font-code-inline text-code-inline">mkdir</code>, <code class="font-code-inline text-code-inline">mkdir -p</code>, <code class="font-code-inline text-code-inline">cp -r</code>, <code class="font-code-inline text-code-inline">mv</code></span></div><h3 class="text-headline-sm font-headline-sm text-on-surface-variant text-base lg:text-headline-sm font-semibold">04. Membuat, Menyalin, &amp; Memindahkan Direktori</h3></div></div><span class="material-symbols-outlined text-outline" data-icon="lock">lock</span></div>
+<!-- LESSON 5: LOCKED FINAL EVALUATION -->
+<div class="bg-surface-container/60 border border-surface-variant rounded-xl p-6 flex items-center justify-between opacity-50"><div class="flex items-center space-x-3.5"><div class="w-8 h-8 rounded-full bg-surface-container-highest text-outline border border-outline-variant flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-lg" data-icon="military_tech">military_tech</span></div><div><div class="flex items-center space-x-2"><span class="text-label-mono font-label-mono text-outline text-[11px] font-bold">UJIAN SERTIFIKASI MINI</span><span class="text-outline text-xs">•</span><span class="text-body-sm font-body-sm text-outline">Ujian Praktik Sysadmin Pemula</span></div><h3 class="text-headline-sm font-headline-sm text-on-surface-variant text-base lg:text-headline-sm font-semibold">05. Evaluasi Akhir: Ujian Praktik Mandiri</h3></div></div><div class="flex items-center space-x-2"><span class="text-label-mono font-label-mono text-xs text-secondary font-bold">+100 XP</span><span class="material-symbols-outlined text-outline" data-icon="lock">lock</span></div></div>
+</div>
+<!-- RIGHT COLUMN: Module Sidebar & Interactive Widgets (5 Cols) -->
+<aside class="lg:col-span-4 space-y-6"><div class="bg-surface-container border border-surface-variant rounded-xl p-6 space-y-4"><div class="flex items-center justify-between pb-3 border-b border-surface-variant"><h3 class="text-headline-sm font-headline-sm font-semibold text-on-surface flex items-center space-x-2"><span class="material-symbols-outlined text-primary text-lg" data-icon="terminal">terminal</span><span class="">Peralatan &amp; Perintah Inti</span></h3><span class="text-label-mono font-label-mono text-[10px] text-outline">6 PERINTAH</span></div><p class="text-body-sm font-body-sm text-on-surface-variant leading-relaxed">Arahkan kursor atau klik sintaks di bawah untuk melihat ringkasan singkat parameter praktikum.</p><div class="space-y-3 pt-1 font-label-mono"><div class="flex items-center justify-between p-2.5 rounded-lg bg-surface-container-low border border-outline-variant hover:border-primary transition-colors cursor-pointer group"><div class="flex items-center space-x-2"><code class="text-primary font-bold text-code-inline">pwd</code><span class="text-[11px] text-outline group-hover:text-on-surface transition-colors">print working dir</span></div><span class="text-[10px] text-outline bg-surface-container-highest px-1.5 py-0.5 rounded font-mono">pwd [-L|-P]</span></div><div class="flex items-center justify-between p-2.5 rounded-lg bg-surface-container-low border border-outline-variant hover:border-primary transition-colors cursor-pointer group"><div class="flex items-center space-x-2"><code class="text-primary font-bold text-code-inline">cd</code><span class="text-[11px] text-outline group-hover:text-on-surface transition-colors">change directory</span></div><span class="text-[10px] text-outline bg-surface-container-highest px-1.5 py-0.5 rounded font-mono">cd [path]</span></div><div class="flex items-center justify-between p-2.5 rounded-lg bg-surface-container-low border border-outline-variant hover:border-primary transition-colors cursor-pointer group"><div class="flex items-center space-x-2"><code class="text-primary font-bold text-code-inline">ls</code><span class="text-[11px] text-outline group-hover:text-on-surface transition-colors">list directory content</span></div><span class="text-[10px] text-outline bg-surface-container-highest px-1.5 py-0.5 rounded font-mono">ls -la</span></div><div class="flex items-center justify-between p-2.5 rounded-lg bg-surface-container-low border border-outline-variant hover:border-primary transition-colors cursor-pointer group"><div class="flex items-center space-x-2"><code class="text-primary font-bold text-code-inline">mkdir</code><span class="text-[11px] text-outline group-hover:text-on-surface transition-colors">make directories</span></div><span class="text-[10px] text-outline bg-surface-container-highest px-1.5 py-0.5 rounded font-mono">mkdir -p [dir]</span></div><div class="flex items-center justify-between p-2.5 rounded-lg bg-surface-container-low border border-outline-variant hover:border-primary transition-colors cursor-pointer group"><div class="flex items-center space-x-2"><code class="text-primary font-bold text-code-inline">touch</code><span class="text-[11px] text-outline group-hover:text-on-surface transition-colors">create empty file</span></div><span class="text-[10px] text-outline bg-surface-container-highest px-1.5 py-0.5 rounded font-mono">touch [nama]</span></div><div class="flex items-center justify-between p-2.5 rounded-lg bg-surface-container-low border border-outline-variant hover:border-primary transition-colors cursor-pointer group"><div class="flex items-center space-x-2"><code class="text-primary font-bold text-code-inline">tree</code><span class="text-[11px] text-outline group-hover:text-on-surface transition-colors">recursive tree list</span></div><span class="text-[10px] text-outline bg-surface-container-highest px-1.5 py-0.5 rounded font-mono">tree -L 2</span></div></div></div><div class="bg-surface-container border border-surface-variant rounded-xl p-6 space-y-4"><div class="flex items-center justify-between pb-3 border-b border-surface-variant"><h3 class="text-headline-sm font-headline-sm font-semibold text-on-surface flex items-center space-x-2"><span class="material-symbols-outlined text-secondary text-lg" data-icon="workspace_premium" style="font-variation-settings: 'FILL' 1;">workspace_premium</span><span class="">Lencana yang Dapat Diraih</span></h3><span class="text-label-mono font-label-mono text-[10px] text-secondary">2 LENCANA</span></div><div class="grid grid-cols-2 gap-3 pt-1"><div class="bg-surface-container-low border border-primary/20 p-4 rounded-lg text-center flex flex-col items-center relative overflow-hidden group"><div class="w-12 h-12 rounded-full bg-primary/10 border border-primary/40 flex items-center justify-center text-primary mb-2"><span class="material-symbols-outlined text-2xl" data-icon="folder_special">folder_special</span></div><div class="text-label-ui font-label-ui font-semibold text-on-surface">File Master</div><p class="text-[10px] text-on-surface-variant mt-1 leading-snug">Selesaikan seluruh 24 latihan di modul ini</p><div class="mt-2 text-label-mono font-label-mono text-[10px] text-primary font-medium">18/24 (75%)</div></div><div class="bg-surface-container-low border border-outline-variant p-4 rounded-lg text-center flex flex-col items-center relative opacity-75"><div class="w-12 h-12 rounded-full bg-surface-container-highest border-2 border-outline-variant flex items-center justify-center text-outline mb-2"><span class="material-symbols-outlined text-2xl" data-icon="explore">explore</span></div><div class="text-label-ui font-label-ui font-bold text-on-surface">Navigator Kilat</div><p class="text-[10px] text-on-surface-variant mt-1 leading-snug">Tuntaskan Labirin tanpa kesalahan sintaks</p><div class="mt-2 text-label-mono font-label-mono text-[10px] text-outline flex items-center space-x-1"><span class="material-symbols-outlined text-[12px]" data-icon="lock">lock</span><span class="">Terkunci</span></div></div></div></div><div class="bg-surface-container border border-surface-variant rounded-xl p-6 space-y-4"><h3 class="text-headline-sm font-headline-sm font-semibold text-on-surface flex items-center space-x-2"><span class="material-symbols-outlined text-tertiary text-lg" data-icon="dns">dns</span><span class="">Prasyarat &amp; Lingkungan Sandbox</span></h3><div class="space-y-3 text-body-sm font-body-sm text-on-surface-variant pt-1 leading-relaxed"><div class="flex items-start space-x-2.5"><span class="material-symbols-outlined text-primary text-base mt-0.5" data-icon="check_circle">check_circle</span><div class=""><strong class="text-on-surface">Distro:</strong> Ubuntu 22.04 LTS (Containerized Sandbox virtual terisolasi).</div></div><div class="flex items-start space-x-2.5"><span class="material-symbols-outlined text-primary text-base mt-0.5" data-icon="check_circle">check_circle</span><div class=""><strong class="text-on-surface">Akses Shell:</strong> Bash 5.1 melalui WebAssembly Terminal di browser (zero-latency).</div></div><div class="flex items-start space-x-2.5"><span class="material-symbols-outlined text-primary text-base mt-0.5" data-icon="check_circle">check_circle</span><div class=""><strong class="text-on-surface">Persyaratan:</strong> Tidak ada pra-syarat, cocok untuk pengguna baru pertama kali.</div></div></div></div><div class="bg-surface-container border border-surface-variant rounded-xl p-5 flex items-center justify-between hover:border-primary/50 transition-colors cursor-pointer group"><div class="flex items-center space-x-3"><div class="w-10 h-10 rounded-lg bg-surface-container-high border border-outline-variant flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-on-primary transition-colors"><span class="material-symbols-outlined text-xl" data-icon="forum">forum</span></div><div><div class="text-label-ui font-label-ui font-bold text-on-surface">Bantuan &amp; Komunitas Bab 01</div><div class="text-body-sm font-body-sm text-on-surface-variant">14 tanya jawab aktif seputar direktori</div></div></div><span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors" data-icon="chevron_right">chevron_right</span></div></aside>
+</div>
+</main>
+<!-- Sticky Mobile Action Floating Bar (shown on smaller screens) -->
+<div class="lg:hidden fixed bottom-0 left-0 right-0 p-4 bg-surface-container-lowest/90 backdrop-blur-md border-t border-surface-variant z-40 flex items-center justify-between">
+<div class="flex flex-col">
+<span class="text-label-mono font-label-mono text-[10px] text-outline">LATIHAN AKTIF</span>
+<span class="text-label-ui font-label-ui font-bold text-on-surface">Latihan 2.3: cd /var/log</span>
+</div>
+<button class="bg-primary text-on-primary font-label-ui text-label-ui px-5 py-2.5 rounded-lg flex items-center space-x-2 font-bold shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-base" data-icon="play_arrow">play_arrow</span>
+<span class="">Lanjutkan</span>
+</button>
+</div>
+<!-- Page Footer -->
+<footer class="mt-auto border-t border-surface-variant bg-surface-container-lowest py-8 text-on-surface-variant text-body-sm font-body-sm">
+<div class="max-w-7xl mx-auto px-gutter flex flex-col md:flex-row justify-between items-center gap-4">
+<div class="flex items-center space-x-2">
+<span class="text-primary font-bold text-code-terminal font-code-terminal">&gt;_</span>
+<span class="font-bold text-on-surface">LinuxStart Indonesia</span>
+<span class="text-outline text-xs">© 2025. Didesain untuk pembelajar Linux pemula.</span>
+</div>
+<div class="flex items-center space-x-6 text-label-ui font-label-ui">
+<a class="hover:text-primary transition-colors" href="#">Dokumentasi FHS</a>
+<a class="hover:text-primary transition-colors" href="#">Cheat Sheet Perintah</a>
+<a class="hover:text-primary transition-colors" href="#">Laporkan Masalah Lab</a>
+</div>
+</div>
+</footer>
+
+
+</body></html>

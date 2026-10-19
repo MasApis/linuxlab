@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>LinuxStart Admin Portal - Manajemen Latihan Interaktif</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Inter & JetBrains Mono Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS with Forms & Container Queries -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "outline-variant": "#3c4a42",
+            "inverse-on-surface": "#283044",
+            "tertiary-fixed-dim": "#7bd0ff",
+            "surface-container-high": "#222a3d",
+            "on-tertiary-container": "#003e55",
+            "error": "#ffb4ab",
+            "surface-tint": "#4edea3",
+            "primary-fixed-dim": "#4edea3",
+            "primary-fixed": "#6ffbbe",
+            "on-secondary": "#472a00",
+            "on-secondary-container": "#5b3800",
+            "surface-dim": "#0b1326",
+            "primary": "#4edea3",
+            "surface-container-low": "#131b2e",
+            "surface": "#0b1326",
+            "surface-container": "#171f33",
+            "tertiary-container": "#19aee8",
+            "inverse-primary": "#006c49",
+            "on-primary": "#003824",
+            "on-tertiary-fixed-variant": "#004c69",
+            "secondary-fixed": "#ffddb8",
+            "surface-variant": "#2d3449",
+            "background": "#0b1326",
+            "secondary-container": "#ee9800",
+            "on-tertiary-fixed": "#001e2c",
+            "surface-container-highest": "#2d3449",
+            "on-primary-container": "#00422b",
+            "on-secondary-fixed-variant": "#653e00",
+            "on-tertiary": "#00354a",
+            "inverse-surface": "#dae2fd",
+            "on-surface-variant": "#bbcabf",
+            "tertiary": "#7bd0ff",
+            "on-primary-fixed-variant": "#005236",
+            "on-primary-fixed": "#002113",
+            "surface-bright": "#31394d",
+            "primary-container": "#10b981",
+            "error-container": "#93000a",
+            "on-error-container": "#ffdad6",
+            "tertiary-fixed": "#c4e7ff",
+            "on-background": "#dae2fd",
+            "on-secondary-fixed": "#2a1700",
+            "secondary": "#ffb95f",
+            "secondary-fixed-dim": "#ffb95f",
+            "outline": "#86948a",
+            "on-error": "#690005",
+            "on-surface": "#dae2fd",
+            "surface-container-lowest": "#060e20"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-xl": "2rem",
+            "space-xs": "0.25rem",
+            "margin-mobile": "1rem",
+            "space-sm": "0.5rem",
+            "gutter-mobile": "1rem",
+            "gutter": "1.5rem",
+            "space-lg": "1.5rem",
+            "space-md": "1rem",
+            "margin": "2rem"
+          },
+          "fontFamily": {
+            "headline-lg-mobile": ["Inter"],
+            "body-sm": ["Inter"],
+            "headline-md": ["Inter"],
+            "headline-sm": ["Inter"],
+            "body-md": ["Inter"],
+            "headline-lg": ["Inter"],
+            "body-lg": ["Inter"],
+            "code-inline": ["JetBrains Mono"],
+            "label-mono": ["JetBrains Mono"],
+            "code-terminal": ["JetBrains Mono"],
+            "display-hero-mobile": ["Inter"],
+            "display-hero": ["Inter"],
+            "label-ui": ["Inter"]
+          },
+          "fontSize": {
+            "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "body-sm": ["12px", { "lineHeight": "18px", "fontWeight": "400" }],
+            "headline-md": ["22px", { "lineHeight": "28px", "fontWeight": "600" }],
+            "headline-sm": ["18px", { "lineHeight": "24px", "fontWeight": "600" }],
+            "body-md": ["14px", { "lineHeight": "22px", "fontWeight": "400" }],
+            "headline-lg": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "body-lg": ["16px", { "lineHeight": "26px", "fontWeight": "400" }],
+            "code-inline": ["13px", { "lineHeight": "18px", "fontWeight": "500" }],
+            "label-mono": ["11px", { "lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+            "code-terminal": ["14px", { "lineHeight": "22px", "fontWeight": "500" }],
+            "display-hero-mobile": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+            "display-hero": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+            "label-ui": ["12px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "600" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined';
+      font-weight: normal;
+      font-style: normal;
+      font-size: 20px;
+      line-height: 1;
+      letter-spacing: normal;
+      text-transform: none;
+      display: inline-block;
+      white-space: nowrap;
+      word-wrap: normal;
+      direction: ltr;
+      -webkit-font-smoothing: antialiased;
+    }
+    /* Custom scrollbars for dark developer console look */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0b1326;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #2d3449;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #3c4a42;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface antialiased min-h-screen flex flex-col font-body-md text-body-md selection:bg-primary selection:text-on-primary">
+<!-- TOP NAVIGATION BAR (Admin Console) -->
+<header class="bg-surface-container-lowest sticky top-0 z-40 h-[68px] border-b border-surface-variant backdrop-blur-md">
+<div class="flex justify-between items-center w-full px-gutter max-w-7xl mx-auto h-full">
+<!-- Brand & Admin Badge -->
+<div class="flex items-center space-x-space-md">
+<div class="flex items-center space-x-space-sm group cursor-pointer">
+<div class="w-9 h-9 rounded-lg bg-surface-container border border-surface-variant flex items-center justify-center text-primary font-code-terminal text-code-terminal font-bold group-hover:border-primary transition-colors">
+            &gt;_
+          </div>
+<div class="flex items-center space-x-2">
+<span class="text-headline-sm font-headline-sm font-bold text-primary tracking-tight">LinuxStart</span>
+<span class="bg-surface-container-high text-primary border border-primary/30 text-label-mono font-label-mono px-2 py-0.5 rounded text-[10px] tracking-wide">
+              ADMIN CONSOLE
+            </span>
+</div>
+</div>
+<!-- Global Search Shortcut Bar -->
+<div class="hidden md:flex items-center pl- space-x-space-sm text-on-surface-variant bg-surface-container-low px-3 py-1.5 rounded-lg border border-surface-variant text-body-sm font-body-sm w-72">
+<span class="material-symbols-outlined text-outline text-[18px]">search</span>
+<span class="flex-1 text-on-surface-variant/70">Cari konfigurasi latihan...</span>
+<kbd class="bg-surface-container-high border border-surface-variant text-on-surface-variant px-1.5 py-0.5 rounded text-[10px] font-label-mono">Ctrl+K</kbd>
+</div>
+</div>
+<!-- System Health Indicator & User Profile -->
+<div class="flex items-center space-x-space-lg">
+<!-- Runner Status Widget -->
+<div class="hidden lg:flex items-center space-x-3 bg-surface-container px-3 py-1.5 rounded-full border border-surface-variant">
+<div class="flex items-center space-x-1.5">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span class="text-label-mono font-label-mono text-on-surface-variant text-[11px]">Runner: <span class="text-primary font-semibold">Healthy</span></span>
+</div>
+<span class="text-surface-variant">|</span>
+<div class="text-label-mono font-label-mono text-on-surface-variant text-[11px]">
+            API: <span class="text-secondary font-semibold">99.98%</span>
+</div>
+</div>
+<!-- Quick Notifications -->
+<button class="relative p-2 rounded-lg bg-surface-container border border-surface-variant text-on-surface-variant hover:text-primary hover:border-primary/40 transition-colors" title="Notifikasi Sistem">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+<span class="absolute top-1 right-1 w-2 h-2 bg-secondary rounded-full"></span>
+</button>
+<!-- Admin Profile -->
+<div class="flex items-center space-x-2.5 pl-2 border-l border-surface-variant">
+<div class="relative">
+<div class="w-9 h-9 rounded-full bg-surface-container-high border-2 border-primary overflow-hidden flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-[20px]">terminal</span>
+</div>
+<span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-primary border-2 border-surface-container-lowest rounded-full"></span>
+</div>
+<div class="hidden sm:flex flex-col text-left">
+<div class="flex items-center space-x-1">
+<span class="text-label-ui font-label-ui text-on-surface">Arya Pratama</span>
+<span class="material-symbols-outlined text-outline text-[16px]">verified_user</span>
+</div>
+<span class="text-label-mono font-label-mono text-[10px] text-primary">Superadmin (Root)</span>
+</div>
+</div>
+</div>
+</div>
+</header>
+<!-- APP SHELL: SIDEBAR & MAIN WORKSPACE -->
+<div class="flex-1 flex max-w-7xl w-full mx-auto px-gutter py-space-lg gap-gutter">
+<!-- SIDEBAR NAVIGATION -->
+<aside class="w-64 shrink-0 flex flex-col justify-between bg-surface-container rounded-xl border border-surface-variant p-space-md shadow-sm h-[calc(100vh-120px)] sticky top-[92px]">
+<!-- Upper Navigation -->
+<div class="space-y-6">
+<div>
+<span class="text-label-mono font-label-mono text-outline text-[11px] px-3 tracking-wider">NAVIGASI KURIKULUM</span>
+<nav class="mt-2 space-y-1">
+<a class="flex items-center space-x-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" href="#modul">
+<span class="material-symbols-outlined text-[18px]">folder_special</span>
+<span class="text-body-md font-body-md">Modul</span>
+</a>
+<a class="flex items-center space-x-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" href="#pelajaran">
+<span class="material-symbols-outlined text-[18px]">menu_book</span>
+<span class="text-body-md font-body-md">Pelajaran</span>
+</a>
+<!-- Active State: Latihan -->
+<a class="flex items-center justify-between px-3 py-2 rounded-lg bg-surface-container-high border-l-4 border-primary text-primary font-semibold transition-all" href="#latihan">
+<div class="flex items-center space-x-3">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">terminal</span>
+<span class="text-body-md font-body-md">Latihan</span>
+</div>
+<span class="text-label-mono font-label-mono text-[10px] bg-primary/10 text-primary px-1.5 py-0.5 rounded">128</span>
+</a>
+<a class="flex items-center space-x-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" href="#pencapaian">
+<span class="material-symbols-outlined text-[18px]">workspace_premium</span>
+<span class="text-body-md font-body-md">Badge &amp; Pencapaian</span>
+</a>
+</nav>
+</div>
+<div>
+<span class="text-label-mono font-label-mono text-outline text-[11px] px-3 tracking-wider">KOMUNITAS &amp; AKUN</span>
+<nav class="mt-2 space-y-1">
+<a class="flex items-center space-x-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" href="#pengguna">
+<span class="material-symbols-outlined text-[18px]">group</span>
+<span class="text-body-md font-body-md">Pengguna</span>
+</a>
+<a class="flex items-center justify-between px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" href="#moderasi">
+<div class="flex items-center space-x-3">
+<span class="material-symbols-outlined text-[18px]">forum</span>
+<span class="text-body-md font-body-md">Moderasi Forum</span>
+</div>
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+</a>
+</nav>
+</div>
+</div>
+<!-- Bottom Settings & Documentation -->
+<div class="border-t border-surface-variant pt-3 space-y-1">
+<a class="flex items-center space-x-3 px-3 py-2 rounded-lg text-on-surface-variant hover:text-primary transition-colors text-body-sm font-body-sm" href="#api-doc">
+<span class="material-symbols-outlined text-[18px]">integration_instructions</span>
+<span>Dokumentasi API</span>
+</a>
+<a class="flex items-center space-x-3 px-3 py-2 rounded-lg text-on-surface-variant hover:text-primary transition-colors text-body-sm font-body-sm" href="#settings">
+<span class="material-symbols-outlined text-[18px]">tune</span>
+<span>Pengaturan Sistem</span>
+</a>
+</div>
+</aside>
+<!-- MAIN CONTENT WORKSPACE -->
+<main class="flex-1 min-w-0 space-y-space-lg">
+<!-- MAIN HEADER & ACTION BUTTONS -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-surface-container p-6 rounded-xl border border-surface-variant shadow-sm">
+<div>
+<div class="flex items-center space-x-2 mb-1">
+<span class="material-symbols-outlined text-primary text-[22px]">terminal</span>
+<h1 class="text-headline-md font-headline-md text-on-surface tracking-tight">Manajemen Latihan Interaktif</h1>
+</div>
+<p class="text-body-md font-body-md text-on-surface-variant">
+            Kelola kurikulum praktik shell, parameter pengujian otomatis, dan validator bash sandbox.
+          </p>
+</div>
+<div class="flex items-center space-x-3 shrink-0">
+<button class="flex items-center space-x-2 px-4 py-2.5 rounded-lg border border-outline-variant bg-surface-container-low text-on-surface hover:bg-surface-container-high transition-colors text-body-md font-body-md font-semibold">
+<span class="material-symbols-outlined text-[18px]">file_download</span>
+<span>Ekspor Data (CSV)</span>
+</button>
+<button class="flex items-center space-x-2 px-4 py-2.5 rounded-lg bg-primary-container text-on-primary-container hover:bg-primary font-bold transition-all shadow-sm active:scale-95" id="openModalBtn">
+<span class="material-symbols-outlined text-[20px]">add_circle</span>
+<span>+ Buat Latihan Baru</span>
+</button>
+</div>
+</div>
+<!-- QUICK STATS BENTO GRID -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<!-- Stat Card 1 -->
+<div class="bg-surface-container rounded-xl p-5 border border-surface-variant flex items-center space-x-4">
+<div class="w-12 h-12 rounded-lg bg-surface-container-high border border-surface-variant flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[26px]">terminal</span>
+</div>
+<div>
+<div class="text-headline-sm font-headline-sm text-on-surface font-bold">128</div>
+<div class="text-body-sm font-body-sm text-on-surface-variant">Total Latihan</div>
+<div class="text-label-mono font-label-mono text-[10px] text-primary mt-0.5">8 Draf Aktif</div>
+</div>
+</div>
+<!-- Stat Card 2 -->
+<div class="bg-surface-container rounded-xl p-5 border border-surface-variant flex items-center space-x-4">
+<div class="w-12 h-12 rounded-lg bg-surface-container-high border border-surface-variant flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[26px]">verified</span>
+</div>
+<div>
+<div class="text-headline-sm font-headline-sm text-on-surface font-bold">88.4%</div>
+<div class="text-body-sm font-body-sm text-on-surface-variant">Keberhasilan Siswa</div>
+<div class="text-label-mono font-label-mono text-[10px] text-primary mt-0.5">+2.1% dari minggu lalu</div>
+</div>
+</div>
+<!-- Stat Card 3 -->
+<div class="bg-surface-container rounded-xl p-5 border border-surface-variant flex items-center space-x-4">
+<div class="w-12 h-12 rounded-lg bg-surface-container-high border border-surface-variant flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[26px]">rule</span>
+</div>
+<div>
+<div class="text-headline-sm font-headline-sm text-on-surface font-bold">4 Jenis</div>
+<div class="text-body-sm font-body-sm text-on-surface-variant">Validator Aktif</div>
+<div class="text-label-mono font-label-mono text-[10px] text-secondary mt-0.5">Regex, Exit, AST, Diff</div>
+</div>
+</div>
+<!-- Stat Card 4 -->
+<div class="bg-surface-container rounded-xl p-5 border border-surface-variant flex items-center space-x-4">
+<div class="w-12 h-12 rounded-lg bg-surface-container-high border border-surface-variant flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined text-[26px]">timer</span>
+</div>
+<div>
+<div class="text-headline-sm font-headline-sm text-on-surface font-bold">4.2 Menit</div>
+<div class="text-body-sm font-body-sm text-on-surface-variant">Rata-rata Durasi Selesai</div>
+<div class="text-label-mono font-label-mono text-[10px] text-tertiary mt-0.5">Optimal Sandbox</div>
+</div>
+</div>
+</div>
+<!-- DATA TABLE SECTION -->
+<div class="bg-surface-container rounded-xl border border-surface-variant overflow-hidden shadow-sm">
+<!-- Filter & Search Toolbar -->
+<div class="p-4 border-b border-surface-variant flex flex-col md:flex-row gap-3 items-center justify-between bg-surface-container-low/50">
+<div class="relative w-full md:w-96">
+<span class="material-symbols-outlined text-outline absolute left-3 top-1/2 -translate-y-1/2 text-[18px]">search</span>
+<input class="w-full bg-surface-container pl-9 pr-4 py-2 rounded-lg border border-surface-variant text-on-surface text-body-sm font-body-sm placeholder:text-outline focus:border-primary focus:ring-1 focus:ring-primary outline-none" placeholder="Cari latihan berdasarkan judul, perintah, atau modul..." type="text"/>
+</div>
+<div class="flex items-center gap-2.5 w-full md:w-auto overflow-x-auto">
+<!-- Filter Modul -->
+<select class="bg-surface-container border border-surface-variant text-on-surface text-body-sm font-body-sm rounded-lg px-3 py-2 outline-none focus:border-primary cursor-pointer">
+<option value="">Semua Modul Induk</option>
+<option value="dasar">01. Dasar Navigasi &amp; File</option>
+<option value="izin">02. Manajemen Hak Akses</option>
+<option value="admin">03. Administrasi Nginx &amp; Jaringan</option>
+<option value="pipe">04. Text Processing &amp; Piping</option>
+</select>
+<!-- Filter Tingkat Kesulitan -->
+<select class="bg-surface-container border border-surface-variant text-on-surface text-body-sm font-body-sm rounded-lg px-3 py-2 outline-none focus:border-primary cursor-pointer">
+<option value="">Semua Tingkat</option>
+<option value="pemula">Pemula</option>
+<option value="menengah">Menengah</option>
+<option value="lanjut">Lanjutan</option>
+</select>
+<!-- Filter Status -->
+<select class="bg-surface-container border border-surface-variant text-on-surface text-body-sm font-body-sm rounded-lg px-3 py-2 outline-none focus:border-primary cursor-pointer">
+<option value="">Status: Semua</option>
+<option value="aktif">Aktif (Live)</option>
+<option value="draft">Draf</option>
+</select>
+</div>
+</div>
+<!-- Table Responsive Container -->
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-high/60 border-b border-surface-variant text-on-surface-variant text-label-mono font-label-mono text-[11px] uppercase tracking-wider">
+<th class="py-3 px-4">ID/KODE</th>
+<th class="py-3 px-4">JUDUL LATIHAN</th>
+<th class="py-3 px-4">MODUL INDUK</th>
+<th class="py-3 px-4">TIPE VALIDASI</th>
+<th class="py-3 px-4">XP REWARD</th>
+<th class="py-3 px-4">STATUS</th>
+<th class="py-3 px-4 text-right">AKSI</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-variant text-body-sm font-body-sm">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-container-high/40 transition-colors">
+<td class="py-3.5 px-4 font-label-mono text-primary font-semibold">EX-023</td>
+<td class="py-3.5 px-4">
+<div class="font-semibold text-on-surface">Berpindah ke Direktori Sistem (/var/log)</div>
+<div class="text-[11px] text-on-surface-variant font-code-terminal">Target: cd /var/log &amp;&amp; pwd</div>
+</td>
+<td class="py-3.5 px-4 text-on-surface-variant">01. Dasar Navigasi &amp; File</td>
+<td class="py-3.5 px-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-label-mono bg-tertiary-container/20 text-tertiary border border-tertiary/30">
+                    File State &amp; PWD
+                  </span>
+</td>
+<td class="py-3.5 px-4 font-semibold text-secondary font-code-terminal">+15 XP</td>
+<td class="py-3.5 px-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-primary-container/20 text-primary border border-primary/40">
+<span class="w-1.5 h-1.5 rounded-full bg-primary mr-1.5"></span> Aktif
+                  </span>
+</td>
+<td class="py-3.5 px-4 text-right">
+<div class="flex items-center justify-end space-x-1.5 text-on-surface-variant">
+<button class="p-1 hover:text-primary hover:bg-surface-container rounded" title="Lihat Pratinjau">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+<button class="p-1 hover:text-primary hover:bg-surface-container rounded" title="Edit Latihan">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1 hover:text-error hover:bg-surface-container rounded" title="Hapus">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container-high/40 transition-colors">
+<td class="py-3.5 px-4 font-label-mono text-primary font-semibold">EX-015</td>
+<td class="py-3.5 px-4">
+<div class="font-semibold text-on-surface">Membuat Symlink Nginx Sites-Enabled</div>
+<div class="text-[11px] text-on-surface-variant font-code-terminal">ln -s /etc/nginx/sites-available/...</div>
+</td>
+<td class="py-3.5 px-4 text-on-surface-variant">03. Administrasi Nginx &amp; Jaringan</td>
+<td class="py-3.5 px-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-label-mono bg-surface-container-high text-on-surface-variant border border-surface-variant">
+                    File State (Symlink)
+                  </span>
+</td>
+<td class="py-3.5 px-4 font-semibold text-secondary font-code-terminal">+30 XP</td>
+<td class="py-3.5 px-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-primary-container/20 text-primary border border-primary/40">
+<span class="w-1.5 h-1.5 rounded-full bg-primary mr-1.5"></span> Aktif
+                  </span>
+</td>
+<td class="py-3.5 px-4 text-right">
+<div class="flex items-center justify-end space-x-1.5 text-on-surface-variant">
+<button class="p-1 hover:text-primary hover:bg-surface-container rounded" title="Lihat Pratinjau">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+<button class="p-1 hover:text-primary hover:bg-surface-container rounded" title="Edit Latihan">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1 hover:text-error hover:bg-surface-container rounded" title="Hapus">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container-high/40 transition-colors">
+<td class="py-3.5 px-4 font-label-mono text-primary font-semibold">EX-042</td>
+<td class="py-3.5 px-4">
+<div class="font-semibold text-on-surface">Konfigurasi Permission Chmod 755 Direktori Web</div>
+<div class="text-[11px] text-on-surface-variant font-code-terminal">chmod -R 755 /var/www/html</div>
+</td>
+<td class="py-3.5 px-4 text-on-surface-variant">02. Manajemen Hak Akses</td>
+<td class="py-3.5 px-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-label-mono bg-secondary-container/20 text-secondary border border-secondary/30">
+                    Octal Permission Diff
+                  </span>
+</td>
+<td class="py-3.5 px-4 font-semibold text-secondary font-code-terminal">+25 XP</td>
+<td class="py-3.5 px-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-primary-container/20 text-primary border border-primary/40">
+<span class="w-1.5 h-1.5 rounded-full bg-primary mr-1.5"></span> Aktif
+                  </span>
+</td>
+<td class="py-3.5 px-4 text-right">
+<div class="flex items-center justify-end space-x-1.5 text-on-surface-variant">
+<button class="p-1 hover:text-primary hover:bg-surface-container rounded" title="Lihat Pratinjau">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+<button class="p-1 hover:text-primary hover:bg-surface-container rounded" title="Edit Latihan">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1 hover:text-error hover:bg-surface-container rounded" title="Hapus">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-surface-container-high/40 transition-colors">
+<td class="py-3.5 px-4 font-label-mono text-primary font-semibold">EX-051</td>
+<td class="py-3.5 px-4">
+<div class="font-semibold text-on-surface">Piping Grep &amp; Sort Log Nginx Error</div>
+<div class="text-[11px] text-on-surface-variant font-code-terminal">cat error.log | grep "404" | sort | uniq -c</div>
+</td>
+<td class="py-3.5 px-4 text-on-surface-variant">04. Text Processing &amp; Piping</td>
+<td class="py-3.5 px-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-label-mono bg-surface-container-high text-on-surface-variant border border-surface-variant">
+                    Regex Output Shell
+                  </span>
+</td>
+<td class="py-3.5 px-4 font-semibold text-secondary font-code-terminal">+40 XP</td>
+<td class="py-3.5 px-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-primary-container/20 text-primary border border-primary/40">
+<span class="w-1.5 h-1.5 rounded-full bg-primary mr-1.5"></span> Aktif
+                  </span>
+</td>
+<td class="py-3.5 px-4 text-right">
+<div class="flex items-center justify-end space-x-1.5 text-on-surface-variant">
+<button class="p-1 hover:text-primary hover:bg-surface-container rounded" title="Lihat Pratinjau">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+<button class="p-1 hover:text-primary hover:bg-surface-container rounded" title="Edit Latihan">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1 hover:text-error hover:bg-surface-container rounded" title="Hapus">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 5 (Draft) -->
+<tr class="hover:bg-surface-container-high/40 transition-colors">
+<td class="py-3.5 px-4 font-label-mono text-outline font-semibold">EX-089</td>
+<td class="py-3.5 px-4">
+<div class="font-semibold text-on-surface">Menyusun Cronjob Backup Database Mingguan</div>
+<div class="text-[11px] text-on-surface-variant font-code-terminal">0 2 * * 0 /opt/scripts/backup.sh</div>
+</td>
+<td class="py-3.5 px-4 text-on-surface-variant">05. Penjadwalan &amp; Daemon</td>
+<td class="py-3.5 px-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-label-mono bg-surface-container-high text-on-surface-variant border border-surface-variant">
+                    AST Shell Script
+                  </span>
+</td>
+<td class="py-3.5 px-4 font-semibold text-secondary font-code-terminal">+50 XP</td>
+<td class="py-3.5 px-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-surface-container-high text-outline border border-surface-variant">
+<span class="w-1.5 h-1.5 rounded-full bg-outline mr-1.5"></span> Draf
+                  </span>
+</td>
+<td class="py-3.5 px-4 text-right">
+<div class="flex items-center justify-end space-x-1.5 text-on-surface-variant">
+<button class="p-1 hover:text-primary hover:bg-surface-container rounded" title="Lihat Pratinjau">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+<button class="p-1 hover:text-primary hover:bg-surface-container rounded" title="Edit Latihan">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1 hover:text-error hover:bg-surface-container rounded" title="Hapus">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination Footer -->
+<div class="p-4 border-t border-surface-variant flex flex-col sm:flex-row items-center justify-between gap-3 text-body-sm font-body-sm text-on-surface-variant">
+<div class="flex items-center space-x-2">
+<span>Menampilkan <strong class="text-on-surface">1 - 5</strong> dari <strong class="text-on-surface">128</strong> latihan</span>
+<span class="text-surface-variant">|</span>
+<div class="flex items-center space-x-1.5">
+<span>Baris per halaman:</span>
+<select class="bg-surface-container border border-surface-variant rounded px-2 py-0.5 text-on-surface outline-none text-body-sm">
+<option>5</option>
+<option selected="">10</option>
+<option>25</option>
+<option>50</option>
+</select>
+</div>
+</div>
+<div class="flex items-center space-x-1">
+<button class="p-1.5 rounded-lg border border-surface-variant text-on-surface-variant hover:bg-surface-container-high disabled:opacity-40" disabled="">
+<span class="material-symbols-outlined text-[18px]">chevron_left</span>
+</button>
+<button class="px-3 py-1 rounded-lg bg-primary-container text-on-primary-container font-semibold">1</button>
+<button class="px-3 py-1 rounded-lg hover:bg-surface-container-high text-on-surface-variant">2</button>
+<button class="px-3 py-1 rounded-lg hover:bg-surface-container-high text-on-surface-variant">3</button>
+<span class="px-1 text-on-surface-variant">...</span>
+<button class="px-3 py-1 rounded-lg hover:bg-surface-container-high text-on-surface-variant">26</button>
+<button class="p-1.5 rounded-lg border border-surface-variant text-on-surface-variant hover:bg-surface-container-high">
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- SLIDE-OVER / MODAL: FORMULIR TAMBAH LATIHAN BARU -->
+<div aria-labelledby="slide-over-title" aria-modal="true" class="fixed inset-0 z-50 overflow-hidden hidden" id="exerciseModal" role="dialog">
+<!-- Backdrop Blur Overlay -->
+<div class="fixed inset-0 bg-surface-container-lowest/80 backdrop-blur-sm transition-opacity" id="modalBackdrop"></div>
+<div class="fixed inset-y-0 right-0 max-w-full flex pl-10">
+<div class="w-screen max-w-2xl bg-surface-container-low border-l border-surface-variant shadow-2xl flex flex-col justify-between">
+<!-- Header Modal -->
+<div class="p-6 border-b border-surface-variant bg-surface-container flex items-center justify-between">
+<div class="flex items-center space-x-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high border border-primary/30 flex items-center justify-center text-primary font-code-terminal">
+              &gt;_
+            </div>
+<div>
+<h2 class="text-headline-sm font-headline-sm font-bold text-on-surface" id="slide-over-title">Formulir Tambah Latihan Baru</h2>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Konfigurasi materi praktik shell, instruksi, dan aturan autograder sandbox.</p>
+</div>
+</div>
+<button class="text-on-surface-variant hover:text-on-surface p-1.5 rounded-lg hover:bg-surface-container-high transition-colors" id="closeModalBtn">
+<span class="material-symbols-outlined text-[24px]">close</span>
+</button>
+</div>
+<!-- Form Scrollable Canvas -->
+<div class="flex-1 overflow-y-auto p-6 space-y-6">
+<!-- Field 1: Judul Latihan & Slug -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div>
+<label class="block text-body-sm font-body-sm font-semibold text-on-surface mb-1.5">Judul Latihan</label>
+<input class="w-full bg-surface-container px-3.5 py-2 rounded-lg border border-surface-variant text-on-surface text-body-sm font-body-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none" placeholder="Contoh: Menelusuri Log Kernel" type="text" value="Pemeriksaan Hak Akses Direktori Sudoers"/>
+</div>
+<div>
+<label class="block text-body-sm font-body-sm font-semibold text-on-surface mb-1.5">Slug URL / Identifier</label>
+<input class="w-full bg-surface-container px-3.5 py-2 rounded-lg border border-surface-variant text-on-surface text-body-sm font-code-terminal text-primary focus:border-primary focus:ring-1 focus:ring-primary outline-none" placeholder="slug-latihan" type="text" value="ex-sudoers-permission-check"/>
+</div>
+</div>
+<!-- Field 2: Modul & Pelajaran Induk -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div>
+<label class="block text-body-sm font-body-sm font-semibold text-on-surface mb-1.5">Modul Induk</label>
+<select class="w-full bg-surface-container px-3.5 py-2 rounded-lg border border-surface-variant text-on-surface text-body-sm font-body-sm focus:border-primary outline-none">
+<option>02. Manajemen Hak Akses</option>
+<option>01. Dasar Navigasi &amp; File</option>
+<option>03. Administrasi Nginx &amp; Jaringan</option>
+<option>04. Text Processing &amp; Piping</option>
+</select>
+</div>
+<div>
+<label class="block text-body-sm font-body-sm font-semibold text-on-surface mb-1.5">Pelajaran Tertaut</label>
+<select class="w-full bg-surface-container px-3.5 py-2 rounded-lg border border-surface-variant text-on-surface text-body-sm font-body-sm focus:border-primary outline-none">
+<option>Pelajaran 2.3: Konfigurasi File /etc/sudoers</option>
+<option>Pelajaran 2.1: Owner, Group, &amp; Others</option>
+<option>Pelajaran 2.2: Setuid &amp; Sticky Bits</option>
+</select>
+</div>
+</div>
+<!-- Field 3: Tingkat Kesulitan & XP Reward -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div>
+<label class="block text-body-sm font-body-sm font-semibold text-on-surface mb-1.5">Tingkat Kesulitan</label>
+<div class="grid grid-cols-3 gap-2">
+<label class="flex items-center justify-center p-2 rounded-lg border border-surface-variant bg-surface-container text-body-sm cursor-pointer hover:border-primary/50">
+<input class="hidden" name="difficulty" type="radio"/>
+<span class="text-on-surface-variant">Pemula</span>
+</label>
+<label class="flex items-center justify-center p-2 rounded-lg border border-primary bg-primary/10 text-body-sm cursor-pointer font-semibold text-primary">
+<input checked="" class="hidden" name="difficulty" type="radio"/>
+<span>Menengah</span>
+</label>
+<label class="flex items-center justify-center p-2 rounded-lg border border-surface-variant bg-surface-container text-body-sm cursor-pointer hover:border-primary/50">
+<input class="hidden" name="difficulty" type="radio"/>
+<span class="text-on-surface-variant">Lanjutan</span>
+</label>
+</div>
+</div>
+<div>
+<label class="block text-body-sm font-body-sm font-semibold text-on-surface mb-1.5">Reward Nilai XP</label>
+<div class="relative">
+<input class="w-full bg-surface-container pl-3.5 pr-12 py-2 rounded-lg border border-surface-variant text-secondary font-code-terminal font-bold text-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none" type="number" value="35"/>
+<span class="absolute right-3.5 top-1/2 -translate-y-1/2 text-secondary font-label-mono font-bold text-body-sm">XP</span>
+</div>
+</div>
+</div>
+<!-- Field 4: Tujuan Latihan (Markdown Support) -->
+<div>
+<div class="flex items-center justify-between mb-1.5">
+<label class="text-body-sm font-body-sm font-semibold text-on-surface">Tujuan Latihan &amp; Instruksi (Markdown)</label>
+<span class="text-label-mono font-label-mono text-[11px] text-primary">Preview Aktif</span>
+</div>
+<textarea class="w-full bg-surface-container px-3.5 py-2.5 rounded-lg border border-surface-variant text-on-surface text-body-sm font-code-terminal focus:border-primary focus:ring-1 focus:ring-primary outline-none" rows="3">Periksa permission file `/etc/sudoers` menggunakan perintah `ls -l`. Pastikan permission saat ini adalah `0440` (r--r-----), lalu konfirmasi direktori kerja pengguna.</textarea>
+</div>
+<!-- Field 5: Petunjuk Lipat (Hint) -->
+<div>
+<label class="block text-body-sm font-body-sm font-semibold text-on-surface mb-1.5">Petunjuk Lipat (Hints untuk Siswa)</label>
+<input class="w-full bg-surface-container px-3.5 py-2 rounded-lg border border-surface-variant text-on-surface text-body-sm font-body-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none" type="text" value="Gunakan perintah 'stat -c %a /etc/sudoers' atau 'ls -l /etc/sudoers' untuk melihat izin berkas."/>
+</div>
+<!-- Field 6: Tipe Validasi -->
+<div>
+<label class="block text-body-sm font-body-sm font-semibold text-on-surface mb-1.5">Metode Validasi Autograder</label>
+<select class="w-full bg-surface-container px-3.5 py-2.5 rounded-lg border border-surface-variant text-primary font-semibold text-body-sm focus:border-primary outline-none">
+<option selected="">Cek Status Berkas (File State)</option>
+<option>Pencocokan Output Shell (Regex)</option>
+<option>Kode Keluar Perintah (Exit Code 0)</option>
+<option>Inspeksi AST Shell Script</option>
+</select>
+</div>
+<!-- Field 7: Konfigurasi Validator (JSON Editor Terminal) -->
+<div>
+<div class="flex items-center justify-between mb-1.5">
+<label class="text-body-sm font-body-sm font-semibold text-on-surface">Konfigurasi Validator JSON (Schema Engine)</label>
+<span class="text-label-mono font-label-mono text-[11px] text-on-surface-variant">JSON Schema v2.1</span>
+</div>
+<!-- Terminal Styled Code Editor -->
+<div class="rounded-lg border border-surface-variant overflow-hidden bg-surface-container-lowest">
+<div class="bg-surface-container-high px-3 py-1.5 border-b border-surface-variant flex items-center justify-between text-label-mono font-label-mono text-[11px] text-on-surface-variant">
+<div class="flex items-center space-x-1.5">
+<span class="w-2.5 h-2.5 rounded-full bg-error"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-secondary"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-primary"></span>
+<span class="ml-2 text-on-surface font-code-terminal">validator_rule.json</span>
+</div>
+<span class="text-primary font-semibold">Valid Syntax</span>
+</div>
+<div class="p-3 font-code-terminal text-code-terminal text-xs leading-relaxed flex">
+<!-- Line Numbers -->
+<div class="text-outline/50 select-none pr-3 text-right border-r border-surface-variant/40 space-y-0.5">
+<div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div>
+</div>
+<!-- Highlighted code content -->
+<div class="pl-3 flex-1 overflow-x-auto text-on-surface">
+<div>{</div>
+<div class="pl-4"><span class="text-tertiary">"target_file"</span>: <span class="text-primary">"/etc/sudoers"</span>,</div>
+<div class="pl-4"><span class="text-tertiary">"expected_permission"</span>: <span class="text-secondary">"0440"</span>,</div>
+<div class="pl-4"><span class="text-tertiary">"required_commands"</span>: [<span class="text-primary">"ls"</span>, <span class="text-primary">"stat"</span>],</div>
+<div class="pl-4"><span class="text-tertiary">"forbidden_commands"</span>: [<span class="text-error">"rm"</span>, <span class="text-error">"chmod"</span>],</div>
+<div class="pl-4"><span class="text-tertiary">"timeout_sec"</span>: <span class="text-secondary">10</span>,</div>
+<div class="pl-4"><span class="text-tertiary">"success_message"</span>: <span class="text-primary">"Audit permission sudoers berhasil diverifikasi!"</span></div>
+<div>}</div>
+</div>
+</div>
+</div>
+<p class="text-body-sm font-body-sm text-outline mt-1.5">Parameter ini akan dievaluasi langsung di dalam container sandbox saat tombol 'Jalankan Pengujian' diklik oleh siswa.</p>
+</div>
+</div>
+<!-- Form Actions Footer -->
+<div class="p-6 border-t border-surface-variant bg-surface-container flex items-center justify-between gap-3">
+<button class="px-4 py-2.5 rounded-lg border border-outline-variant text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors font-semibold text-body-sm font-body-sm" id="cancelModalBtn">
+            Batal
+          </button>
+<div class="flex items-center space-x-3">
+<button class="flex items-center space-x-2 px-4 py-2.5 rounded-lg border border-primary/40 bg-surface-container-high text-primary hover:bg-primary/20 transition-colors font-semibold text-body-sm font-body-sm">
+<span class="material-symbols-outlined text-[18px]">play_arrow</span>
+<span>Uji di Terminal Sandbox</span>
+</button>
+<button class="flex items-center space-x-2 px-5 py-2.5 rounded-lg bg-primary-container text-on-primary-container hover:bg-primary transition-all font-bold text-body-sm font-body-sm shadow-sm active:scale-95">
+<span class="material-symbols-outlined text-[18px]">save</span>
+<span>Simpan &amp; Publikasikan</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Inline Script for Interactivity -->
+<script>
+    const modal = document.getElementById('exerciseModal');
+    const openBtn = document.getElementById('openModalBtn');
+    const closeBtn = document.getElementById('closeModalBtn');
+    const cancelBtn = document.getElementById('cancelModalBtn');
+    const backdrop = document.getElementById('modalBackdrop');
+
+    function openModal() {
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      modal.classList.add('hidden');
+      document.body.style.overflow = 'auto';
+    }
+
+    if (openBtn) openBtn.addEventListener('click', openModal);
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+    if (cancelBtn) cancelBtn.addEventListener('click', closeModal);
+    if (backdrop) backdrop.addEventListener('click', closeModal);
+
+    // Global ESC key listener to dismiss slide-over
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+        closeModal();
+      }
+    });
+  </script>
+</body></html>

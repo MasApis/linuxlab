@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>LinuxStart - Halaman Pelajaran: Navigasi Direktori &amp; Path</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS v3 with Plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Theme Configuration -->
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "tertiary": "#7bd0ff",
+            "on-tertiary-fixed-variant": "#004c69",
+            "secondary-container": "#ee9800",
+            "surface-container-highest": "#2d3449",
+            "on-tertiary-fixed": "#001e2c",
+            "surface-bright": "#31394d",
+            "primary-fixed-dim": "#4edea3",
+            "surface-container": "#171f33",
+            "surface-container-high": "#222a3d",
+            "error-container": "#93000a",
+            "surface": "#0b1326",
+            "on-secondary-container": "#5b3800",
+            "on-surface-variant": "#bbcabf",
+            "on-background": "#dae2fd",
+            "primary": "#4edea3",
+            "on-tertiary": "#00354a",
+            "on-secondary": "#472a00",
+            "on-surface": "#dae2fd",
+            "primary-container": "#10b981",
+            "surface-container-low": "#131b2e",
+            "on-secondary-fixed": "#2a1700",
+            "inverse-primary": "#006c49",
+            "outline-variant": "#3c4a42",
+            "on-primary": "#003824",
+            "surface-container-lowest": "#060e20",
+            "outline": "#86948a",
+            "secondary-fixed-dim": "#ffb95f",
+            "inverse-on-surface": "#283044",
+            "on-error": "#690005",
+            "on-tertiary-container": "#003e55",
+            "primary-fixed": "#6ffbbe",
+            "error": "#ffb4ab",
+            "on-primary-fixed": "#002113",
+            "tertiary-fixed-dim": "#7bd0ff",
+            "on-primary-container": "#00422b",
+            "on-primary-fixed-variant": "#005236",
+            "tertiary-fixed": "#c4e7ff",
+            "surface-variant": "#2d3449",
+            "secondary-fixed": "#ffddb8",
+            "inverse-surface": "#dae2fd",
+            "surface-dim": "#0b1326",
+            "secondary": "#ffb95f",
+            "tertiary-container": "#19aee8",
+            "background": "#0b1326",
+            "surface-tint": "#4edea3",
+            "on-secondary-fixed-variant": "#653e00",
+            "on-error-container": "#ffdad6"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-lg": "1.5rem",
+            "margin": "2rem",
+            "margin-mobile": "1rem",
+            "space-xl": "2rem",
+            "space-md": "1rem",
+            "space-xs": "0.25rem",
+            "space-sm": "0.5rem",
+            "gutter-mobile": "1rem",
+            "gutter": "1.5rem"
+          },
+          "fontFamily": {
+            "display-hero": ["Inter"],
+            "body-sm": ["Inter"],
+            "body-md": ["Inter"],
+            "headline-sm": ["Inter"],
+            "label-mono": ["JetBrains Mono"],
+            "headline-lg": ["Inter"],
+            "body-lg": ["Inter"],
+            "headline-lg-mobile": ["Inter"],
+            "code-terminal": ["JetBrains Mono"],
+            "label-ui": ["Inter"],
+            "headline-md": ["Inter"],
+            "display-hero-mobile": ["Inter"],
+            "code-inline": ["JetBrains Mono"]
+          },
+          "fontSize": {
+            "display-hero": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+            "body-sm": ["12px", { "lineHeight": "18px", "fontWeight": "400" }],
+            "body-md": ["14px", { "lineHeight": "22px", "fontWeight": "400" }],
+            "headline-sm": ["18px", { "lineHeight": "24px", "fontWeight": "600" }],
+            "label-mono": ["11px", { "lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+            "headline-lg": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "body-lg": ["16px", { "lineHeight": "26px", "fontWeight": "400" }],
+            "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "code-terminal": ["14px", { "lineHeight": "22px", "fontWeight": "500" }],
+            "label-ui": ["12px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "600" }],
+            "headline-md": ["22px", { "lineHeight": "28px", "fontWeight": "600" }],
+            "display-hero-mobile": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+            "code-inline": ["13px", { "lineHeight": "18px", "fontWeight": "500" }]
+          }
+        },
+      },
+    }
+  </script>
+</head>
+<body class="bg-background text-on-surface font-body-md text-body-md antialiased min-h-screen flex flex-col selection:bg-primary selection:text-on-primary">
+<!-- TOP APP BAR -->
+<header class="bg-surface-container-lowest dark:bg-surface-container-lowest text-primary dark:text-primary docked full-width top-0 sticky z-50 h-[68px] border-b border-surface-variant dark:border-surface-variant shadow-sm dark:shadow-none backdrop-blur-md">
+<div class="flex justify-between items-center w-full px-gutter max-w-7xl mx-auto h-full">
+<!-- Brand & Left Navigation Links -->
+<div class="flex items-center gap-space-lg">
+<a class="flex items-center gap-2 group active:scale-95 transition-transform duration-150" href="#">
+<div class="w-8 h-8 rounded-lg bg-surface-container-high border border-outline-variant flex items-center justify-center text-primary group-hover:border-primary transition-colors">
+<span class="font-label-mono text-label-mono text-primary font-bold">&gt;_</span>
+</div>
+<span class="text-headline-sm font-headline-sm font-bold text-primary dark:text-primary tracking-tight">LinuxStart</span>
+</a>
+<!-- Desktop Navigation Links (Shared Component) -->
+<nav class="hidden md:flex items-center gap-space-md ml-4">
+<!-- Active tab: Modul -->
+<a class="border-b-2 border-primary dark:border-primary text-on-surface dark:text-on-surface font-semibold pb-1 text-label-ui font-label-ui active:scale-95 transition-transform duration-150" href="#">Modul</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface dark:hover:text-on-surface transition-colors hover:text-primary dark:hover:text-primary transition-all duration-200 text-label-ui font-label-ui active:scale-95 transition-transform duration-150" href="#">Taman Bermain Terminal</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface dark:hover:text-on-surface transition-colors hover:text-primary dark:hover:text-primary transition-all duration-200 text-label-ui font-label-ui active:scale-95 transition-transform duration-150" href="#">Forum Diskusi</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface dark:hover:text-on-surface transition-colors hover:text-primary dark:hover:text-primary transition-all duration-200 text-label-ui font-label-ui active:scale-95 transition-transform duration-150" href="#">Pencapaian</a>
+</nav>
+</div>
+<!-- Right Trailing Actions & User Status -->
+<div class="flex items-center gap-space-md">
+<!-- Streak Indicator Pill -->
+<div class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container border border-surface-variant" title="Runtutan Belajar">
+<span class="material-symbols-outlined text-secondary text-[18px]" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+<span class="font-label-mono text-label-mono text-secondary font-bold">7 Hari</span>
+</div>
+<!-- XP Pill Badge -->
+<div class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container border border-surface-variant" title="Total Poin Pengalaman">
+<span class="material-symbols-outlined text-primary text-[18px]">military_tech</span>
+<span class="font-label-mono text-label-mono text-primary font-bold">1.450 XP</span>
+</div>
+<!-- User Profile Avatar Pill -->
+<div class="flex items-center gap-2 pl-2 cursor-pointer group">
+<div class="relative">
+<div class="w-9 h-9 rounded-full bg-surface-container-high border-2 border-primary-container flex items-center justify-center overflow-hidden">
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">person</span>
+</div>
+<span class="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-primary-container ring-2 ring-surface-container-lowest"></span>
+</div>
+<div class="hidden lg:flex flex-col text-left">
+<span class="font-label-ui text-label-ui font-semibold text-on-surface leading-tight">Alex Pratama</span>
+<span class="font-label-mono text-label-mono text-on-surface-variant">Lv. 4 Sysadmin</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-[18px] group-hover:text-on-surface transition-colors">keyboard_arrow_down</span>
+</div>
+</div>
+</div>
+</header>
+<!-- SUBHEADER / BREADCRUMB & LESSON CONTROL BAR -->
+<div class="bg-surface-container-low border-b border-surface-variant">
+<div class="max-w-7xl mx-auto px-gutter py-3 flex flex-col md:flex-row md:items-center justify-between gap-3">
+<!-- Breadcrumb Hierarchy -->
+<nav class="flex items-center gap-2 text-label-ui font-label-ui overflow-x-auto whitespace-nowrap text-on-surface-variant">
+<a class="hover:text-primary transition-colors flex items-center gap-1" href="#">
+<span class="material-symbols-outlined text-[16px]">home</span>
+<span>Beranda</span>
+</a>
+<span class="text-outline-variant">/</span>
+<a class="hover:text-primary transition-colors" href="#">Modul 01: File System</a>
+<span class="text-outline-variant">/</span>
+<a class="hover:text-primary transition-colors" href="#">Pelajaran 02: Navigasi Direktori</a>
+<span class="text-outline-variant">/</span>
+<span class="text-on-surface font-semibold">2.3 Path Absolut vs Relatif</span>
+</nav>
+<!-- Metadata Badges & Mark Completed Action -->
+<div class="flex items-center gap-3 self-end md:self-auto">
+<div class="flex items-center gap-1.5 px-2.5 py-1 rounded bg-surface-container-highest text-tertiary font-label-mono text-label-mono">
+<span class="material-symbols-outlined text-[14px]">timer</span>
+<span>15 Menit</span>
+</div>
+<div class="flex items-center gap-1.5 px-2.5 py-1 rounded bg-surface-container-highest text-secondary font-label-mono text-label-mono">
+<span class="material-symbols-outlined text-[14px]">stars</span>
+<span>+25 XP</span>
+</div>
+<button class="flex items-center gap-1.5 px-3 py-1 rounded bg-surface-container border border-outline-variant hover:border-primary text-on-surface hover:text-primary text-label-ui font-label-ui transition-all duration-150 active:scale-95" id="completeBtn">
+<span class="material-symbols-outlined text-[16px]">task_alt</span>
+<span>Tandai Selesai</span>
+</button>
+</div>
+</div>
+</div>
+<!-- MAIN CONTENT CANVAS (Dual-Pane Layout) -->
+<main class="flex-1 max-w-7xl w-full mx-auto px-gutter py-space-lg">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
+<!-- LEFT COLUMN: LESSON TEXT & INTERACTIVE EXPLANATIONS (8 cols) -->
+<article class="lg:col-span-8 flex flex-col gap-6">
+<!-- Header Info Card -->
+<div class="p-6 rounded-xl bg-surface-container border border-surface-variant flex flex-col gap-3">
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded bg-primary-container/20 border border-primary-container text-primary font-label-mono text-label-mono uppercase">Pelajaran 02 / Bagian 3</span>
+<span class="text-on-surface-variant font-label-mono text-label-mono">• Linux FHS Architecture</span>
+</div>
+<h1 class="text-headline-lg font-headline-lg text-on-surface font-bold tracking-tight">
+            2.3 Memahami Path Absolut vs Relatif di Linux
+          </h1>
+<p class="text-body-lg font-body-lg text-on-surface-variant">
+            Di dalam sistem operasi Linux, segala sesuatu direpresentasikan sebagai file dalam struktur pohon hierarkis tunggal. Untuk berinteraksi dan mengelola file secara efektif melalui antarmuka baris perintah (CLI), kamu harus memahami dua cara mendasar dalam menentukan lokasi file atau folder: <span class="text-primary font-semibold">Path Absolut</span> dan <span class="text-secondary font-semibold">Path Relatif</span>.
+          </p>
+</div>
+<!-- Informative Callout Rule Box -->
+<div class="p-4 rounded-xl bg-surface-container-high/60 border-l-4 border-primary border-y border-r border-surface-variant flex items-start gap-3">
+<span class="material-symbols-outlined text-primary text-[24px] mt-0.5">info</span>
+<div class="flex flex-col gap-1">
+<h4 class="font-headline-sm text-headline-sm text-primary font-semibold">Kaidah Utama Penulisan Jalur</h4>
+<p class="text-body-md font-body-md text-on-surface-variant">
+<strong class="text-on-surface">Ingat:</strong> Jalur absolut <span class="text-primary font-mono font-bold">selalu diawali dengan tanda garis miring (/)</span> yang merepresentasikan root sistem. Jika tidak diawali tanda garis miring, shell Linux akan otomatis menganggapnya sebagai jalur relatif terhadap direktori tempat kamu berada saat ini (<code class="bg-surface-container-lowest px-1.5 py-0.5 rounded text-primary-fixed-dim font-code-inline text-code-inline">$PWD</code>).
+            </p>
+</div>
+</div>
+<!-- Interactive Stylized Diagram Card -->
+<div class="rounded-xl bg-surface-container border border-surface-variant p-5 flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary text-[20px]">account_tree</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Visualisasi Pohon Direktori Linux (Root Tree)</h3>
+</div>
+<span class="text-label-mono font-label-mono text-tertiary bg-tertiary-container/20 px-2 py-0.5 rounded border border-tertiary/30">Diagram Interaktif</span>
+</div>
+<div class="p-5 rounded-lg bg-surface-container-lowest border border-surface-variant flex flex-col gap-6 font-code-terminal text-code-terminal">
+<!-- Root Level -->
+<div class="flex flex-col items-center">
+<div class="px-4 py-2 rounded-lg bg-surface-container-high border-2 border-primary text-primary font-bold flex items-center gap-2 shadow-sm">
+<span class="material-symbols-outlined text-[18px]">folder</span>
+<span>/ (Root Directory)</span>
+</div>
+<div class="w-0.5 h-6 bg-outline-variant"></div>
+</div>
+<!-- First Tier Split -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-center">
+<!-- /home Branch -->
+<div class="flex flex-col items-center">
+<div class="w-full py-2 px-2 rounded bg-surface-container border border-surface-variant text-on-surface">
+<div class="flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-tertiary">folder</span>
+<span>/home</span>
+</div>
+</div>
+<div class="w-0.5 h-4 bg-outline-variant"></div>
+<!-- /home/alex Node -->
+<div class="w-full py-2 px-2 rounded-lg bg-primary-container/20 border border-primary text-primary font-semibold flex flex-col items-center gap-1">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">person_pin</span>
+<span>alex ($HOME)</span>
+</div>
+<span class="text-[10px] text-primary-fixed-dim uppercase tracking-wider font-bold">Posisi Saat Ini</span>
+</div>
+</div>
+<!-- /var Branch -->
+<div class="flex flex-col items-center">
+<div class="w-full py-2 px-2 rounded bg-surface-container border border-surface-variant text-on-surface">
+<div class="flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-secondary">folder</span>
+<span>/var</span>
+</div>
+</div>
+<div class="w-0.5 h-4 bg-outline-variant"></div>
+<!-- /var/log Target Node -->
+<div class="w-full py-2 px-2 rounded-lg bg-secondary-container/20 border border-secondary text-secondary font-semibold flex flex-col items-center gap-1">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">folder_special</span>
+<span>log</span>
+</div>
+<span class="text-[10px] text-secondary-fixed-dim uppercase tracking-wider font-bold">Tujuan Target</span>
+</div>
+</div>
+<!-- /etc Branch -->
+<div class="flex flex-col items-center opacity-70">
+<div class="w-full py-2 px-2 rounded bg-surface-container border border-surface-variant text-on-surface-variant">
+<div class="flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-[16px]">folder</span>
+<span>/etc</span>
+</div>
+</div>
+<div class="w-0.5 h-4 bg-outline-variant"></div>
+<div class="w-full py-1.5 px-2 rounded bg-surface-container-low border border-surface-variant text-on-surface-variant text-xs">
+<span>nginx</span>
+</div>
+</div>
+<!-- /bin Branch -->
+<div class="flex flex-col items-center opacity-70">
+<div class="w-full py-2 px-2 rounded bg-surface-container border border-surface-variant text-on-surface-variant">
+<div class="flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-[16px]">folder</span>
+<span>/usr</span>
+</div>
+</div>
+<div class="w-0.5 h-4 bg-outline-variant"></div>
+<div class="w-full py-1.5 px-2 rounded bg-surface-container-low border border-surface-variant text-on-surface-variant text-xs">
+<span>bin</span>
+</div>
+</div>
+</div>
+<!-- Path Comparisons Banner -->
+<div class="mt-2 grid grid-cols-1 md:grid-cols-2 gap-3 pt-3 border-t border-surface-variant">
+<div class="p-3 rounded bg-surface-container-high border border-outline-variant/50">
+<span class="text-xs text-primary font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">arrow_right_alt</span> Opsi A (Path Absolut):
+                </span>
+<p class="font-code-inline text-code-inline text-on-surface mt-1">cd /var/log</p>
+<span class="text-body-sm text-on-surface-variant text-xs block mt-0.5">Langsung dari root tanpa peduli posisi kamu saat ini.</span>
+</div>
+<div class="p-3 rounded bg-surface-container-high border border-outline-variant/50">
+<span class="text-xs text-secondary font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">turn_left</span> Opsi B (Path Relatif):
+                </span>
+<p class="font-code-inline text-code-inline text-on-surface mt-1">cd ../../var/log</p>
+<span class="text-body-sm text-on-surface-variant text-xs block mt-0.5">Naik 2 level ke root, lalu masuk ke direktori var/log.</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Section 1: Path Absolut -->
+<section class="flex flex-col gap-3">
+<h2 class="text-headline-md font-headline-md text-on-surface font-semibold flex items-center gap-2">
+<span class="w-7 h-7 rounded-lg bg-surface-container-high text-primary flex items-center justify-center text-sm font-bold border border-outline-variant">1</span>
+            Navigasi Menggunakan Path Absolut
+          </h2>
+<p class="text-body-md font-body-md text-on-surface-variant">
+            Path absolut adalah alamat lengkap file atau direktori yang dihitung mulai dari direktori teratas (root <code class="font-code-inline text-primary">/</code>). Keuntungan utama path absolut adalah ia akan selalu berhasil dieksekusi tanpa bergantung pada direktori kerja kamu saat ini.
+          </p>
+<!-- Terminal Code Snippet Block 1 -->
+<div class="rounded-xl overflow-hidden bg-surface-container-lowest border border-surface-variant shadow-md">
+<!-- Window Titlebar -->
+<div class="bg-surface-container-high px-4 py-2.5 border-b border-surface-variant flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="flex items-center gap-1.5">
+<span class="w-3 h-3 rounded-full bg-[#ef4444]"></span>
+<span class="w-3 h-3 rounded-full bg-[#f59e0b]"></span>
+<span class="w-3 h-3 rounded-full bg-[#10b981]"></span>
+</div>
+<span class="font-code-terminal text-code-terminal text-on-surface-variant text-xs ml-2">Terminal — Jalur Absolut</span>
+</div>
+<button class="flex items-center gap-1 text-label-ui font-label-ui text-on-surface-variant hover:text-primary transition-colors py-1 px-2 rounded hover:bg-surface-container" onclick="navigator.clipboard.writeText('cd /var/log\npwd')">
+<span class="material-symbols-outlined text-[16px]">content_copy</span>
+<span>Salin Perintah</span>
+</button>
+</div>
+<!-- Console Content -->
+<div class="p-4 font-code-terminal text-code-terminal flex flex-col gap-2">
+<div class="text-outline text-xs"># Berpindah langsung ke direktori log sistem dari mana saja</div>
+<div class="flex items-center gap-2">
+<span class="text-primary font-bold">alex@linuxstart:~$</span>
+<span class="text-on-surface">cd /var/log</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-primary font-bold">alex@linuxstart:/var/log$</span>
+<span class="text-on-surface">pwd</span>
+</div>
+<div class="text-on-surface-variant bg-surface-container/50 px-2 py-1 rounded w-fit border border-surface-variant/40">
+                /var/log
+              </div>
+</div>
+</div>
+</section>
+<!-- Section 2: Path Relatif -->
+<section class="flex flex-col gap-3">
+<h2 class="text-headline-md font-headline-md text-on-surface font-semibold flex items-center gap-2">
+<span class="w-7 h-7 rounded-lg bg-surface-container-high text-primary flex items-center justify-center text-sm font-bold border border-outline-variant">2</span>
+            Navigasi Menggunakan Path Relatif
+          </h2>
+<p class="text-body-md font-body-md text-on-surface-variant">
+            Path relatif ditentukan berdasarkan posisi direktori kerja kamu saat ini. Jalur ini tidak diawali dengan garis miring <code class="font-code-inline text-primary">/</code>. Linux menyediakan karakter pintas khusus untuk mempermudah navigasi relatif:
+          </p>
+<!-- Special Symbols Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+<div class="p-3.5 rounded-lg bg-surface-container border border-surface-variant flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<span class="font-code-terminal text-code-terminal text-primary font-bold text-base px-2 py-0.5 rounded bg-surface-container-highest">.</span>
+<span class="text-label-mono font-label-mono text-on-surface-variant">Titik Tunggal</span>
+</div>
+<span class="font-semibold text-on-surface text-sm mt-1">Direktori Saat Ini</span>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Mereferensikan folder tempat shell sedang aktif.</p>
+</div>
+<div class="p-3.5 rounded-lg bg-surface-container border border-surface-variant flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<span class="font-code-terminal text-code-terminal text-secondary font-bold text-base px-2 py-0.5 rounded bg-surface-container-highest">..</span>
+<span class="text-label-mono font-label-mono text-on-surface-variant">Titik Ganda</span>
+</div>
+<span class="font-semibold text-on-surface text-sm mt-1">Direktori Induk (Parent)</span>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Naik satu tingkat ke folder yang menampung direktori ini.</p>
+</div>
+<div class="p-3.5 rounded-lg bg-surface-container border border-surface-variant flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<span class="font-code-terminal text-code-terminal text-tertiary font-bold text-base px-2 py-0.5 rounded bg-surface-container-highest">~</span>
+<span class="text-label-mono font-label-mono text-on-surface-variant">Tilde</span>
+</div>
+<span class="font-semibold text-on-surface text-sm mt-1">Home Direktori</span>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Pintasan menuju folder profil pengguna aktif saat ini.</p>
+</div>
+</div>
+<!-- Terminal Code Snippet Block 2 -->
+<div class="rounded-xl overflow-hidden bg-surface-container-lowest border border-surface-variant shadow-md">
+<!-- Window Titlebar -->
+<div class="bg-surface-container-high px-4 py-2.5 border-b border-surface-variant flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="flex items-center gap-1.5">
+<span class="w-3 h-3 rounded-full bg-[#ef4444]"></span>
+<span class="w-3 h-3 rounded-full bg-[#f59e0b]"></span>
+<span class="w-3 h-3 rounded-full bg-[#10b981]"></span>
+</div>
+<span class="font-code-terminal text-code-terminal text-on-surface-variant text-xs ml-2">Terminal — Jalur Relatif</span>
+</div>
+<button class="flex items-center gap-1 text-label-ui font-label-ui text-on-surface-variant hover:text-primary transition-colors py-1 px-2 rounded hover:bg-surface-container" onclick="navigator.clipboard.writeText('cd ../etc/nginx\npwd')">
+<span class="material-symbols-outlined text-[16px]">content_copy</span>
+<span>Salin Perintah</span>
+</button>
+</div>
+<!-- Console Content -->
+<div class="p-4 font-code-terminal text-code-terminal flex flex-col gap-2">
+<div class="text-outline text-xs"># Naik satu tingkat ke induk, lalu masuk ke direktori etc/nginx</div>
+<div class="flex items-center gap-2">
+<span class="text-primary font-bold">alex@linuxstart:/etc/apache2$</span>
+<span class="text-on-surface">cd ../nginx</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-primary font-bold">alex@linuxstart:/etc/nginx$</span>
+<span class="text-on-surface">pwd</span>
+</div>
+<div class="text-on-surface-variant bg-surface-container/50 px-2 py-1 rounded w-fit border border-surface-variant/40">
+                /etc/nginx
+              </div>
+</div>
+</div>
+</section>
+<!-- Pitfall & Warning Box -->
+<div class="p-4 rounded-xl bg-surface-container border border-surface-variant flex items-start gap-3">
+<span class="material-symbols-outlined text-secondary text-[24px] mt-0.5">warning</span>
+<div class="flex flex-col gap-1">
+<h4 class="font-headline-sm text-headline-sm text-secondary font-semibold">Jebakan Pemula yang Sering Terjadi</h4>
+<p class="text-body-md font-body-md text-on-surface-variant">
+              Menulis <code class="font-code-inline text-error bg-surface-container-lowest px-1 rounded">cd /home</code> vs <code class="font-code-inline text-primary bg-surface-container-lowest px-1 rounded">cd home</code>. Jika kamu sedang berada di <code class="font-code-inline text-on-surface">/var</code> dan mengetik <code class="font-code-inline text-on-surface">cd home</code>, Linux akan mencari folder <code class="font-code-inline text-on-surface">/var/home</code> yang tidak ada, sehingga menghasilkan error: <span class="text-error font-mono text-xs">bash: cd: home: No such file or directory</span>.
+            </p>
+</div>
+</div>
+</article>
+<!-- RIGHT COLUMN: STICKY CHEATSHEET & PRACTICE ACTIONS (4 cols) -->
+<aside class="lg:col-span-4 sticky top-[84px] flex flex-col gap-4">
+<!-- Cheatsheet Card -->
+<div class="rounded-xl bg-surface-container border border-surface-variant p-5 shadow-lg flex flex-col gap-4">
+<!-- Card Header -->
+<div class="flex items-center justify-between pb-3 border-b border-surface-variant">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[22px]">terminal</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-bold">Cheatsheet Cepat</h3>
+</div>
+<span class="px-2 py-0.5 rounded bg-surface-container-highest text-primary-fixed-dim text-label-mono font-label-mono border border-outline-variant">
+              Pelajaran 02
+            </span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant">
+            Referensi sintaks navigasi esensial untuk sesi latihan ini.
+          </p>
+<!-- Monospace Command Chips List -->
+<div class="flex flex-col gap-2.5">
+<div class="p-2.5 rounded-lg bg-surface-container-lowest border border-surface-variant/80 flex items-start gap-2.5">
+<code class="font-code-terminal text-code-terminal text-primary font-bold px-1.5 py-0.5 rounded bg-surface-container-high min-w-[50px] text-center">pwd</code>
+<span class="text-body-sm font-body-sm text-on-surface-variant">Cetak nama direktori kerja aktif ($PWD)</span>
+</div>
+<div class="p-2.5 rounded-lg bg-surface-container-lowest border border-surface-variant/80 flex items-start gap-2.5">
+<code class="font-code-terminal text-code-terminal text-primary font-bold px-1.5 py-0.5 rounded bg-surface-container-high min-w-[50px] text-center">cd /</code>
+<span class="text-body-sm font-body-sm text-on-surface-variant">Pindah langsung ke root direktori sistem</span>
+</div>
+<div class="p-2.5 rounded-lg bg-surface-container-lowest border border-surface-variant/80 flex items-start gap-2.5">
+<code class="font-code-terminal text-code-terminal text-primary font-bold px-1.5 py-0.5 rounded bg-surface-container-high min-w-[50px] text-center">cd ~</code>
+<span class="text-body-sm font-body-sm text-on-surface-variant">Kembali ke direktori home pengguna ($HOME)</span>
+</div>
+<div class="p-2.5 rounded-lg bg-surface-container-lowest border border-surface-variant/80 flex items-start gap-2.5">
+<code class="font-code-terminal text-code-terminal text-primary font-bold px-1.5 py-0.5 rounded bg-surface-container-high min-w-[50px] text-center">cd ..</code>
+<span class="text-body-sm font-body-sm text-on-surface-variant">Naik satu tingkat ke direktori di atasnya</span>
+</div>
+<div class="p-2.5 rounded-lg bg-surface-container-lowest border border-surface-variant/80 flex items-start gap-2.5">
+<code class="font-code-terminal text-code-terminal text-primary font-bold px-1.5 py-0.5 rounded bg-surface-container-high min-w-[50px] text-center">cd -</code>
+<span class="text-body-sm font-body-sm text-on-surface-variant">Kembali ke direktori sebelumnya yang baru dikunjungi</span>
+</div>
+<div class="p-2.5 rounded-lg bg-surface-container-lowest border border-surface-variant/80 flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<code class="font-code-terminal text-code-terminal text-primary font-bold">cd /var/log</code>
+<span class="text-label-mono font-label-mono text-tertiary text-[10px]">ABSOLUT</span>
+</div>
+<span class="text-body-sm font-body-sm text-on-surface-variant">Menuju folder log terlepas posisi direktori saat ini</span>
+</div>
+<div class="p-2.5 rounded-lg bg-surface-container-lowest border border-surface-variant/80 flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<code class="font-code-terminal text-code-terminal text-secondary font-bold">cd ../proyek</code>
+<span class="text-label-mono font-label-mono text-secondary text-[10px]">RELATIF</span>
+</div>
+<span class="text-body-sm font-body-sm text-on-surface-variant">Masuk ke folder proyek dari posisi folder saudara</span>
+</div>
+</div>
+<!-- Action Buttons Stack -->
+<div class="flex flex-col gap-2 pt-2">
+<!-- Primary Practice CTA Button -->
+<button class="w-full py-3 px-4 rounded-lg bg-primary-container hover:bg-primary font-label-ui font-label-ui font-bold text-on-primary-container hover:text-on-primary flex items-center justify-center gap-2 shadow-lg shadow-primary-container/20 transition-all duration-200 active:scale-98">
+<span>Mulai Praktik CLI</span>
+<span class="material-symbols-outlined text-[18px]">terminal</span>
+</button>
+<!-- Outline Print / Download Button -->
+<button class="w-full py-2.5 px-4 rounded-lg bg-transparent hover:bg-surface-container-high border border-outline-variant text-on-surface text-label-ui font-label-ui font-semibold flex items-center justify-center gap-2 transition-colors active:scale-98">
+<span class="material-symbols-outlined text-[18px]">download</span>
+<span>Cetak / Unduh PDF</span>
+</button>
+</div>
+<!-- Bottom Micro Tip Note -->
+<div class="p-3 rounded-lg bg-surface-container-high/50 border border-surface-variant flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-tertiary text-[18px]">lightbulb</span>
+<span class="text-body-sm font-body-sm text-xs">
+<strong>Tips Pro:</strong> Tekan tombol <kbd class="px-1.5 py-0.5 bg-surface-container-lowest rounded border border-outline text-primary font-mono text-[11px]">Tab</kbd> dua kali di terminal untuk auto-complete perintah &amp; path.
+            </span>
+</div>
+</div>
+</aside>
+</div>
+<!-- BELOW MAIN CONTENT: LESSON FORUM & COMMUNITY DISCUSSION -->
+<section class="mt-12 rounded-xl bg-surface-container border border-surface-variant p-6">
+<div class="flex flex-col md:flex-row md:items-center justify-between pb-6 border-b border-surface-variant gap-4">
+<div>
+<h3 class="text-headline-md font-headline-md text-on-surface font-bold">Diskusi &amp; Tanya Jawab Pelajaran</h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-1">Punya kendala pada latihan direktori ini? Diskusikan bersama 1.200+ pembelajar LinuxStart.</p>
+</div>
+<!-- Ask Question CTA -->
+<button class="flex items-center gap-2 px-4 py-2 rounded-lg bg-surface-container-high hover:bg-surface-bright border border-outline-variant text-primary font-label-ui font-label-ui font-semibold transition-colors self-start md:self-auto active:scale-95">
+<span class="material-symbols-outlined text-[18px]">chat</span>
+<span>Ajukan Pertanyaan Baru</span>
+</button>
+</div>
+<!-- Tab Pill Navigation -->
+<div class="flex items-center gap-3 pt-4 border-b border-surface-variant/50 pb-3 overflow-x-auto">
+<button class="px-3.5 py-1.5 rounded-full bg-primary-container text-on-primary-container font-label-ui font-label-ui font-semibold text-xs flex items-center gap-1.5">
+<span>Forum Tanya Jawab</span>
+<span class="px-1.5 py-0.2 rounded-full bg-on-primary-container/20 text-on-primary text-[10px]">18</span>
+</button>
+<button class="px-3.5 py-1.5 rounded-full text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high font-label-ui font-label-ui text-xs transition-colors">
+          Catatan Komunitas (4)
+        </button>
+<button class="px-3.5 py-1.5 rounded-full text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high font-label-ui font-label-ui text-xs transition-colors">
+          Solusi Masalah Umum (12)
+        </button>
+</div>
+<!-- Discussion Thread Preview Card -->
+<div class="mt-4 p-4 rounded-xl bg-surface-container-lowest border border-surface-variant flex flex-col gap-3">
+<div class="flex items-start justify-between gap-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-secondary text-sm font-bold border border-outline-variant">
+              R
+            </div>
+<div>
+<span class="font-semibold text-on-surface text-sm">Rian Maulana</span>
+<span class="text-xs text-on-surface-variant ml-2">• 2 jam yang lalu</span>
+</div>
+</div>
+<span class="px-2 py-0.5 rounded bg-primary-container/20 text-primary border border-primary/30 font-label-mono text-label-mono text-xs flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">check_circle</span> Terjawab
+          </span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface font-semibold hover:text-primary transition-colors cursor-pointer">
+          Kapan sebaiknya pakai jalur absolut vs relatif dalam skrip bash otomatis?
+        </h4>
+<p class="text-body-md font-body-md text-on-surface-variant">
+          Saya sedang membuat backup script di crontab. Apakah lebih aman menulis <code class="font-code-inline text-on-surface bg-surface-container px-1 rounded">cd backup</code> atau selalu harus <code class="font-code-inline text-primary bg-surface-container px-1 rounded">cd /home/alex/backup</code>?
+        </p>
+<!-- Verified Mentor Answer Box -->
+<div class="mt-2 p-3.5 rounded-lg bg-surface-container-high border-l-2 border-primary border-y border-r border-surface-variant flex flex-col gap-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]">verified</span>
+<span class="font-label-ui font-label-ui text-primary font-bold text-xs">Jawaban Mentor SysAdmin (Budi Santoso)</span>
+<span class="text-outline-variant">•</span>
+<span class="text-xs text-on-surface-variant">Sangat Disarankan</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant">
+            Untuk otomasi seperti cron job atau script system, <strong class="text-on-surface">selalu gunakan path absolut</strong>. Karena lingkungan eksekusi crontab biasanya tidak mewarisi <code class="font-code-inline text-on-surface">$PWD</code> normal pengguna, menggunakan path relatif seringkali berujung pada error direktori tidak ditemukan.
+          </p>
+</div>
+</div>
+</section>
+</main>
+<!-- MINIMAL FOOTER -->
+<footer class="bg-surface-container-lowest border-t border-surface-variant mt-12 py-6">
+<div class="max-w-7xl mx-auto px-gutter flex flex-col md:flex-row items-center justify-between gap-4 text-body-sm font-body-sm text-on-surface-variant">
+<!-- Brand & Copyright -->
+<div class="flex items-center gap-3">
+<span class="font-label-mono text-label-mono text-primary font-bold">&gt;_ LinuxStart</span>
+<span>© 2025 LinuxStart Ecosystem. Edukasi Linux Terbuka Indonesia.</span>
+</div>
+<!-- Sandbox Health Indicator & Quick Links -->
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span>
+<span class="font-label-mono text-label-mono text-xs">Sandbox CLI Ready (99.98%)</span>
+</div>
+<div class="flex items-center gap-3 text-xs">
+<a class="hover:text-primary transition-colors" href="#">Dokumentasi</a>
+<a class="hover:text-primary transition-colors" href="#">Privasi</a>
+<a class="hover:text-primary transition-colors" href="#">Pusat Bantuan</a>
+</div>
+</div>
+</div>
+</footer>
+<!-- Micro Interaction Script for Completed State -->
+<script>
+    const completeBtn = document.getElementById('completeBtn');
+    if (completeBtn) {
+      completeBtn.addEventListener('click', function() {
+        const isDone = this.classList.contains('bg-primary-container');
+        if (!isDone) {
+          this.classList.remove('bg-surface-container', 'text-on-surface', 'border-outline-variant');
+          this.classList.add('bg-primary-container', 'text-on-primary-container', 'border-primary');
+          this.innerHTML = '<span class="material-symbols-outlined text-[16px]">check</span><span>Selesai Dibaca</span>';
+        } else {
+          this.classList.add('bg-surface-container', 'text-on-surface', 'border-outline-variant');
+          this.classList.remove('bg-primary-container', 'text-on-primary-container', 'border-primary');
+          this.innerHTML = '<span class="material-symbols-outlined text-[16px]">task_alt</span><span>Tandai Selesai</span>';
+        }
+      });
+    }
+  </script>
+</body></html>
