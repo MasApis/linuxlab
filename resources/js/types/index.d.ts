@@ -22,6 +22,36 @@ export interface Module {
     lessons?: Lesson[];
 }
 
+export interface Exercise {
+    id: number;
+    lesson_id?: number;
+    title: string;
+    instruction: string;
+    validation_type: 'system_state' | 'output' | 'combined';
+    validation_config?: Record<string, any>;
+    points: number;
+    order: number;
+    hints?: Hint[];
+}
+
+export interface Hint {
+    id: number;
+    exercise_id: number;
+    content: string;
+    order: number;
+}
+
+export interface ExerciseAttempt {
+    id: number;
+    user_id: number;
+    exercise_id: number;
+    terminal_session_id?: number | null;
+    is_correct: boolean;
+    score: number;
+    feedback: string;
+    created_at: string;
+}
+
 export interface Lesson {
     id: number;
     module_id?: number;
@@ -31,6 +61,7 @@ export interface Lesson {
     example_commands?: string | null;
     cheat_sheet?: string | null;
     order: number;
+    exercises?: Exercise[];
 }
 
 export type PageProps<
@@ -40,4 +71,5 @@ export type PageProps<
         user: User;
     };
 };
+
 

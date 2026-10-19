@@ -29,6 +29,10 @@ class LessonController extends Controller
             ? $moduleLessons->get($currentIndex + 1)
             : null;
 
+        $exercises = $lesson->exercises()
+            ->orderBy('order')
+            ->get(['id', 'title', 'points', 'order']);
+
         return Inertia::render('Lessons/Show', [
             'module' => [
                 'id' => $module->id,
@@ -43,6 +47,7 @@ class LessonController extends Controller
                 'example_commands' => $lesson->example_commands,
                 'cheat_sheet' => $lesson->cheat_sheet,
                 'order' => $lesson->order,
+                'exercises' => $exercises,
             ],
             'moduleLessons' => $moduleLessons->map(fn ($item) => [
                 'id' => $item->id,
@@ -62,16 +67,18 @@ class LessonController extends Controller
     }
 
     /**
-     * Halaman praktik terminal interaktif pelajaran (FR-MOD-02, FR-TERM-01 s.d. 05).
+     * Halaman praktik terminal interaktif pelajaran (FR-MOD-02, FR-TERM-01 s.d. 05, FR-EX-01 s.d. 04).
      */
     public function practice(Lesson $lesson): Response
     {
         $module = $lesson->module;
         abort_unless($module && $module->is_published, 404);
 
+        $userId = \Illuminate\Support\Facades\Auth::id();
+
         /** @var \App\Models\TerminalSession|null $activeSession */
         $activeSession = \App\Models\TerminalSession::query()
-            ->where('user_id', \Illuminate\Support\Facades\Auth::id())
+            ->where('user_id', $userId)
             ->active()
             ->first();
 
@@ -88,6 +95,52 @@ class LessonController extends Controller
             ];
         }
 
+        $exercises = $lesson->exercises()
+            ->with('hints')
+            ->orderBy('order')
+            ->get()
+            ->map(function ($exercise) use ($userId) {
+                $sessionKey = "exercise_{$exercise->id}_hints_user_{$userId}";
+                $unlockedCount = (int) session()->get($sessionKey, 0);
+                $allHints = $exercise->hints->sortBy('order')->values();
+                $unlockedHints = $allHints->take($unlockedCount)->values();
+
+                $latestAttempt = \App\Models\ExerciseAttempt::query()
+                    ->where('user_id', $userId)
+                    ->where('exercise_id', $exercise->id)
+                    ->latest('id')
+                    ->first();
+
+                $hasPassed = \App\Models\ExerciseAttempt::query()
+                    ->where('user_id', $userId)
+                    ->where('exercise_id', $exercise->id)
+                    ->where('is_correct', true)
+                    ->exists();
+
+                return [
+                    'id' => $exercise->id,
+                    'title' => $exercise->title,
+                    'instruction' => $exercise->instruction,
+                    'validation_type' => $exercise->validation_type,
+                    'points' => $exercise->points,
+                    'order' => $exercise->order,
+                    'total_hints' => $allHints->count(),
+                    'unlocked_hints' => $unlockedHints->map(fn ($h) => [
+                        'id' => $h->id,
+                        'content' => $h->content,
+                        'order' => $h->order,
+                    ]),
+                    'has_passed' => $hasPassed,
+                    'latest_attempt' => $latestAttempt ? [
+                        'id' => $latestAttempt->id,
+                        'is_correct' => $latestAttempt->is_correct,
+                        'score' => $latestAttempt->score,
+                        'feedback' => $latestAttempt->feedback,
+                        'created_at' => $latestAttempt->created_at->toIso8601String(),
+                    ] : null,
+                ];
+            });
+
         return Inertia::render('Lessons/Practice', [
             'module' => [
                 'id' => $module->id,
@@ -101,6 +154,8 @@ class LessonController extends Controller
                 'order' => $lesson->order,
             ],
             'initialSession' => $activeSessionData,
+            'exercises' => $exercises,
         ]);
     }
 }
+

@@ -54,4 +54,13 @@ class Lesson extends Model
     {
         return $this->belongsTo(Module::class);
     }
+
+    /**
+     * Relasi ke latihan di dalam pelajaran ini (SPEC Bagian 8.3).
+     */
+    public function exercises(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Exercise::class)->orderBy('order');
+    }
 }
+

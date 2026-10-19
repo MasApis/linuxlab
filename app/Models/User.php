@@ -46,4 +46,13 @@ class User extends Authenticatable
     {
         return $this->hasMany(TerminalSession::class);
     }
+
+    /**
+     * Percobaan latihan milik pengguna (SPEC Bagian 8.3).
+     */
+    public function exerciseAttempts(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(ExerciseAttempt::class);
+    }
 }
+

@@ -35,6 +35,12 @@ class TerminalSession extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function exercise(): BelongsTo
+    {
+        return $this->belongsTo(Exercise::class);
+    }
+
+
     /**
      * Scope untuk sesi yang masih aktif dan belum lewat waktu kedaluwarsa.
      */
