@@ -70,5 +70,23 @@ class Lesson extends Model
     {
         return $this->hasMany(LessonProgress::class);
     }
+
+    /**
+     * Menyelesaikan model binding baik melalui slug maupun id numerik.
+     */
+    public function resolveRouteBinding($value, $field = null): ?Model
+    {
+        return $this->where($field ?? 'slug', $value)
+            ->orWhere('id', $value)
+            ->firstOrFail();
+    }
+
+    /**
+     * Pertanyaan forum yang terikat pada pelajaran ini (SPEC Bagian 8.3 & FR-FORUM-01).
+     */
+    public function questions(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Question::class);
+    }
 }
 

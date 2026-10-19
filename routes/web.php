@@ -3,11 +3,13 @@
 use App\Http\Controllers\AchievementController;
 use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ForumController;
 use App\Http\Controllers\LeaderboardController;
 use App\Http\Controllers\LessonController;
 use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgressController;
+use App\Models\Lesson;
 use App\Models\Module;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -66,6 +68,26 @@ Route::middleware('auth')->group(function () {
     Route::get('/terminal/sessions/{session}', [\App\Http\Controllers\TerminalSessionController::class, 'show'])->name('terminal.sessions.show');
     Route::delete('/terminal/sessions/{session}', [\App\Http\Controllers\TerminalSessionController::class, 'destroy'])->name('terminal.sessions.destroy');
 
+    // FR-FORUM-01 Forum per Pelajaran
+    Route::get('/forum', function () {
+        $firstLesson = Lesson::query()->orderBy('order')->first();
+        if ($firstLesson) {
+            return redirect()->route('forum.index', $firstLesson);
+        }
+        return redirect()->route('modules.index');
+    })->name('forum');
+    Route::get('/lessons/{lesson}/forum', [ForumController::class, 'index'])->name('forum.index');
+    Route::post('/lessons/{lesson}/forum', [ForumController::class, 'storeQuestion'])->name('forum.store');
+
+    // FR-FORUM-02 Detail Pertanyaan & Menulis Jawaban
+    Route::get('/forum/{question}', [ForumController::class, 'show'])->name('forum.show');
+    Route::post('/forum/{question}/answers', [ForumController::class, 'storeAnswer'])->name('forum.answers.store');
+
+    // FR-FORUM-03 Upvote Jawaban
+    Route::post('/answers/{answer}/vote', [ForumController::class, 'voteAnswer'])->name('answers.vote');
+
+    // FR-FORUM-04 Menandai Jawaban Terbaik
+    Route::post('/answers/{answer}/best', [ForumController::class, 'markBestAnswer'])->name('answers.best');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

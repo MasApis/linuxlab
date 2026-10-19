@@ -68,11 +68,54 @@ export interface Lesson {
     is_completed?: boolean;
 }
 
+export interface Question {
+    id: number;
+    title: string;
+    body: string;
+    is_resolved: boolean;
+    answers_count?: number;
+    created_at: string;
+    created_at_human?: string;
+    is_owner?: boolean;
+    user: {
+        id?: number;
+        name: string;
+        username: string;
+    };
+}
+
+export interface Answer {
+    id: number;
+    body: string;
+    is_best_answer: boolean;
+    votes_count: number;
+    has_voted: boolean;
+    is_own_answer: boolean;
+    created_at: string;
+    created_at_human?: string;
+    user: {
+        id?: number;
+        name: string;
+        username: string;
+    };
+}
+
+export interface AnswerVote {
+    id: number;
+    answer_id: number;
+    user_id: number;
+    created_at: string;
+}
+
 export type PageProps<
     T extends Record<string, unknown> = Record<string, unknown>,
 > = T & {
     auth: {
         user: User;
+    };
+    flash?: {
+        success?: string;
+        error?: string;
     };
 };
 

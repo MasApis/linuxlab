@@ -95,5 +95,29 @@ class User extends Authenticatable
     {
         return $this->hasOne(Certificate::class);
     }
+
+    /**
+     * Seluruh pertanyaan forum yang diajukan pengguna (SPEC Bagian 8.3).
+     */
+    public function questions(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Question::class);
+    }
+
+    /**
+     * Seluruh jawaban forum yang ditulis pengguna (SPEC Bagian 8.3).
+     */
+    public function answers(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Answer::class);
+    }
+
+    /**
+     * Seluruh upvote jawaban yang diberikan pengguna (SPEC Bagian 8.3).
+     */
+    public function answerVotes(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(AnswerVote::class);
+    }
 }
 
