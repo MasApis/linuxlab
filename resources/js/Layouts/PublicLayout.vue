@@ -11,6 +11,7 @@ const navLinks = [
     { name: 'Beranda', href: '/' },
     { name: 'Modul', href: '/modules' },
     { name: 'Leaderboard', href: '/leaderboard' },
+    { name: 'Verifikasi Sertifikat', href: '/certificates/verify' },
 ];
 </script>
 
@@ -154,6 +155,7 @@ const navLinks = [
                     <Link href="/" class="hover:text-text-primary transition-colors">Beranda</Link>
                     <Link href="/modules" class="hover:text-text-primary transition-colors">Modul</Link>
                     <Link href="/leaderboard" class="hover:text-text-primary transition-colors">Leaderboard</Link>
+                    <Link href="/certificates/verify" class="hover:text-text-primary transition-colors">Verifikasi Sertifikat</Link>
                 </div>
             </div>
         </footer>

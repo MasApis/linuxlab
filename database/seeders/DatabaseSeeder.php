@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             AdminUserSeeder::class,
             ModuleLessonSeeder::class,
             ExerciseSeeder::class,
+            BadgeSeeder::class,
         ]);
     }
 }

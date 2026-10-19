@@ -19,6 +19,7 @@ export interface Module {
     is_published?: boolean;
     lessons_count?: number;
     completion_percentage?: number;
+    status?: 'not_started' | 'in_progress' | 'completed';
     lessons?: Lesson[];
 }
 
@@ -32,6 +33,7 @@ export interface Exercise {
     points: number;
     order: number;
     hints?: Hint[];
+    has_passed?: boolean;
 }
 
 export interface Hint {
@@ -62,6 +64,8 @@ export interface Lesson {
     cheat_sheet?: string | null;
     order: number;
     exercises?: Exercise[];
+    status?: 'not_started' | 'in_progress' | 'completed';
+    is_completed?: boolean;
 }
 
 export type PageProps<

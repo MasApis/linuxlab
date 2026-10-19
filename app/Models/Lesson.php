@@ -62,5 +62,13 @@ class Lesson extends Model
     {
         return $this->hasMany(Exercise::class)->orderBy('order');
     }
+
+    /**
+     * Progres pelajaran oleh berbagai pengguna (SPEC Bagian 8.3).
+     */
+    public function lessonProgress(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(LessonProgress::class);
+    }
 }
 

@@ -53,4 +53,12 @@ class Module extends Model
     {
         return $this->hasMany(Lesson::class)->orderBy('order');
     }
+
+    /**
+     * Progres modul oleh berbagai pengguna (SPEC Bagian 8.3).
+     */
+    public function moduleProgress(): HasMany
+    {
+        return $this->hasMany(ModuleProgress::class);
+    }
 }

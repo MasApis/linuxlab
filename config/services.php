@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'certificate' => [
+        'signatory_name' => env('CERTIFICATE_SIGNATORY_NAME'),
+        'signatory_title' => env('CERTIFICATE_SIGNATORY_TITLE'),
+    ],
+
 ];

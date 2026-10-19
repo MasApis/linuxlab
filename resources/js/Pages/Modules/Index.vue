@@ -46,23 +46,6 @@ const getModuleBadgeColor = (order: number) => {
                 </p>
             </div>
 
-            <!-- Honest Progress Notice (Fase 2 / Q-03 / FR-MOD-01) -->
-            <div class="p-4 rounded-card bg-surface-card border border-border flex items-start gap-3">
-                <div class="w-8 h-8 rounded-lg bg-brand-tertiary/10 text-brand-tertiary border border-brand-tertiary/30 flex items-center justify-center shrink-0 mt-0.5">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                </div>
-                <div class="text-xs sm:text-sm text-text-muted space-y-1">
-                    <p class="font-semibold text-text-primary">
-                        Status Progres Awal
-                    </p>
-                    <p>
-                        Persentase penyelesaian modul di bawah ini ditampilkan pada <strong class="text-white">keadaan awal (0%)</strong>. Pelacakan otomatis hasil latihan per pengguna akan diaktifkan secara menyeluruh pada Fase 5.
-                    </p>
-                </div>
-            </div>
-
             <!-- Modules Grid -->
             <div v-if="modules.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <AppCard
@@ -108,7 +91,10 @@ const getModuleBadgeColor = (order: number) => {
                             <div class="flex items-center justify-between text-xs">
                                 <span class="text-text-dim">Penyelesaian</span>
                                 <span class="font-mono text-text-muted font-medium">
-                                    {{ module.completion_percentage ?? 0 }}% (Belum Dimulai)
+                                    {{ module.completion_percentage ?? 0 }}%
+                                    <span v-if="(module.completion_percentage ?? 0) === 100" class="text-brand-primary">(Selesai)</span>
+                                    <span v-else-if="(module.completion_percentage ?? 0) > 0" class="text-brand-secondary">(Sedang Berjalan)</span>
+                                    <span v-else class="text-text-dim">(Belum Dimulai)</span>
                                 </span>
                             </div>
                             <ProgressBar

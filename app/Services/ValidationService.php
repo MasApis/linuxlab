@@ -11,7 +11,10 @@ use Illuminate\Auth\Access\AuthorizationException;
 class ValidationService
 {
     public function __construct(
-        protected TerminalService $terminalService
+        protected TerminalService $terminalService,
+        protected ProgressService $progressService,
+        protected BadgeService $badgeService,
+        protected CertificateService $certificateService
     ) {}
 
     /**
@@ -113,6 +116,11 @@ class ValidationService
             'feedback' => $feedback,
         ]);
 
+        // VAL-05: Rangkaian pembaruan progres, evaluasi lencana, dan syarat sertifikat
+        $this->progressService->updateProgressForExercise($user, $exercise);
+        $newBadges = $this->badgeService->evaluateBadges($user);
+        $certificate = $this->certificateService->issueCertificateIfEligible($user);
+
         return [
             'success' => true,
             'is_correct' => $isCorrect,
@@ -120,6 +128,8 @@ class ValidationService
             'feedback' => $feedback,
             'attempt' => $attempt,
             'checks' => $checkResults,
+            'new_badges' => $newBadges,
+            'certificate' => $certificate,
         ];
     }
 

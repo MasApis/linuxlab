@@ -11,6 +11,7 @@ interface SimpleNavLesson {
     title: string;
     slug: string;
     order: number;
+    is_completed?: boolean;
 }
 
 interface Props {
@@ -277,6 +278,73 @@ const formattedContent = computed(() => {
                         </div>
                     </div>
 
+                    <!-- Latihan Praktik Terikat Pelajaran Ini (FR-EX-01, FR-PROG-01) -->
+                    <AppCard class="border-border space-y-4">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-border/60">
+                            <div>
+                                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                                    <svg class="w-5 h-5 text-brand-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                                    </svg>
+                                    <span>Latihan Praktik Terikat</span>
+                                </h3>
+                                <p class="text-xs text-text-muted mt-0.5">
+                                    Selesaikan seluruh latihan di terminal untuk menandai pelajaran ini 100% selesai.
+                                </p>
+                            </div>
+                            <span
+                                class="text-xs font-mono font-semibold px-2.5 py-1 rounded-full self-start sm:self-auto border"
+                                :class="lesson.is_completed ? 'bg-brand-primary/15 text-brand-primary border-brand-primary/30' : 'bg-surface-elevated text-brand-secondary border-brand-secondary/30'"
+                            >
+                                {{ lesson.is_completed ? 'Pelajaran Selesai 100%' : 'Latihan Belum Tuntas' }}
+                            </span>
+                        </div>
+
+                        <div v-if="lesson.exercises && lesson.exercises.length > 0" class="space-y-2.5">
+                            <div
+                                v-for="(ex, index) in lesson.exercises"
+                                :key="ex.id"
+                                class="p-3 rounded-lg border flex items-center justify-between gap-4 transition-colors"
+                                :class="ex.has_passed ? 'bg-brand-primary/5 border-brand-primary/30' : 'bg-surface-base border-border'"
+                            >
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-7 h-7 rounded-full flex items-center justify-center font-mono font-bold text-xs shrink-0 border"
+                                        :class="ex.has_passed ? 'bg-brand-primary text-surface-base border-brand-primary' : 'bg-surface-elevated text-text-dim border-border'"
+                                    >
+                                        {{ ex.has_passed ? '✓' : index + 1 }}
+                                    </div>
+                                    <div>
+                                        <h4 class="text-sm font-semibold text-white">{{ ex.title }}</h4>
+                                        <p class="text-xs text-text-muted line-clamp-1">{{ ex.instruction }}</p>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center gap-3 shrink-0">
+                                    <span class="text-xs font-mono text-text-dim">{{ ex.points }} poin</span>
+                                    <span
+                                        class="text-[11px] font-semibold px-2 py-0.5 rounded font-mono"
+                                        :class="ex.has_passed ? 'bg-brand-primary/15 text-brand-primary' : 'bg-surface-elevated text-text-dim'"
+                                    >
+                                        {{ ex.has_passed ? 'Selesai' : 'Belum' }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CTA to Practice -->
+                        <div class="pt-2 flex justify-end">
+                            <Link :href="route('lessons.practice', lesson.slug)">
+                                <AppButton variant="primary" size="sm">
+                                    <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                    </svg>
+                                    <span>Buka Terminal Praktik & Periksa Jawaban</span>
+                                </AppButton>
+                            </Link>
+                        </div>
+                    </AppCard>
+
                     <!-- Forum Discussion Link Card (FR-FORUM-01 Preview) -->
                     <AppCard class="border-border bg-surface-card/60">
                         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -399,7 +467,10 @@ const formattedContent = computed(() => {
                                 ]"
                             >
                                 <span class="truncate">0{{ item.order }}. {{ item.title }}</span>
-                                <span v-if="item.slug === lesson.slug" class="text-[10px] font-mono uppercase text-brand-primary ml-2 shrink-0">
+                                <span v-if="item.is_completed" class="text-[10px] font-mono text-brand-primary ml-2 shrink-0">
+                                    ✓ Selesai
+                                </span>
+                                <span v-else-if="item.slug === lesson.slug" class="text-[10px] font-mono uppercase text-brand-secondary ml-2 shrink-0">
                                     Aktif
                                 </span>
                             </Link>

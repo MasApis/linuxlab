@@ -54,5 +54,46 @@ class User extends Authenticatable
     {
         return $this->hasMany(ExerciseAttempt::class);
     }
+
+    /**
+     * Progres pelajaran milik pengguna (SPEC Bagian 8.3).
+     */
+    public function lessonProgress(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(LessonProgress::class);
+    }
+
+    /**
+     * Progres modul milik pengguna (SPEC Bagian 8.3).
+     */
+    public function moduleProgress(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(ModuleProgress::class);
+    }
+
+    /**
+     * Baris relasi lencana pengguna (SPEC Bagian 8.3).
+     */
+    public function userBadges(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(UserBadge::class);
+    }
+
+    /**
+     * Seluruh lencana yang telah diperoleh pengguna.
+     */
+    public function badges(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Badge::class, 'user_badges')
+            ->withPivot('awarded_at');
+    }
+
+    /**
+     * Sertifikat penyelesaian milik pengguna (relasi 1:1, SPEC Bagian 8.3).
+     */
+    public function certificate(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(Certificate::class);
+    }
 }
 

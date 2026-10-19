@@ -81,8 +81,11 @@ const firstLesson = props.module.lessons && props.module.lessons.length > 0
                     <div class="lg:col-span-4 bg-surface-elevated/70 border border-border rounded-xl p-5 space-y-4">
                         <div class="flex items-center justify-between text-xs">
                             <span class="font-mono text-text-dim">STATUS MODUL</span>
-                            <span class="font-mono font-bold px-2 py-0.5 rounded bg-surface-card text-brand-primary border border-brand-primary/20">
-                                0% SELESAI
+                            <span
+                                class="font-mono font-bold px-2 py-0.5 rounded border"
+                                :class="(module.completion_percentage ?? 0) === 100 ? 'bg-brand-primary/15 text-brand-primary border-brand-primary/30' : ((module.completion_percentage ?? 0) > 0 ? 'bg-brand-secondary/15 text-brand-secondary border-brand-secondary/30' : 'bg-surface-card text-text-dim border-border')"
+                            >
+                                {{ module.completion_percentage ?? 0 }}% SELESAI
                             </span>
                         </div>
 
@@ -127,12 +130,17 @@ const firstLesson = props.module.lessons && props.module.lessons.length > 0
                     <div
                         v-for="lesson in module.lessons"
                         :key="lesson.id"
-                        class="p-4 sm:p-5 rounded-card bg-surface-card border border-border hover:border-border-focus transition-all duration-150 flex flex-col sm:flex-row sm:items-center justify-between gap-4 group"
+                        class="p-4 sm:p-5 rounded-card bg-surface-card border transition-all duration-150 flex flex-col sm:flex-row sm:items-center justify-between gap-4 group"
+                        :class="lesson.is_completed ? 'border-brand-primary/40 bg-surface-card' : 'border-border hover:border-border-focus'"
                     >
                         <div class="flex items-start sm:items-center gap-4">
-                            <!-- Order Number Badge -->
-                            <div class="w-10 h-10 rounded-lg bg-surface-elevated border border-border text-brand-primary font-mono font-bold text-sm flex items-center justify-center shrink-0 group-hover:border-brand-primary/40 transition-colors">
-                                0{{ lesson.order }}
+                            <!-- Order Number / Completed Badge -->
+                            <div
+                                class="w-10 h-10 rounded-lg border font-mono font-bold text-sm flex items-center justify-center shrink-0 transition-colors"
+                                :class="lesson.is_completed ? 'bg-brand-primary/15 text-brand-primary border-brand-primary/40' : 'bg-surface-elevated text-brand-primary border-border group-hover:border-brand-primary/40'"
+                            >
+                                <span v-if="lesson.is_completed">✓</span>
+                                <span v-else>0{{ lesson.order }}</span>
                             </div>
 
                             <div class="space-y-1">
@@ -141,7 +149,22 @@ const firstLesson = props.module.lessons && props.module.lessons.length > 0
                                         Pelajaran {{ module.order }}.{{ lesson.order }}
                                     </span>
                                     <span class="text-xs text-text-dim">•</span>
-                                    <span class="text-[11px] font-mono text-brand-tertiary">
+                                    <span
+                                        v-if="lesson.is_completed"
+                                        class="text-[11px] font-mono font-bold text-brand-primary"
+                                    >
+                                        Selesai 100%
+                                    </span>
+                                    <span
+                                        v-else-if="lesson.status === 'in_progress'"
+                                        class="text-[11px] font-mono font-bold text-brand-secondary"
+                                    >
+                                        Sedang Berjalan
+                                    </span>
+                                    <span
+                                        v-else
+                                        class="text-[11px] font-mono text-text-dim"
+                                    >
                                         Materi & Cheat Sheet
                                     </span>
                                 </div>
@@ -154,8 +177,8 @@ const firstLesson = props.module.lessons && props.module.lessons.length > 0
                         <!-- Action Button -->
                         <div class="sm:self-center shrink-0">
                             <Link :href="route('lessons.show', [module.slug, lesson.slug])">
-                                <AppButton variant="secondary" size="sm" class="w-full sm:w-auto">
-                                    <span>Pelajari Materi</span>
+                                <AppButton :variant="lesson.is_completed ? 'secondary' : 'primary'" size="sm" class="w-full sm:w-auto">
+                                    <span>{{ lesson.is_completed ? 'Tinjau Materi' : 'Pelajari Materi' }}</span>
                                     <svg class="w-4 h-4 ml-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                                     </svg>

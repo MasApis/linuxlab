@@ -29,9 +29,47 @@ class LessonController extends Controller
             ? $moduleLessons->get($currentIndex + 1)
             : null;
 
+        $userId = \Illuminate\Support\Facades\Auth::id();
+
+        // Tandai in_progress jika pengguna login dan belum mulai
+        if ($userId) {
+            \App\Models\LessonProgress::firstOrCreate(
+                ['user_id' => $userId, 'lesson_id' => $lesson->id],
+                ['status' => 'in_progress']
+            );
+            \App\Models\ModuleProgress::firstOrCreate(
+                ['user_id' => $userId, 'module_id' => $module->id],
+                ['status' => 'in_progress', 'completion_percentage' => 0]
+            );
+        }
+
+        $passedExerciseIds = $userId ? \App\Models\ExerciseAttempt::query()
+            ->where('user_id', $userId)
+            ->whereIn('exercise_id', $lesson->exercises()->pluck('id'))
+            ->where('is_correct', true)
+            ->pluck('exercise_id')
+            ->all() : [];
+
         $exercises = $lesson->exercises()
             ->orderBy('order')
-            ->get(['id', 'title', 'points', 'order']);
+            ->get(['id', 'title', 'instruction', 'points', 'order'])
+            ->map(fn ($ex) => [
+                'id' => $ex->id,
+                'title' => $ex->title,
+                'instruction' => $ex->instruction,
+                'points' => $ex->points,
+                'order' => $ex->order,
+                'has_passed' => in_array($ex->id, $passedExerciseIds, true),
+            ]);
+
+        $lessonProgress = $userId ? \App\Models\LessonProgress::where('user_id', $userId)->where('lesson_id', $lesson->id)->first() : null;
+
+        $completedLessonIds = $userId ? \App\Models\LessonProgress::query()
+            ->where('user_id', $userId)
+            ->whereIn('lesson_id', $moduleLessons->pluck('id'))
+            ->where('status', 'completed')
+            ->pluck('lesson_id')
+            ->all() : [];
 
         return Inertia::render('Lessons/Show', [
             'module' => [
@@ -47,6 +85,8 @@ class LessonController extends Controller
                 'example_commands' => $lesson->example_commands,
                 'cheat_sheet' => $lesson->cheat_sheet,
                 'order' => $lesson->order,
+                'status' => $lessonProgress ? $lessonProgress->status : 'not_started',
+                'is_completed' => $lessonProgress ? ($lessonProgress->status === 'completed') : false,
                 'exercises' => $exercises,
             ],
             'moduleLessons' => $moduleLessons->map(fn ($item) => [
@@ -54,6 +94,7 @@ class LessonController extends Controller
                 'title' => $item->title,
                 'slug' => $item->slug,
                 'order' => $item->order,
+                'is_completed' => in_array($item->id, $completedLessonIds, true),
             ]),
             'previousLesson' => $previousLesson ? [
                 'title' => $previousLesson->title,

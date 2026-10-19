@@ -1,8 +1,13 @@
 <?php
 
+use App\Http\Controllers\AchievementController;
+use App\Http\Controllers\CertificateController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\LeaderboardController;
 use App\Http\Controllers\LessonController;
 use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProgressController;
 use App\Models\Module;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -20,34 +25,29 @@ Route::get('/', function () {
     ]);
 })->name('home');
 
+// FR-LEAD-01 s.d. 04 Leaderboard Publik
+Route::get('/leaderboard', [LeaderboardController::class, 'index'])->name('leaderboard');
+
+// FR-CERT-04 Verifikasi Publik Sertifikat
+Route::get('/certificates/verify/{code?}', [CertificateController::class, 'verify'])->name('certificates.verify');
+
 Route::get('/design-system', function () {
     return Inertia::render('DesignSystemTest');
 })->name('design-system');
 
 // 9.2 Rute Pengguna Terdaftar
 Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', function () {
-        $modules = Module::query()
-            ->where('is_published', true)
-            ->orderBy('order')
-            ->withCount('lessons')
-            ->get()
-            ->map(function (Module $module) {
-                return [
-                    'id' => $module->id,
-                    'title' => $module->title,
-                    'slug' => $module->slug,
-                    'description' => $module->description,
-                    'order' => $module->order,
-                    'lessons_count' => $module->lessons_count,
-                    'completion_percentage' => 0,
-                ];
-            });
+    // FR-PROG-03 Dashboard Pengguna
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-        return Inertia::render('Dashboard', [
-            'modules' => $modules,
-        ]);
-    })->name('dashboard');
+    // FR-PROG-02 & FR-EX-04 Progres & Riwayat
+    Route::get('/progress', [ProgressController::class, 'index'])->name('progress.index');
+
+    // FR-PROG-05, FR-CERT-03, FR-CERT-05 Pencapaian & Kartu Sertifikat
+    Route::get('/achievements', [AchievementController::class, 'index'])->name('achievements.index');
+
+    // FR-CERT-03 Unduh Sertifikat PDF (hanya milik sendiri)
+    Route::get('/certificates/download', [CertificateController::class, 'download'])->name('certificates.download');
 
     // FR-MOD-01 Daftar dan Detail Modul
     Route::get('/modules', [ModuleController::class, 'index'])->name('modules.index');
