@@ -1,20 +1,17 @@
 <script setup lang="ts">
-import ApplicationLogo from '@/Components/ApplicationLogo.vue';
-import { Link } from '@inertiajs/vue3';
+import AppLogo from '@/Components/AppLogo.vue';
 </script>
 
 <template>
     <div
-        class="flex min-h-screen flex-col items-center bg-gray-100 pt-6 sm:justify-center sm:pt-0"
+        class="flex min-h-screen flex-col items-center bg-surface-base px-4 py-8 sm:justify-center font-sans text-text-primary"
     >
-        <div>
-            <Link href="/">
-                <ApplicationLogo class="h-20 w-20 fill-current text-gray-500" />
-            </Link>
+        <div class="mb-6">
+            <AppLogo size="lg" href="/" :show-subtitle="true" />
         </div>
 
         <div
-            class="mt-6 w-full overflow-hidden bg-white px-6 py-4 shadow-md sm:max-w-md sm:rounded-lg"
+            class="w-full max-w-md rounded-card border border-border bg-surface-card p-6 sm:p-8 shadow-xl"
         >
             <slot />
         </div>
