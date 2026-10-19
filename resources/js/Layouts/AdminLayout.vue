@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { Link, usePage, router } from '@inertiajs/vue3';
 import AppLogo from '@/Components/AppLogo.vue';
 
@@ -7,6 +7,7 @@ const page = usePage();
 const sidebarOpen = ref(false);
 
 const user = page.props.auth?.user as { name?: string; email?: string } | undefined;
+const flash = computed(() => (page.props.flash ?? {}) as { success?: string | null; error?: string | null });
 
 const adminNavItems = [
     {
@@ -223,6 +224,31 @@ const logout = () => {
 
             <!-- Main Content Slot -->
             <main class="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto">
+                <!-- Flash Notification Banner -->
+                <div
+                    v-if="flash.success"
+                    class="mb-6 p-4 rounded-card bg-brand-primary/10 border border-brand-primary/30 text-brand-primary-light flex items-center justify-between gap-3 text-sm animate-fade-in"
+                >
+                    <div class="flex items-center gap-2.5">
+                        <svg class="w-5 h-5 shrink-0 text-brand-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                        <span>{{ flash.success }}</span>
+                    </div>
+                </div>
+
+                <div
+                    v-if="flash.error"
+                    class="mb-6 p-4 rounded-card bg-brand-danger/10 border border-brand-danger/30 text-brand-danger-light flex items-center justify-between gap-3 text-sm animate-fade-in"
+                >
+                    <div class="flex items-center gap-2.5">
+                        <svg class="w-5 h-5 shrink-0 text-brand-danger" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                        <span>{{ flash.error }}</span>
+                    </div>
+                </div>
+
                 <slot />
             </main>
         </div>

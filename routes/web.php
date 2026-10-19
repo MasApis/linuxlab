@@ -9,6 +9,14 @@ use App\Http\Controllers\LessonController;
 use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgressController;
+use App\Http\Controllers\Admin\AdminBadgeController;
+use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\AdminExerciseController;
+use App\Http\Controllers\Admin\AdminForumController;
+use App\Http\Controllers\Admin\AdminHintController;
+use App\Http\Controllers\Admin\AdminLessonController;
+use App\Http\Controllers\Admin\AdminModuleController;
+use App\Http\Controllers\Admin\AdminUserController;
 use App\Models\Lesson;
 use App\Models\Module;
 use Illuminate\Support\Facades\Route;
@@ -100,14 +108,45 @@ Route::get('/internal/terminal/verify', [\App\Http\Controllers\TerminalSessionCo
 
 // 9.3 Rute Administrator (awalan /admin, middleware auth + admin)
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/', function () {
-        return Inertia::render('Admin/Dashboard');
-    })->name('dashboard');
+    Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
 
-    // Placeholder untuk sub-route admin lainnya agar terlindungi oleh middleware admin (RBAC-04)
-    Route::get('/{any}', function () {
-        return Inertia::render('Admin/Dashboard');
-    })->where('any', '.*');
+    // FR-ADMIN-01 Modul CRUD
+    Route::get('/modules', [AdminModuleController::class, 'index'])->name('modules.index');
+    Route::post('/modules', [AdminModuleController::class, 'store'])->name('modules.store');
+    Route::patch('/modules/{module}', [AdminModuleController::class, 'update'])->name('modules.update');
+    Route::delete('/modules/{module}', [AdminModuleController::class, 'destroy'])->name('modules.destroy');
+
+    // FR-ADMIN-01 Pelajaran CRUD
+    Route::get('/lessons', [AdminLessonController::class, 'index'])->name('lessons.index');
+    Route::post('/lessons', [AdminLessonController::class, 'store'])->name('lessons.store');
+    Route::patch('/lessons/{lesson}', [AdminLessonController::class, 'update'])->name('lessons.update');
+    Route::delete('/lessons/{lesson}', [AdminLessonController::class, 'destroy'])->name('lessons.destroy');
+
+    // FR-ADMIN-01 Latihan & Validator CRUD
+    Route::get('/exercises', [AdminExerciseController::class, 'index'])->name('exercises.index');
+    Route::post('/exercises', [AdminExerciseController::class, 'store'])->name('exercises.store');
+    Route::patch('/exercises/{exercise}', [AdminExerciseController::class, 'update'])->name('exercises.update');
+    Route::delete('/exercises/{exercise}', [AdminExerciseController::class, 'destroy'])->name('exercises.destroy');
+
+    // FR-ADMIN-01 Hint Latihan CRUD
+    Route::post('/exercises/{exercise}/hints', [AdminHintController::class, 'store'])->name('exercises.hints.store');
+    Route::patch('/hints/{hint}', [AdminHintController::class, 'update'])->name('hints.update');
+    Route::delete('/hints/{hint}', [AdminHintController::class, 'destroy'])->name('hints.destroy');
+
+    // FR-ADMIN-02 Kelola Lencana CRUD
+    Route::get('/badges', [AdminBadgeController::class, 'index'])->name('badges.index');
+    Route::post('/badges', [AdminBadgeController::class, 'store'])->name('badges.store');
+    Route::patch('/badges/{badge}', [AdminBadgeController::class, 'update'])->name('badges.update');
+    Route::delete('/badges/{badge}', [AdminBadgeController::class, 'destroy'])->name('badges.destroy');
+
+    // FR-ADMIN-03 Moderasi Forum
+    Route::get('/forum', [AdminForumController::class, 'index'])->name('forum.index');
+    Route::delete('/forum/questions/{question}', [AdminForumController::class, 'destroyQuestion'])->name('forum.questions.destroy');
+    Route::delete('/forum/answers/{answer}', [AdminForumController::class, 'destroyAnswer'])->name('forum.answers.destroy');
+
+    // FR-ADMIN-04 Kelola Pengguna
+    Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
+    Route::patch('/users/{user}', [AdminUserController::class, 'update'])->name('users.update');
 });
 
 // Rute Autentikasi (Register, Login, Logout, dll.)
