@@ -38,4 +38,12 @@ class User extends Authenticatable
     {
         return $this->role === 'admin';
     }
+
+    /**
+     * Sesi terminal milik pengguna (SPEC Bagian 8.3).
+     */
+    public function terminalSessions(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(TerminalSession::class);
+    }
 }

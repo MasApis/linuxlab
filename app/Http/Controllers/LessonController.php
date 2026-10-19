@@ -62,13 +62,31 @@ class LessonController extends Controller
     }
 
     /**
-     * Halaman placeholder praktik terminal pelajaran (FR-MOD-02 / Fase 2).
-     * Terminal interaktif nyata dan isolasi container akan diaktifkan pada Fase 3 & Fase 5.
+     * Halaman praktik terminal interaktif pelajaran (FR-MOD-02, FR-TERM-01 s.d. 05).
      */
     public function practice(Lesson $lesson): Response
     {
         $module = $lesson->module;
         abort_unless($module && $module->is_published, 404);
+
+        /** @var \App\Models\TerminalSession|null $activeSession */
+        $activeSession = \App\Models\TerminalSession::query()
+            ->where('user_id', \Illuminate\Support\Facades\Auth::id())
+            ->active()
+            ->first();
+
+        $activeSessionData = null;
+        if ($activeSession) {
+            $now = \Carbon\Carbon::now();
+            $activeSessionData = [
+                'id' => $activeSession->id,
+                'status' => $activeSession->status,
+                'expires_at' => $activeSession->expires_at->toIso8601String(),
+                'remaining_seconds' => max(0, $now->diffInSeconds($activeSession->expires_at, false)),
+                'ws_token' => $activeSession->ws_token,
+                'ws_port' => (int) config('terminal.ws_port', 3001),
+            ];
+        }
 
         return Inertia::render('Lessons/Practice', [
             'module' => [
@@ -82,6 +100,7 @@ class LessonController extends Controller
                 'slug' => $lesson->slug,
                 'order' => $lesson->order,
             ],
+            'initialSession' => $activeSessionData,
         ]);
     }
 }

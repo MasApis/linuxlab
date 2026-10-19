@@ -57,10 +57,19 @@ Route::middleware('auth')->group(function () {
     Route::get('/modules/{module}/lessons/{lesson}', [LessonController::class, 'show'])->name('lessons.show');
     Route::get('/lessons/{lesson}/practice', [LessonController::class, 'practice'])->name('lessons.practice');
 
+    // FR-TERM-01, FR-TERM-04, SEC-TERM-09 Sesi Terminal
+    Route::post('/terminal/sessions', [\App\Http\Controllers\TerminalSessionController::class, 'store'])->name('terminal.sessions.store');
+    Route::get('/terminal/sessions/{session}', [\App\Http\Controllers\TerminalSessionController::class, 'show'])->name('terminal.sessions.show');
+    Route::delete('/terminal/sessions/{session}', [\App\Http\Controllers\TerminalSessionController::class, 'destroy'])->name('terminal.sessions.destroy');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+// Endpoint internal untuk validasi token oleh daemon WebSocket Gateway lokal (SEC-TERM-01)
+Route::get('/internal/terminal/verify', [\App\Http\Controllers\TerminalSessionController::class, 'verifyInternal'])->name('internal.terminal.verify');
+
 
 // 9.3 Rute Administrator (awalan /admin, middleware auth + admin)
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
