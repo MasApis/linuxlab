@@ -15,6 +15,9 @@ import url from 'url';
 const PORT = parseInt(process.env.TERMINAL_WS_PORT || '3001', 10);
 const HOST = process.env.TERMINAL_WS_HOST || '0.0.0.0';
 const APP_URL = process.env.APP_INTERNAL_URL || process.env.APP_URL || 'http://127.0.0.1:8000';
+const GATEWAY_SECRET = process.env.TERMINAL_GATEWAY_SECRET || '';
+// Hanya karakter aman untuk nama/ID container Docker
+const SAFE_CONTAINER_ID = /^[a-zA-Z0-9][a-zA-Z0-9_.-]+$/;
 
 const server = http.createServer((req, res) => {
     // Health check endpoint untuk backend
@@ -51,15 +54,15 @@ server.on('upgrade', async (request, socket, head) => {
         // Validasi token sesi ke backend Laravel internal (gunakan 127.0.0.1 untuk keandalan IPv4)
         const baseAppUrl = APP_URL.replace('localhost', '127.0.0.1');
         const verifyUrl = `${baseAppUrl}/internal/terminal/verify?token=${encodeURIComponent(token)}`;
-        const response = await fetch(verifyUrl, {
-            headers: {
-                'Accept': 'application/json',
-            },
-        });
+        const headers = { 'Accept': 'application/json' };
+        if (GATEWAY_SECRET) {
+            headers['X-Gateway-Secret'] = GATEWAY_SECRET;
+        }
+        const response = await fetch(verifyUrl, { headers });
 
 
         if (!response.ok) {
-            console.warn(`[Gateway] Token sesi tidak valid: ${token}`);
+            console.warn('[Gateway] Token sesi tidak valid (ditolak backend).');
             socket.write('HTTP/1.1 403 Forbidden\r\n\r\n');
             socket.destroy();
             return;
@@ -68,6 +71,14 @@ server.on('upgrade', async (request, socket, head) => {
         const sessionData = await response.json();
 
         if (!sessionData.valid || !sessionData.container_id) {
+            socket.write('HTTP/1.1 403 Forbidden\r\n\r\n');
+            socket.destroy();
+            return;
+        }
+
+        // Tolak ID container yang tidak sesuai pola aman sebelum dipakai ke shell
+        if (!SAFE_CONTAINER_ID.test(sessionData.container_id)) {
+            console.warn('[Gateway] container_id tidak valid, koneksi ditolak.');
             socket.write('HTTP/1.1 403 Forbidden\r\n\r\n');
             socket.destroy();
             return;

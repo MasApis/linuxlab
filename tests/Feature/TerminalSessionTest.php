@@ -16,6 +16,7 @@ beforeEach(function () {
         'terminal.memory_limit' => '256m',
         'terminal.session_ttl' => 30,
         'terminal.max_sessions' => 3,
+        'terminal.gateway_secret' => null,
     ]);
 });
 
@@ -202,4 +203,30 @@ test('verifikasi internal token untuk gateway hanya mengizinkan localhost (SEC-T
     $this->withServerVariables(['REMOTE_ADDR' => '192.168.1.50'])
         ->getJson(route('internal.terminal.verify', ['token' => $session->ws_token]))
         ->assertStatus(403);
+});
+
+test('verifikasi internal menolak request tanpa secret gateway yang benar (SEC-TERM-01)', function () {
+    config(['terminal.gateway_secret' => 'rahasia-gateway-uji']);
+
+    $user = User::factory()->create();
+    $terminalService = app(TerminalService::class);
+    $session = $terminalService->createSession($user);
+
+    $params = ['token' => $session->ws_token];
+
+    // Tanpa header secret -> 403 walau dari localhost
+    $this->withServerVariables(['REMOTE_ADDR' => '127.0.0.1'])
+        ->getJson(route('internal.terminal.verify', $params), ['X-Gateway-Secret' => ''])
+        ->assertStatus(403);
+
+    // Secret salah -> 403
+    $this->withServerVariables(['REMOTE_ADDR' => '127.0.0.1'])
+        ->getJson(route('internal.terminal.verify', $params), ['X-Gateway-Secret' => 'salah'])
+        ->assertStatus(403);
+
+    // Secret benar -> 200
+    $this->withServerVariables(['REMOTE_ADDR' => '127.0.0.1'])
+        ->getJson(route('internal.terminal.verify', $params), ['X-Gateway-Secret' => 'rahasia-gateway-uji'])
+        ->assertStatus(200)
+        ->assertJson(['valid' => true, 'session_id' => $session->id]);
 });

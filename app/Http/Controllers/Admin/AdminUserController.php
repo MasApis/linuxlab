@@ -80,7 +80,8 @@ class AdminUserController extends Controller
             'role.in' => 'Peran pengguna harus user atau admin.',
         ]);
 
-        $user->update($validated);
+        // role/is_active di luar $fillable (anti mass-assignment) → tulis eksplisit
+        $user->forceFill($validated)->save();
 
         $actionText = isset($validated['is_active'])
             ? ($user->is_active ? 'diaktifkan' : 'dinonaktifkan')

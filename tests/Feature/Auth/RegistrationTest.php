@@ -101,3 +101,21 @@ test('pendaftaran dengan konfirmasi password yang tidak cocok ditolak', function
     $response->assertSessionHasErrors('password');
     expect(session('errors')->get('password')[0])->toBe('Konfirmasi password tidak cocok.');
 });
+
+test('pendaftaran tidak dapat menyuntik role admin lewat mass-assignment', function () {
+    $response = $this->post('/register', [
+        'name' => 'Penyusup',
+        'username' => 'penyusup_x',
+        'email' => 'penyusup@example.com',
+        'password' => 'rahasia123',
+        'password_confirmation' => 'rahasia123',
+        'role' => 'admin',
+        'is_active' => true,
+    ]);
+
+    $response->assertRedirect('/login');
+
+    $user = User::where('username', 'penyusup_x')->first();
+    expect($user)->not->toBeNull();
+    expect($user->role)->toBe('user');
+});

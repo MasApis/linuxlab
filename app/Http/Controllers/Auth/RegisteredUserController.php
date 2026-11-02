@@ -61,7 +61,7 @@ class RegisteredUserController extends Controller
             'password.confirmed' => 'Konfirmasi password tidak cocok.',
         ]);
 
-        $user = User::create([
+        $user = User::forceCreate([
             'name' => $request->name,
             'username' => $request->username,
             'email' => $request->email,

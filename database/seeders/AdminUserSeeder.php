@@ -32,7 +32,8 @@ class AdminUserSeeder extends Seeder
         $username = env('ADMIN_USERNAME', 'admin');
         $name = env('ADMIN_NAME', 'Administrator LinuxLab');
 
-        User::updateOrCreate(
+        // role/is_active di luar $fillable (anti mass-assignment) → tulis unguarded
+        User::unguarded(fn () => User::updateOrCreate(
             ['email' => $email],
             [
                 'name' => $name,
@@ -41,7 +42,7 @@ class AdminUserSeeder extends Seeder
                 'role' => 'admin',
                 'is_active' => true,
             ]
-        );
+        ));
 
         if ($this->command) {
             $this->command->info("✓ Akun administrator ({$username} / {$email}) berhasil disiapkan.");

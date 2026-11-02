@@ -114,6 +114,12 @@ class TerminalSessionController extends Controller
             abort(403, 'Akses hanya diizinkan dari internal localhost.');
         }
 
+        // Jika secret gateway dikonfigurasi, wajib cocok (lapis kedua selain cek IP)
+        $secret = (string) config('terminal.gateway_secret', '');
+        if ($secret !== '' && ! hash_equals($secret, (string) $request->header('X-Gateway-Secret'))) {
+            abort(403, 'Kredensial gateway internal tidak valid.');
+        }
+
         $token = (string) $request->query('token');
         if (empty($token)) {
             return response()->json(['valid' => false, 'message' => 'Token wajib disertakan.'], 400);

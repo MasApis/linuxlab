@@ -60,6 +60,7 @@ class TerminalService
         // - Batas Memori: -m (SEC-TERM-03)
         // - Batas Proses: --pids-limit (SEC-TERM-03)
         // - Tanpa Akses Jaringan Luar: --network none (SEC-TERM-04)
+        // - Kurangi kapabilitas kernel + cegah privilege escalation (hardening)
         // - Direktori Kerja: -w /home/student
         $cmd = [
             'docker', 'run', '-d',
@@ -68,6 +69,8 @@ class TerminalService
             '-m', $memoryLimit,
             '--pids-limit', $pidsLimit,
             '--network', 'none',
+            '--cap-drop', 'ALL',
+            '--security-opt', 'no-new-privileges:true',
             '--user', 'student',
             '-w', '/home/student',
             $image,

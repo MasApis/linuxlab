@@ -67,12 +67,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/modules/{module}/lessons/{lesson}', [LessonController::class, 'show'])->name('lessons.show');
     Route::get('/lessons/{lesson}/practice', [LessonController::class, 'practice'])->name('lessons.practice');
 
-    // FR-EX-01 s.d. FR-EX-03 Penilaian Latihan dan Hint Bertahap
-    Route::post('/exercises/{exercise}/check', [\App\Http\Controllers\ExerciseController::class, 'check'])->name('exercises.check');
+    // FR-EX-01 s.d. FR-EX-03 Penilaian Latihan dan Hint Bertahap (throttle cegah spam penilaian)
+    Route::post('/exercises/{exercise}/check', [\App\Http\Controllers\ExerciseController::class, 'check'])->middleware('throttle:60,1')->name('exercises.check');
     Route::post('/exercises/{exercise}/hints', [\App\Http\Controllers\ExerciseController::class, 'hint'])->name('exercises.hints');
 
-    // FR-TERM-01, FR-TERM-04, SEC-TERM-09 Sesi Terminal
-    Route::post('/terminal/sessions', [\App\Http\Controllers\TerminalSessionController::class, 'store'])->name('terminal.sessions.store');
+    // FR-TERM-01, FR-TERM-04, SEC-TERM-09 Sesi Terminal (throttle cegah spam pembuatan container)
+    Route::post('/terminal/sessions', [\App\Http\Controllers\TerminalSessionController::class, 'store'])->middleware('throttle:10,1')->name('terminal.sessions.store');
     Route::get('/terminal/sessions/{session}', [\App\Http\Controllers\TerminalSessionController::class, 'show'])->name('terminal.sessions.show');
     Route::delete('/terminal/sessions/{session}', [\App\Http\Controllers\TerminalSessionController::class, 'destroy'])->name('terminal.sessions.destroy');
 

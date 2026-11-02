@@ -20,4 +20,8 @@ return [
     'pids_limit' => (int) env('TERMINAL_PIDS_LIMIT', 64),
 
     'ws_port' => (int) env('TERMINAL_WS_PORT', 3001),
+
+    // Secret bersama gateway WebSocket internal (SEC-TERM-01).
+    // Kosong = hanya cek IP loopback (mode pengembangan).
+    'gateway_secret' => env('TERMINAL_GATEWAY_SECRET'),
 ];

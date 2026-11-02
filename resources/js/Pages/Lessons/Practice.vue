@@ -329,10 +329,19 @@ const goToNextExercise = () => {
     }
 };
 
-// Helper format teks instruksi dengan tag code sederhana
+// Helper format teks instruksi dengan tag code sederhana (escape dulu agar aman dari XSS)
+const escapeHtml = (str: string) =>
+    str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+
 const formatInstruction = (text: string) => {
     if (!text) return '';
-    return text.replace(/`([^`]+)`/g, '<code class="px-1.5 py-0.5 rounded bg-surface-card text-brand-primary-light font-mono text-xs border border-border/70 font-semibold">$1</code>');
+    const escaped = escapeHtml(text);
+    return escaped.replace(/`([^`]+)`/g, '<code class="px-1.5 py-0.5 rounded bg-surface-card text-brand-primary-light font-mono text-xs border border-border/70 font-semibold">$1</code>');
 };
 
 onMounted(() => {
