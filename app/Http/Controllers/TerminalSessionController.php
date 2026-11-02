@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Exercise;
 use App\Models\TerminalSession;
 use App\Services\TerminalService;
 use Carbon\Carbon;
@@ -22,8 +23,17 @@ class TerminalSessionController extends Controller
     public function store(Request $request): JsonResponse
     {
         $validated = $request->validate([
-            'exercise_id' => ['nullable', 'integer'],
+            'exercise_id' => ['nullable', 'integer', 'exists:exercises,id'],
+        ], [
+            'exercise_id.exists' => 'Latihan yang dipilih tidak valid.',
         ]);
+
+        // Sesi hanya boleh terikat latihan yang modulnya published (konsisten dengan halaman praktik)
+        if (! empty($validated['exercise_id'])) {
+            $exercise = Exercise::with('lesson.module')->find($validated['exercise_id']);
+            $module = $exercise?->lesson?->module;
+            abort_unless($module && $module->is_published, 404);
+        }
 
         /** @var \App\Models\User $user */
         $user = Auth::user();

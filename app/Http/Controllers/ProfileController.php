@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Services\TerminalService;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -43,13 +44,19 @@ class ProfileController extends Controller
     /**
      * Delete the user's account.
      */
-    public function destroy(Request $request): RedirectResponse
+    public function destroy(Request $request, TerminalService $terminalService): RedirectResponse
     {
         $request->validate([
             'password' => ['required', 'current_password'],
         ]);
 
         $user = $request->user();
+
+        // Hancurkan container terminal milik user dulu; baris sesi ikut terhapus via cascade
+        // sehingga cleanup kedaluwarsa tak lagi bisa menjangkau container yatim.
+        foreach ($user->terminalSessions()->where('status', 'active')->get() as $session) {
+            $terminalService->destroySession($session, 'terminated');
+        }
 
         Auth::logout();
 

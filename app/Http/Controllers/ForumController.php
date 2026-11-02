@@ -118,6 +118,7 @@ class ForumController extends Controller
     {
         $lesson = $question->lesson;
         $module = $lesson->module;
+        abort_unless($module && $module->is_published, 404);
         $currentUser = Auth::user();
 
         // Jawaban: jawaban terbaik di posisi teratas, lalu upvote terbanyak (FR-FORUM-05)
@@ -190,6 +191,9 @@ class ForumController extends Controller
      */
     public function storeAnswer(Request $request, Question $question): RedirectResponse
     {
+        $module = $question->lesson?->module;
+        abort_unless($module && $module->is_published, 404);
+
         $validated = $request->validate([
             'body' => ['required', 'string', 'min:5'],
         ], [
@@ -215,6 +219,9 @@ class ForumController extends Controller
      */
     public function voteAnswer(Request $request, Answer $answer): RedirectResponse
     {
+        $module = $answer->question?->lesson?->module;
+        abort_unless($module && $module->is_published, 404);
+
         /** @var \App\Models\User $user */
         $user = Auth::user();
 
@@ -244,6 +251,9 @@ class ForumController extends Controller
         /** @var \App\Models\User $user */
         $user = Auth::user();
         $question = $answer->question;
+
+        $module = $question?->lesson?->module;
+        abort_unless($module && $module->is_published, 404);
 
         // Hanya penanya yang dapat menandai jawaban terbaik (FR-FORUM-04)
         if ($question->user_id !== $user->id) {

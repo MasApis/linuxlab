@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\TerminalSession;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use RuntimeException;
@@ -19,87 +20,94 @@ class TerminalService
      */
     public function createSession(User $user, ?int $exerciseId = null): TerminalSession
     {
-        // 1. Bersihkan sesi kedaluwarsa terlebih dahulu agar kapasitas kembali akurat
-        $this->cleanExpiredSessions();
+        // Kunci baris user agar pembuatan sesi konkuren terserialisasi (FR-TERM-01:
+        // satu pengguna hanya boleh memiliki satu sesi aktif). Cek kuota + insert
+        // berjalan dalam transaksi yang sama sehingga tidak bisa disalip.
+        return DB::transaction(function () use ($user, $exerciseId) {
+            $user = User::where('id', $user->id)->lockForUpdate()->firstOrFail();
 
-        // 2. Periksa batas jumlah sesi aktif bersamaan (SEC-TERM-08)
-        $maxSessions = (int) config('terminal.max_sessions', 5);
-        $activeSessionsCount = TerminalSession::query()->active()->count();
+            // 1. Bersihkan sesi kedaluwarsa terlebih dahulu agar kapasitas kembali akurat
+            $this->cleanExpiredSessions();
 
-        // Ambil sesi aktif user saat ini jika ada
-        $existingSession = TerminalSession::query()
-            ->where('user_id', $user->id)
-            ->active()
-            ->first();
+            // 2. Periksa batas jumlah sesi aktif bersamaan (SEC-TERM-08)
+            $maxSessions = (int) config('terminal.max_sessions', 5);
+            $activeSessionsCount = TerminalSession::query()->active()->count();
 
-        // Jika user belum punya sesi aktif dan server sudah mencapai kuota maksimal
-        if (! $existingSession && $activeSessionsCount >= $maxSessions) {
-            throw new RuntimeException('Server praktik sedang penuh, coba lagi sesaat lagi.');
-        }
+            // Ambil sesi aktif user saat ini jika ada
+            $existingSession = TerminalSession::query()
+                ->where('user_id', $user->id)
+                ->active()
+                ->first();
 
-        // 3. Satu pengguna hanya boleh memiliki satu sesi aktif (FR-TERM-01, D-03)
-        // Memulai sesi baru otomatis mengakhiri sesi lama
-        if ($existingSession) {
-            $this->destroySession($existingSession, 'terminated');
-        }
+            // Jika user belum punya sesi aktif dan server sudah mencapai kuota maksimal
+            if (! $existingSession && $activeSessionsCount >= $maxSessions) {
+                throw new RuntimeException('Server praktik sedang penuh, coba lagi sesaat lagi.');
+            }
 
-        // 4. Siapkan konfigurasi container terisolasi (SEC-TERM-02, SEC-TERM-03, SEC-TERM-04)
-        $image = (string) config('terminal.image', 'linuxlab-terminal:latest');
-        $cpuLimit = (string) config('terminal.cpu_limit', '0.5');
-        $memoryLimit = (string) config('terminal.memory_limit', '256m');
-        $pidsLimit = (string) config('terminal.pids_limit', 64);
-        $ttlMinutes = (int) config('terminal.session_ttl', 30);
+            // 3. Satu pengguna hanya boleh memiliki satu sesi aktif (FR-TERM-01, D-03)
+            // Memulai sesi baru otomatis mengakhiri sesi lama
+            if ($existingSession) {
+                $this->destroySession($existingSession, 'terminated');
+            }
 
-        $uuid = Str::uuid()->toString();
-        $containerName = "linuxlab-session-{$user->id}-{$uuid}";
-        $wsToken = Str::random(64);
+            // 4. Siapkan konfigurasi container terisolasi (SEC-TERM-02, SEC-TERM-03, SEC-TERM-04)
+            $image = (string) config('terminal.image', 'linuxlab-terminal:latest');
+            $cpuLimit = (string) config('terminal.cpu_limit', '0.5');
+            $memoryLimit = (string) config('terminal.memory_limit', '256m');
+            $pidsLimit = (string) config('terminal.pids_limit', 64);
+            $ttlMinutes = (int) config('terminal.session_ttl', 30);
 
-        // Perintah pembuatan container terisolasi:
-        // - Non-root: --user student (SEC-TERM-03)
-        // - Batas CPU: --cpus (SEC-TERM-03)
-        // - Batas Memori: -m (SEC-TERM-03)
-        // - Batas Proses: --pids-limit (SEC-TERM-03)
-        // - Tanpa Akses Jaringan Luar: --network none (SEC-TERM-04)
-        // - Kurangi kapabilitas kernel + cegah privilege escalation (hardening)
-        // - Direktori Kerja: -w /home/student
-        $cmd = [
-            'docker', 'run', '-d',
-            '--name', $containerName,
-            '--cpus', $cpuLimit,
-            '-m', $memoryLimit,
-            '--pids-limit', $pidsLimit,
-            '--network', 'none',
-            '--cap-drop', 'ALL',
-            '--security-opt', 'no-new-privileges:true',
-            '--user', 'student',
-            '-w', '/home/student',
-            $image,
-            'sleep', 'infinity',
-        ];
+            $uuid = Str::uuid()->toString();
+            $containerName = "linuxlab-session-{$user->id}-{$uuid}";
+            $wsToken = Str::random(64);
 
-        $process = new Process($cmd);
-        $process->setTimeout(30);
-        $process->run();
+            // Perintah pembuatan container terisolasi:
+            // - Non-root: --user student (SEC-TERM-03)
+            // - Batas CPU: --cpus (SEC-TERM-03)
+            // - Batas Memori: -m (SEC-TERM-03)
+            // - Batas Proses: --pids-limit (SEC-TERM-03)
+            // - Tanpa Akses Jaringan Luar: --network none (SEC-TERM-04)
+            // - Kurangi kapabilitas kernel + cegah privilege escalation (hardening)
+            // - Direktori Kerja: -w /home/student
+            $cmd = [
+                'docker', 'run', '-d',
+                '--name', $containerName,
+                '--cpus', $cpuLimit,
+                '-m', $memoryLimit,
+                '--pids-limit', $pidsLimit,
+                '--network', 'none',
+                '--cap-drop', 'ALL',
+                '--security-opt', 'no-new-privileges:true',
+                '--user', 'student',
+                '-w', '/home/student',
+                $image,
+                'sleep', 'infinity',
+            ];
 
-        if (! $process->isSuccessful()) {
-            Log::error('Gagal membuat container terminal: '.$process->getErrorOutput());
-            throw new RuntimeException('Gagal menyiapkan lingkungan terminal praktik. Silakan hubungi pengelola.');
-        }
+            $process = new Process($cmd);
+            $process->setTimeout(30);
+            $process->run();
 
-        $containerId = trim($process->getOutput());
-        if (empty($containerId)) {
-            $containerId = $containerName;
-        }
+            if (! $process->isSuccessful()) {
+                Log::error('Gagal membuat container terminal: '.$process->getErrorOutput());
+                throw new RuntimeException('Gagal menyiapkan lingkungan terminal praktik. Silakan hubungi pengelola.');
+            }
 
-        // 5. Catat sesi pada tabel terminal_sessions (FR-TERM-01, SPEC Bagian 8.2)
-        return TerminalSession::create([
-            'user_id' => $user->id,
-            'exercise_id' => $exerciseId,
-            'container_id' => $containerId,
-            'status' => 'active',
-            'ws_token' => $wsToken,
-            'expires_at' => Carbon::now()->addMinutes($ttlMinutes),
-        ]);
+            $containerId = trim($process->getOutput());
+            if (empty($containerId)) {
+                $containerId = $containerName;
+            }
+
+            // 5. Catat sesi pada tabel terminal_sessions (FR-TERM-01, SPEC Bagian 8.2)
+            return TerminalSession::create([
+                'user_id' => $user->id,
+                'exercise_id' => $exerciseId,
+                'container_id' => $containerId,
+                'status' => 'active',
+                'ws_token' => $wsToken,
+                'expires_at' => Carbon::now()->addMinutes($ttlMinutes),
+                ]);
+        });
     }
 
     /**

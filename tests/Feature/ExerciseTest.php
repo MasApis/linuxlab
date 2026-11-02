@@ -604,3 +604,14 @@ test('tidak dapat menilai sesi milik pengguna lain (VAL-01)', function () {
         ->toThrow(\Illuminate\Auth\Access\AuthorizationException::class);
 });
 
+
+test('check dan hint latihan modul draf ditolak 404 (gate is_published)', function () {
+    $user = User::factory()->create();
+    $draftModule = \App\Models\Module::create(['title' => 'Draf Ex', 'slug' => 'modul-draf-ex', 'description' => 'd', 'order' => 98, 'is_published' => false]);
+    $draftLesson = \App\Models\Lesson::create(['module_id' => $draftModule->id, 'title' => 'P', 'slug' => 'p-draf-ex', 'content' => 'c', 'example_commands' => 'e', 'cheat_sheet' => 's', 'order' => 1]);
+    $exercise = Exercise::create(['lesson_id' => $draftLesson->id, 'title' => 'Lat draf', 'instruction' => 'I', 'validation_type' => 'system_state', 'validation_config' => ['checks' => []], 'points' => 10, 'order' => 1]);
+
+    $this->actingAs($user)->postJson(route('exercises.hints', $exercise))->assertStatus(404);
+    $this->actingAs($user)->postJson(route('exercises.check', $exercise))->assertStatus(404);
+    expect(\App\Models\ExerciseAttempt::where('user_id', $user->id)->exists())->toBeFalse();
+});

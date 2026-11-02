@@ -21,6 +21,10 @@ class ExerciseController extends Controller
      */
     public function check(Request $request, Exercise $exercise): JsonResponse
     {
+        // Latihan modul draf tidak dapat dinilai (konsisten dengan halaman praktik 404)
+        $module = $exercise->lesson?->module;
+        abort_unless($module && $module->is_published, 404);
+
         /** @var \App\Models\User $user */
         $user = Auth::user();
 
@@ -51,6 +55,10 @@ class ExerciseController extends Controller
      */
     public function hint(Request $request, Exercise $exercise): JsonResponse
     {
+        // Hint latihan modul draf tidak dapat dibuka (konsisten dengan halaman praktik 404)
+        $module = $exercise->lesson?->module;
+        abort_unless($module && $module->is_published, 404);
+
         /** @var \App\Models\User $user */
         $user = Auth::user();
 

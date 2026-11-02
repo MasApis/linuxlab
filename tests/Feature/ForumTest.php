@@ -414,3 +414,19 @@ test('membuat pertanyaan pertama memicu lencana first_question dan jawaban terba
     // otherUser mendapatkan lencana best_answer
     expect($this->otherUser->badges()->where('badges.id', $badgeBestAns->id)->exists())->toBeTrue();
 });
+
+test('forum modul draf tidak dapat dibuka, dijawab, divote, atau ditandai best (gate is_published)', function () {
+    $draftModule = Module::create(['title' => 'Draf', 'slug' => 'modul-draf-x', 'description' => 'd', 'order' => 99, 'is_published' => false]);
+    $draftLesson = Lesson::create(['module_id' => $draftModule->id, 'title' => 'P Draf', 'slug' => 'p-draf-x', 'content' => 'c', 'example_commands' => 'e', 'cheat_sheet' => 's', 'order' => 1]);
+    $question = Question::create(['user_id' => $this->user->id, 'lesson_id' => $draftLesson->id, 'title' => 'Tanya draf', 'body' => 'Isi draf.', 'is_resolved' => false]);
+    $answer = Answer::create(['question_id' => $question->id, 'user_id' => $this->otherUser->id, 'body' => 'Jawab draf.', 'is_best_answer' => false]);
+
+    $this->actingAs($this->otherUser);
+    $this->get(route('forum.show', $question))->assertStatus(404);
+    $this->post(route('forum.answers.store', $question), ['body' => 'X'])->assertStatus(404);
+    $this->post(route('answers.vote', $answer))->assertStatus(404);
+
+    $this->actingAs($this->user);
+    $this->post(route('answers.best', $answer))->assertStatus(404);
+    expect(Answer::where('body', 'X')->exists())->toBeFalse();
+});

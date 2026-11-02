@@ -11,11 +11,13 @@ import { WebSocketServer, WebSocket } from 'ws';
 import { spawn } from 'child_process';
 import http from 'http';
 import url from 'url';
+import { loadGatewaySecret } from './load-dotenv-secret.mjs';
 
 const PORT = parseInt(process.env.TERMINAL_WS_PORT || '3001', 10);
 const HOST = process.env.TERMINAL_WS_HOST || '0.0.0.0';
 const APP_URL = process.env.APP_INTERNAL_URL || process.env.APP_URL || 'http://127.0.0.1:8000';
-const GATEWAY_SECRET = process.env.TERMINAL_GATEWAY_SECRET || '';
+// Dibaca dari .env proyek otomatis bila env proses kosong
+const GATEWAY_SECRET = loadGatewaySecret();
 // Hanya karakter aman untuk nama/ID container Docker
 const SAFE_CONTAINER_ID = /^[a-zA-Z0-9][a-zA-Z0-9_.-]+$/;
 

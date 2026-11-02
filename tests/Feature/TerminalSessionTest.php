@@ -1,5 +1,8 @@
 <?php
 
+use App\Models\Exercise;
+use App\Models\Lesson;
+use App\Models\Module;
 use App\Models\TerminalSession;
 use App\Models\User;
 use App\Services\TerminalService;
@@ -229,4 +232,33 @@ test('verifikasi internal menolak request tanpa secret gateway yang benar (SEC-T
         ->getJson(route('internal.terminal.verify', $params), ['X-Gateway-Secret' => 'rahasia-gateway-uji'])
         ->assertStatus(200)
         ->assertJson(['valid' => true, 'session_id' => $session->id]);
+});
+
+test('pembuatan sesi menolak exercise_id yang tidak ada (422) dan latihan draf (404)', function () {
+    $user = User::factory()->create();
+
+    $this->actingAs($user)->postJson(route('terminal.sessions.store'), ['exercise_id' => 999999])
+        ->assertStatus(422);
+    expect(TerminalSession::where('exercise_id', 999999)->exists())->toBeFalse();
+
+    $draftModule = Module::create(['title' => 'Draf S', 'slug' => 'modul-draf-s', 'description' => 'd', 'order' => 97, 'is_published' => false]);
+    $draftLesson = Lesson::create(['module_id' => $draftModule->id, 'title' => 'P', 'slug' => 'p-draf-s', 'content' => 'c', 'example_commands' => 'e', 'cheat_sheet' => 's', 'order' => 1]);
+    $draftExercise = Exercise::create(['lesson_id' => $draftLesson->id, 'title' => 'Lat', 'instruction' => 'I', 'validation_type' => 'system_state', 'validation_config' => ['checks' => []], 'points' => 10, 'order' => 1]);
+
+    $this->actingAs($user)->postJson(route('terminal.sessions.store'), ['exercise_id' => $draftExercise->id])
+        ->assertStatus(404);
+    expect(TerminalSession::where('exercise_id', $draftExercise->id)->exists())->toBeFalse();
+});
+
+test('hapus akun menghancurkan container terminal miliknya (tanpa container yatim)', function () {
+    $user = User::factory()->create();
+    $terminalService = app(TerminalService::class);
+    $session = $terminalService->createSession($user);
+    $containerId = $session->container_id;
+    expect($terminalService->isContainerRunning($containerId))->toBeTrue();
+
+    $this->actingAs($user)->delete('/profile', ['password' => 'password'])->assertRedirect('/');
+
+    expect(TerminalSession::where('user_id', $user->id)->count())->toBe(0);
+    expect($terminalService->isContainerRunning($containerId))->toBeFalse();
 });
