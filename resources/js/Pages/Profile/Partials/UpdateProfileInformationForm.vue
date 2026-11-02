@@ -20,7 +20,7 @@ const submit = () => {
 <template>
     <section>
         <header>
-            <h2 class="text-lg font-bold text-white tracking-tight">
+            <h2 class="font-display text-lg font-bold text-ink tracking-tight">
                 Informasi Profil
             </h2>
             <p class="mt-1 text-sm text-text-muted">

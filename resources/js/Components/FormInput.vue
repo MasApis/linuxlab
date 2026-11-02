@@ -46,7 +46,7 @@ const onInput = (event: Event) => {
         <label
             v-if="label"
             :for="inputId"
-            class="text-xs font-semibold uppercase tracking-wider text-text-muted flex items-center justify-between"
+            class="text-[13px] font-extrabold uppercase tracking-wider text-text-muted flex items-center justify-between"
         >
             <span>
                 {{ label }}
@@ -71,12 +71,12 @@ const onInput = (event: Event) => {
                 :disabled="disabled"
                 :required="required"
                 @input="onInput"
-                class="w-full rounded-input border bg-surface-card text-text-primary placeholder:text-text-dim transition-colors duration-150 focus:outline-none text-sm px-3.5 py-2.5 disabled:opacity-50 disabled:cursor-not-allowed"
+                class="w-full rounded-input border-2 bg-surface-card text-text-primary placeholder:text-text-dim transition-colors duration-150 focus:outline-none text-sm px-4 py-4 disabled:opacity-50 disabled:cursor-not-allowed"
                 :class="[
                     isMono ? 'font-mono' : 'font-sans',
                     error
-                        ? 'border-brand-danger focus:border-brand-danger focus:ring-1 focus:ring-brand-danger'
-                        : 'border-border focus:border-brand-primary focus:ring-1 focus:ring-brand-primary',
+                        ? 'border-brand-danger focus:border-brand-danger focus:ring-2 focus:ring-brand-danger/30'
+                        : 'border-border focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/30',
                     $slots.prefix ? 'pl-9' : '',
                     $slots.suffix ? 'pr-9' : '',
                 ]"

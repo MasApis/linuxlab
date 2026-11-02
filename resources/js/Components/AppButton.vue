@@ -21,33 +21,33 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const baseClasses =
-    'inline-flex items-center justify-center font-medium transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-surface-base disabled:opacity-50 disabled:cursor-not-allowed select-none rounded-button';
+    'inline-flex items-center justify-center font-display font-bold uppercase tracking-wide transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-brand-primary focus-visible:ring-offset-surface-base disabled:opacity-50 disabled:cursor-not-allowed disabled:active:translate-y-0 disabled:shadow-none select-none rounded-button border-2';
 
 const variantClasses = computed(() => {
     switch (props.variant) {
         case 'secondary':
-            return 'bg-surface-elevated text-text-primary border border-border hover:bg-surface-high hover:border-border-focus focus:ring-slate-400/30 active:bg-surface-highest';
+            return 'bg-surface-card text-text-muted border-border shadow-none hover:border-border-focus hover:text-text-primary active:bg-surface-high';
         case 'accent':
-            return 'bg-brand-secondary text-brand-secondary-dark font-semibold hover:bg-brand-secondary-hover focus:ring-brand-secondary/50 active:bg-brand-secondary-hover';
+            return 'bg-brand-tertiary text-white border-transparent shadow-[0_4px_0_0_#1899d6] hover:brightness-105 active:translate-y-[4px] active:shadow-none';
         case 'danger':
-            return 'bg-brand-danger text-white font-semibold hover:bg-brand-danger-hover focus:ring-brand-danger/50 active:bg-brand-danger-hover';
+            return 'bg-brand-danger text-white border-transparent shadow-[0_4px_0_0_#9e1f1f] hover:brightness-105 active:translate-y-[4px] active:shadow-none';
         case 'ghost':
-            return 'bg-transparent text-text-muted hover:text-text-primary hover:bg-surface-card focus:ring-slate-400/30 active:bg-surface-elevated';
+            return 'bg-transparent text-text-muted border-transparent shadow-none hover:text-text-primary hover:bg-surface-high active:bg-surface-highest';
         case 'primary':
         default:
-            return 'bg-brand-primary text-brand-primary-dark font-semibold hover:bg-brand-primary-hover focus:ring-brand-primary/50 active:bg-brand-primary-hover';
+            return 'bg-brand-primary text-white border-transparent shadow-[0_4px_0_0_#245700] hover:brightness-125 active:translate-y-[4px] active:shadow-none';
     }
 });
 
 const sizeClasses = computed(() => {
     switch (props.size) {
         case 'sm':
-            return 'px-3 py-1.5 text-xs gap-1.5';
+            return 'min-h-10 px-4 py-1.5 text-xs gap-1.5';
         case 'lg':
-            return 'px-6 py-3 text-base gap-2.5';
+            return 'min-h-14 px-8 py-3 text-base gap-2.5';
         case 'md':
         default:
-            return 'px-4 py-2 text-sm gap-2';
+            return 'min-h-12 px-6 py-2 text-sm gap-2';
     }
 });
 </script>

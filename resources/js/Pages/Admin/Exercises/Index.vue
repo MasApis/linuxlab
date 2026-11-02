@@ -304,7 +304,7 @@ const deleteHint = (hint: HintItem) => {
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-surface-card p-6 rounded-card border border-border shadow-sm">
                 <div>
                     <div class="flex items-center gap-2 mb-1">
-                        <svg class="w-6 h-6 text-brand-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg class="w-6 h-6 text-brand-primary-light" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
                         <h1 class="text-xl sm:text-2xl font-bold text-text-primary tracking-tight">
@@ -320,7 +320,7 @@ const deleteHint = (hint: HintItem) => {
                     <button
                         type="button"
                         @click="openCreateModal"
-                        class="px-4 py-2.5 text-sm font-bold rounded-button bg-brand-primary text-brand-primary-dark hover:bg-brand-primary-hover transition-all shadow-sm inline-flex items-center gap-2 active:scale-95"
+                        class="px-4 py-2.5 text-sm font-bold rounded-button bg-brand-primary text-white hover:bg-brand-primary-hover transition-all shadow-sm inline-flex items-center gap-2 active:scale-95"
                     >
                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
@@ -333,7 +333,7 @@ const deleteHint = (hint: HintItem) => {
             <!-- Bento Stats Cepat Latihan -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div class="bg-surface-card rounded-card p-4 border border-border flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-lg bg-surface-elevated border border-border flex items-center justify-center text-brand-primary">
+                    <div class="w-10 h-10 rounded-lg bg-surface-elevated border border-border flex items-center justify-center text-brand-primary-light">
                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
@@ -345,7 +345,7 @@ const deleteHint = (hint: HintItem) => {
                 </div>
 
                 <div class="bg-surface-card rounded-card p-4 border border-border flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-lg bg-surface-elevated border border-border flex items-center justify-center text-brand-secondary">
+                    <div class="w-10 h-10 rounded-lg bg-surface-elevated border border-border flex items-center justify-center text-brand-secondary-light">
                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
@@ -359,7 +359,7 @@ const deleteHint = (hint: HintItem) => {
                 </div>
 
                 <div class="bg-surface-card rounded-card p-4 border border-border flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-lg bg-surface-elevated border border-border flex items-center justify-center text-brand-tertiary">
+                    <div class="w-10 h-10 rounded-lg bg-surface-elevated border border-border flex items-center justify-center text-brand-tertiary-light">
                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" />
                         </svg>
@@ -373,7 +373,7 @@ const deleteHint = (hint: HintItem) => {
                 </div>
 
                 <div class="bg-surface-card rounded-card p-4 border border-border flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-lg bg-surface-elevated border border-border flex items-center justify-center text-purple-400">
+                    <div class="w-10 h-10 rounded-lg bg-surface-elevated border border-border flex items-center justify-center text-purple-700">
                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                         </svg>
@@ -391,7 +391,11 @@ const deleteHint = (hint: HintItem) => {
             <div class="bg-surface-card rounded-card border border-border overflow-hidden">
                 <div class="p-4 border-b border-border flex flex-col md:flex-row gap-3 items-center justify-between bg-surface-card/60">
                     <div class="relative w-full md:w-80">
-                        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted text-xs font-mono">🔍</span>
+                        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-text-dim pointer-events-none">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                        </span>
                         <input
                             v-model="searchQuery"
                             type="text"
@@ -435,7 +439,7 @@ const deleteHint = (hint: HintItem) => {
                 <!-- Table Responsive Container -->
                 <div class="overflow-x-auto">
                     <table class="w-full text-left text-sm">
-                        <thead class="bg-surface-elevated/70 text-text-dim text-[11px] font-mono uppercase tracking-wider border-b border-border">
+                        <thead class="bg-surface-high text-text-dim text-[11px] font-mono uppercase tracking-wider border-b border-border">
                             <tr>
                                 <th class="py-3 px-4">KODE / URUTAN</th>
                                 <th class="py-3 px-4">JUDUL LATIHAN</th>
@@ -452,7 +456,7 @@ const deleteHint = (hint: HintItem) => {
                                 :key="ex.id"
                                 class="hover:bg-surface-elevated/40 transition-colors"
                             >
-                                <td class="py-3.5 px-4 font-mono text-brand-primary font-semibold text-xs">
+                                <td class="py-3.5 px-4 font-mono text-brand-primary-light font-semibold text-xs">
                                     EX-{{ String(ex.id).padStart(3, '0') }}
                                     <span class="text-text-muted font-normal ml-1">#{{ ex.order }}</span>
                                 </td>
@@ -468,22 +472,22 @@ const deleteHint = (hint: HintItem) => {
                                     <span
                                         class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-mono border"
                                         :class="{
-                                            'bg-brand-secondary/15 text-brand-secondary border-brand-secondary/30': ex.validation_type === 'system_state',
-                                            'bg-brand-tertiary/15 text-brand-tertiary border-brand-tertiary/30': ex.validation_type === 'output',
-                                            'bg-purple-400/15 text-purple-400 border-purple-400/30': ex.validation_type === 'combined',
+                                            'bg-brand-secondary/15 text-brand-secondary-light border-brand-secondary/30': ex.validation_type === 'system_state',
+                                            'bg-brand-tertiary/15 text-brand-tertiary-light border-brand-tertiary/30': ex.validation_type === 'output',
+                                            'bg-purple-400/15 text-purple-700 border-purple-400/30': ex.validation_type === 'combined',
                                         }"
                                     >
                                         {{ ex.validation_type }}
                                     </span>
                                 </td>
-                                <td class="py-3.5 px-4 font-mono text-xs text-brand-secondary font-bold">
+                                <td class="py-3.5 px-4 font-mono text-xs text-brand-secondary-light font-bold">
                                     +{{ ex.points }} XP
                                 </td>
                                 <td class="py-3.5 px-4 text-xs font-mono">
                                     <button
                                         type="button"
                                         @click="openHintsManager(ex)"
-                                        class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-surface-elevated hover:bg-surface-high border border-border text-brand-primary"
+                                        class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-surface-elevated hover:bg-surface-high border border-border text-brand-primary-light"
                                     >
                                         <span>💡 {{ ex.hints?.length ?? 0 }} Hint</span>
                                     </button>
@@ -493,7 +497,7 @@ const deleteHint = (hint: HintItem) => {
                                         <button
                                             type="button"
                                             @click="openHintsManager(ex)"
-                                            class="p-1.5 rounded hover:bg-surface-elevated text-brand-primary"
+                                            class="p-1.5 rounded hover:bg-surface-elevated text-brand-primary-light"
                                             title="Kelola Hint"
                                         >
                                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -513,7 +517,7 @@ const deleteHint = (hint: HintItem) => {
                                         <button
                                             type="button"
                                             @click="deleteExercise(ex)"
-                                            class="p-1.5 rounded hover:bg-surface-elevated text-brand-danger/70 hover:text-brand-danger"
+                                            class="p-1.5 rounded hover:bg-surface-elevated text-brand-danger-light/70 hover:text-brand-danger-light"
                                             title="Hapus Latihan"
                                         >
                                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -541,7 +545,7 @@ const deleteHint = (hint: HintItem) => {
                     <!-- Modal Header -->
                     <div class="flex items-center justify-between border-b border-border pb-4">
                         <div class="flex items-center gap-3">
-                            <div class="w-9 h-9 rounded-lg bg-surface-elevated border border-brand-primary/30 flex items-center justify-center text-brand-primary font-mono text-sm font-bold">
+                            <div class="w-9 h-9 rounded-lg bg-surface-elevated border border-brand-primary/30 flex items-center justify-center text-brand-primary-light font-mono text-sm font-bold">
                                 &gt;_
                             </div>
                             <div>
@@ -576,7 +580,7 @@ const deleteHint = (hint: HintItem) => {
                                     class="w-full bg-surface-elevated px-3 py-2 rounded-input border border-border text-sm text-text-primary focus:border-brand-primary outline-none"
                                     required
                                 />
-                                <div v-if="exerciseForm.errors.title" class="text-xs text-brand-danger mt-1">{{ exerciseForm.errors.title }}</div>
+                                <div v-if="exerciseForm.errors.title" class="text-xs text-brand-danger-light mt-1">{{ exerciseForm.errors.title }}</div>
                             </div>
 
                             <div>
@@ -590,7 +594,7 @@ const deleteHint = (hint: HintItem) => {
                                         {{ l.title }}
                                     </option>
                                 </select>
-                                <div v-if="exerciseForm.errors.lesson_id" class="text-xs text-brand-danger mt-1">{{ exerciseForm.errors.lesson_id }}</div>
+                                <div v-if="exerciseForm.errors.lesson_id" class="text-xs text-brand-danger-light mt-1">{{ exerciseForm.errors.lesson_id }}</div>
                             </div>
                         </div>
 
@@ -602,10 +606,10 @@ const deleteHint = (hint: HintItem) => {
                                     v-model.number="exerciseForm.points"
                                     type="number"
                                     min="1"
-                                    class="w-full bg-surface-elevated px-3 py-2 rounded-input border border-border text-sm font-mono text-brand-secondary font-bold focus:border-brand-primary outline-none"
+                                    class="w-full bg-surface-elevated px-3 py-2 rounded-input border border-border text-sm font-mono text-brand-secondary-light font-bold focus:border-brand-primary outline-none"
                                     required
                                 />
-                                <div v-if="exerciseForm.errors.points" class="text-xs text-brand-danger mt-1">{{ exerciseForm.errors.points }}</div>
+                                <div v-if="exerciseForm.errors.points" class="text-xs text-brand-danger-light mt-1">{{ exerciseForm.errors.points }}</div>
                             </div>
 
                             <div>
@@ -617,7 +621,7 @@ const deleteHint = (hint: HintItem) => {
                                     class="w-full bg-surface-elevated px-3 py-2 rounded-input border border-border text-sm font-mono text-text-primary focus:border-brand-primary outline-none"
                                     required
                                 />
-                                <div v-if="exerciseForm.errors.order" class="text-xs text-brand-danger mt-1">{{ exerciseForm.errors.order }}</div>
+                                <div v-if="exerciseForm.errors.order" class="text-xs text-brand-danger-light mt-1">{{ exerciseForm.errors.order }}</div>
                             </div>
                         </div>
 
@@ -631,7 +635,7 @@ const deleteHint = (hint: HintItem) => {
                                 class="w-full bg-surface-elevated px-3 py-2 rounded-input border border-border text-sm text-text-primary font-mono focus:border-brand-primary outline-none"
                                 required
                             ></textarea>
-                            <div v-if="exerciseForm.errors.instruction" class="text-xs text-brand-danger mt-1">{{ exerciseForm.errors.instruction }}</div>
+                            <div v-if="exerciseForm.errors.instruction" class="text-xs text-brand-danger-light mt-1">{{ exerciseForm.errors.instruction }}</div>
                         </div>
 
                         <!-- Tipe Validasi & Template Preset -->
@@ -643,21 +647,21 @@ const deleteHint = (hint: HintItem) => {
                                     <button
                                         type="button"
                                         @click="applyJsonTemplate('system_state')"
-                                        class="px-1.5 py-0.5 rounded bg-surface-elevated hover:bg-surface-high border border-border text-brand-secondary"
+                                        class="px-1.5 py-0.5 rounded bg-surface-elevated hover:bg-surface-high border border-border text-brand-secondary-light"
                                     >
                                         file_state
                                     </button>
                                     <button
                                         type="button"
                                         @click="applyJsonTemplate('output')"
-                                        class="px-1.5 py-0.5 rounded bg-surface-elevated hover:bg-surface-high border border-border text-brand-tertiary"
+                                        class="px-1.5 py-0.5 rounded bg-surface-elevated hover:bg-surface-high border border-border text-brand-tertiary-light"
                                     >
                                         output
                                     </button>
                                     <button
                                         type="button"
                                         @click="applyJsonTemplate('combined')"
-                                        class="px-1.5 py-0.5 rounded bg-surface-elevated hover:bg-surface-high border border-border text-purple-400"
+                                        class="px-1.5 py-0.5 rounded bg-surface-elevated hover:bg-surface-high border border-border text-purple-700"
                                     >
                                         combined
                                     </button>
@@ -666,14 +670,14 @@ const deleteHint = (hint: HintItem) => {
 
                             <select
                                 v-model="exerciseForm.validation_type"
-                                class="w-full bg-surface-elevated px-3 py-2 rounded-input border border-border text-sm font-semibold text-brand-primary focus:border-brand-primary outline-none"
+                                class="w-full bg-surface-elevated px-3 py-2 rounded-input border border-border text-sm font-semibold text-brand-primary-light focus:border-brand-primary outline-none"
                                 required
                             >
                                 <option value="system_state">system_state (Pemeriksaan Kondisi Filesystem / Permission)</option>
                                 <option value="output">output (Pemeriksaan Output Eksekusi Perintah)</option>
                                 <option value="combined">combined (Kombinasi Kondisi Filesystem & Output Perintah)</option>
                             </select>
-                            <div v-if="exerciseForm.errors.validation_type" class="text-xs text-brand-danger mt-1">{{ exerciseForm.errors.validation_type }}</div>
+                            <div v-if="exerciseForm.errors.validation_type" class="text-xs text-brand-danger-light mt-1">{{ exerciseForm.errors.validation_type }}</div>
                         </div>
 
                         <!-- Editor validation_config Terminal Style (JSON) -->
@@ -685,7 +689,7 @@ const deleteHint = (hint: HintItem) => {
                                 <div class="flex items-center gap-2">
                                     <span
                                         class="text-[11px] font-mono px-2 py-0.5 rounded font-semibold inline-flex items-center gap-1"
-                                        :class="jsonSyntaxStatus.valid ? 'bg-brand-primary/15 text-brand-primary border border-brand-primary/30' : 'bg-brand-danger/15 text-brand-danger border border-brand-danger/30'"
+                                        :class="jsonSyntaxStatus.valid ? 'bg-brand-primary/15 text-brand-primary-light border border-brand-primary/30' : 'bg-brand-danger/15 text-brand-danger-light border border-brand-danger/30'"
                                     >
                                         <span class="w-1.5 h-1.5 rounded-full" :class="jsonSyntaxStatus.valid ? 'bg-brand-primary' : 'bg-brand-danger'"></span>
                                         {{ jsonSyntaxStatus.valid ? 'Sintaks JSON Valid' : 'Format JSON Rusak' }}
@@ -716,14 +720,14 @@ const deleteHint = (hint: HintItem) => {
 
                             <!-- Syntax Error Feedback Warning -->
                             <div v-if="!jsonSyntaxStatus.valid" class="mt-2 p-2.5 rounded bg-brand-danger/10 border border-brand-danger/30 text-brand-danger-light text-xs font-mono flex items-center gap-2">
-                                <svg class="w-4 h-4 shrink-0 text-brand-danger" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <svg class="w-4 h-4 shrink-0 text-brand-danger-light" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                                 </svg>
                                 <span>Peringatan Format: {{ jsonSyntaxStatus.error }}</span>
                             </div>
 
                             <!-- Backend Validation Error (jika ditolak oleh server) -->
-                            <div v-if="exerciseForm.errors.validation_config" class="mt-2 p-2.5 rounded bg-brand-danger/15 border border-brand-danger text-brand-danger font-semibold text-xs font-mono">
+                            <div v-if="exerciseForm.errors.validation_config" class="mt-2 p-2.5 rounded bg-brand-danger/15 border border-brand-danger text-brand-danger-light font-semibold text-xs font-mono">
                                 {{ exerciseForm.errors.validation_config }}
                             </div>
 
@@ -770,7 +774,7 @@ const deleteHint = (hint: HintItem) => {
                                 </h3>
                             </div>
                             <p class="text-xs text-text-muted mt-0.5">
-                                Latihan: <strong class="text-brand-primary">{{ activeHintExercise.title }}</strong>
+                                Latihan: <strong class="text-brand-primary-light">{{ activeHintExercise.title }}</strong>
                             </p>
                         </div>
                         <button
@@ -810,7 +814,7 @@ const deleteHint = (hint: HintItem) => {
                                     class="w-full bg-surface-card px-3 py-2 rounded-input border border-border text-xs text-text-primary focus:border-brand-primary outline-none"
                                     required
                                 ></textarea>
-                                <div v-if="hintForm.errors.content" class="text-xs text-brand-danger mt-1">{{ hintForm.errors.content }}</div>
+                                <div v-if="hintForm.errors.content" class="text-xs text-brand-danger-light mt-1">{{ hintForm.errors.content }}</div>
                             </div>
 
                             <div>
@@ -822,7 +826,7 @@ const deleteHint = (hint: HintItem) => {
                                     class="w-full bg-surface-card px-3 py-2 rounded-input border border-border text-xs font-mono text-text-primary focus:border-brand-primary outline-none"
                                     required
                                 />
-                                <div v-if="hintForm.errors.order" class="text-xs text-brand-danger mt-1">{{ hintForm.errors.order }}</div>
+                                <div v-if="hintForm.errors.order" class="text-xs text-brand-danger-light mt-1">{{ hintForm.errors.order }}</div>
                             </div>
                         </div>
 
@@ -851,7 +855,7 @@ const deleteHint = (hint: HintItem) => {
                                 class="p-3 rounded-card bg-surface-elevated border border-border flex items-start justify-between gap-3 text-xs"
                             >
                                 <div class="flex items-start gap-2.5">
-                                    <span class="px-1.5 py-0.5 rounded bg-surface-card border border-border font-mono text-[11px] text-brand-primary font-bold">
+                                    <span class="px-1.5 py-0.5 rounded bg-surface-card border border-border font-mono text-[11px] text-brand-primary-light font-bold">
                                         #{{ hint.order }}
                                     </span>
                                     <p class="text-text-primary leading-relaxed">{{ hint.content }}</p>
@@ -871,7 +875,7 @@ const deleteHint = (hint: HintItem) => {
                                     <button
                                         type="button"
                                         @click="deleteHint(hint)"
-                                        class="p-1 rounded hover:bg-surface-card text-brand-danger/70 hover:text-brand-danger"
+                                        class="p-1 rounded hover:bg-surface-card text-brand-danger-light/70 hover:text-brand-danger-light"
                                         title="Hapus"
                                     >
                                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

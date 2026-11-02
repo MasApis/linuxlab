@@ -18,7 +18,7 @@ withDefaults(defineProps<Props>(), {
     <div
         class="rounded-card border border-border bg-surface-card transition-all duration-200"
         :class="{
-            'hover:border-border-focus hover:bg-surface-card-hover hover:shadow-lg hover:shadow-black/20': hoverable,
+            'hover:border-border-focus hover:bg-surface-card-hover hover:shadow-md hover:shadow-black/[0.06]': hoverable,
             'p-4': compact,
             'p-6': !compact,
         }"

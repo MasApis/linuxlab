@@ -18,7 +18,7 @@ defineProps<{
         <div class="py-8 max-w-4xl mx-auto space-y-6">
             <!-- Header Page -->
             <div>
-                <h1 class="text-2xl font-bold text-white tracking-tight">Pengaturan Profil</h1>
+                <h1 class="font-display text-2xl font-bold text-ink tracking-tight">Pengaturan Profil</h1>
                 <p class="text-sm text-text-muted mt-1">
                     Kelola identitas akun dan keamanan kata sandi Anda.
                 </p>

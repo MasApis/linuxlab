@@ -5,6 +5,7 @@ import AppCard from '@/Components/AppCard.vue';
 import AppButton from '@/Components/AppButton.vue';
 import ProgressBar from '@/Components/ProgressBar.vue';
 import EmptyState from '@/Components/EmptyState.vue';
+import ModuleIcon from '@/Components/ModuleIcon.vue';
 import type { Module } from '@/types';
 
 interface Props {
@@ -38,7 +39,7 @@ const getModuleBadgeColor = (order: number) => {
                     <span class="w-1.5 h-1.5 rounded-full bg-brand-primary"></span>
                     <span>KURIKULUM LINUXLAB</span>
                 </div>
-                <h1 class="text-3xl font-extrabold text-white tracking-tight">
+                <h1 class="font-display text-3xl font-bold text-ink tracking-tight">
                     Modul Pembelajaran Linux
                 </h1>
                 <p class="text-text-muted text-sm sm:text-base max-w-3xl leading-relaxed">
@@ -53,14 +54,13 @@ const getModuleBadgeColor = (order: number) => {
                     :key="module.id"
                     class="flex flex-col justify-between hover:border-border-focus transition-all duration-200 group relative overflow-hidden"
                 >
-                    <!-- Top subtle accent gradient -->
-                    <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-brand-primary/40 via-brand-tertiary/40 to-transparent"></div>
 
                     <div class="space-y-4">
+                        <ModuleIcon :order="module.order" />
                         <!-- Module Badge & Lesson Count -->
                         <div class="flex items-center justify-between">
                             <span
-                                class="text-xs font-mono font-bold px-2.5 py-1 rounded border"
+                                class="text-xs font-display font-bold tracking-wide px-2.5 py-1 rounded border"
                                 :class="getModuleBadgeColor(module.order)"
                             >
                                 MODUL 0{{ module.order }}
@@ -75,7 +75,7 @@ const getModuleBadgeColor = (order: number) => {
 
                         <!-- Title & Description -->
                         <div class="space-y-2">
-                            <h2 class="text-xl font-bold text-white group-hover:text-brand-primary-light transition-colors">
+                            <h2 class="font-display text-xl font-bold text-ink group-hover:text-brand-primary-light transition-colors">
                                 {{ module.title }}
                             </h2>
                             <p class="text-text-muted text-xs sm:text-sm line-clamp-3 leading-relaxed">
@@ -90,9 +90,9 @@ const getModuleBadgeColor = (order: number) => {
                         <div class="space-y-1">
                             <div class="flex items-center justify-between text-xs">
                                 <span class="text-text-dim">Penyelesaian</span>
-                                <span class="font-mono text-text-muted font-medium">
+                                <span class="tabular-nums text-text-muted font-semibold">
                                     {{ module.completion_percentage ?? 0 }}%
-                                    <span v-if="(module.completion_percentage ?? 0) === 100" class="text-brand-primary">(Selesai)</span>
+                                    <span v-if="(module.completion_percentage ?? 0) === 100" class="text-brand-primary-light">(Selesai)</span>
                                     <span v-else-if="(module.completion_percentage ?? 0) > 0" class="text-brand-secondary">(Sedang Berjalan)</span>
                                     <span v-else class="text-text-dim">(Belum Dimulai)</span>
                                 </span>
@@ -108,7 +108,7 @@ const getModuleBadgeColor = (order: number) => {
                         <Link :href="route('modules.show', module.slug)" class="block">
                             <AppButton
                                 variant="secondary"
-                                class="w-full justify-center group-hover:border-brand-primary/50 group-hover:text-white"
+                                class="w-full justify-center group-hover:border-brand-primary/50"
                             >
                                 <span>Buka Modul</span>
                                 <svg class="w-4 h-4 ml-1.5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">

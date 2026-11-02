@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import GuestLayout from '@/Layouts/GuestLayout.vue';
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
+import AuthLayout from '@/Layouts/AuthLayout.vue';
+import FormInput from '@/Components/FormInput.vue';
+import AppButton from '@/Components/AppButton.vue';
 import { Head, useForm } from '@inertiajs/vue3';
 
 defineProps<{
@@ -20,47 +18,50 @@ const submit = () => {
 </script>
 
 <template>
-    <GuestLayout>
-        <Head title="Forgot Password" />
+    <AuthLayout hide-tabs>
+        <Head title="Lupa Password - LinuxLab" />
 
-        <div class="mb-4 text-sm text-gray-600">
-            Forgot your password? No problem. Just let us know your email
-            address and we will email you a password reset link that will allow
-            you to choose a new one.
+        <div class="mb-6">
+            <h2 class="font-display text-xl sm:text-2xl font-bold text-ink tracking-tight">Lupa Password</h2>
+            <p class="text-xs sm:text-sm text-text-muted mt-1">
+                Masukkan email akun Anda. Kami akan mengirim tautan untuk membuat password baru.
+            </p>
         </div>
 
         <div
             v-if="status"
-            class="mb-4 text-sm font-medium text-green-600"
+            class="mb-4 p-3 rounded-button bg-brand-primary/10 border border-brand-primary/30 text-brand-primary-light text-xs sm:text-sm flex items-center gap-2"
+            role="status"
         >
-            {{ status }}
+            <svg class="w-4 h-4 shrink-0 text-brand-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            <span>{{ status }}</span>
         </div>
 
-        <form @submit.prevent="submit">
-            <div>
-                <InputLabel for="email" value="Email" />
+        <form @submit.prevent="submit" class="space-y-4">
+            <FormInput
+                id="email"
+                v-model="form.email"
+                type="email"
+                label="Email"
+                placeholder="nama@domain.com"
+                :error="form.errors.email"
+                required
+                autofocus
+                autocomplete="username"
+            />
 
-                <TextInput
-                    id="email"
-                    type="email"
-                    class="mt-1 block w-full"
-                    v-model="form.email"
-                    required
-                    autofocus
-                    autocomplete="username"
-                />
-
-                <InputError class="mt-2" :message="form.errors.email" />
-            </div>
-
-            <div class="mt-4 flex items-center justify-end">
-                <PrimaryButton
-                    :class="{ 'opacity-25': form.processing }"
-                    :disabled="form.processing"
-                >
-                    Email Password Reset Link
-                </PrimaryButton>
-            </div>
+            <AppButton
+                type="submit"
+                variant="primary"
+                size="md"
+                class="w-full justify-center"
+                :loading="form.processing"
+                :disabled="form.processing"
+            >
+                Kirim Tautan Reset
+            </AppButton>
         </form>
-    </GuestLayout>
+    </AuthLayout>
 </template>

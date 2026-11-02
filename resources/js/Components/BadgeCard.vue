@@ -33,7 +33,7 @@ withDefaults(defineProps<Props>(), {
                 class="w-16 h-16 rounded-full flex items-center justify-center border-2 transition-transform duration-200"
                 :class="[
                     isUnlocked
-                        ? 'border-brand-secondary bg-brand-secondary/15 text-brand-secondary shadow-lg shadow-brand-secondary/20 scale-105'
+                        ? 'border-brand-secondary bg-brand-secondary/15 text-brand-secondary-light shadow-lg shadow-brand-secondary/20 scale-105'
                         : 'border-border bg-surface-high text-text-dim',
                 ]"
             >
@@ -67,7 +67,7 @@ withDefaults(defineProps<Props>(), {
                 class="absolute -bottom-1 -right-1 text-[10px] font-semibold px-2 py-0.5 rounded-badge uppercase tracking-wider"
                 :class="[
                     isUnlocked
-                        ? 'bg-brand-secondary text-brand-secondary-dark'
+                        ? 'bg-brand-secondary text-ink'
                         : 'bg-surface-highest text-text-dim border border-border/50',
                 ]"
             >
@@ -89,7 +89,7 @@ withDefaults(defineProps<Props>(), {
 
         <!-- Criteria / Unlocked Date Footer -->
         <div class="mt-3 pt-3 w-full border-t border-border/40 text-[11px] leading-tight">
-            <span v-if="isUnlocked && unlockedAt" class="text-brand-secondary font-medium">
+            <span v-if="isUnlocked && unlockedAt" class="text-brand-secondary-light font-medium">
                 Diraih pada: {{ unlockedAt }}
             </span>
             <span v-else-if="criteria" class="text-text-dim">

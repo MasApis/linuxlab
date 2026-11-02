@@ -13,66 +13,68 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Inter', ...defaultTheme.fontFamily.sans],
+                sans: ['Nunito', ...defaultTheme.fontFamily.sans],
+                display: ['"Baloo 2"', 'Nunito', ...defaultTheme.fontFamily.sans],
                 mono: ['JetBrains Mono', ...defaultTheme.fontFamily.mono],
             },
             colors: {
-                // Surface hierarchy
+                // Surface hierarchy (Pencil: surface #F7F7F7, raised #FFFFFF)
                 surface: {
-                    base: '#0b1326',
-                    card: '#131b2e',
-                    'card-hover': '#1a233a',
-                    elevated: '#171f33',
-                    high: '#222a3d',
-                    highest: '#2d3449',
+                    base: '#f7f7f7',
+                    card: '#ffffff',
+                    'card-hover': '#f5f5f5',
+                    elevated: '#ffffff',
+                    high: '#efefef',
+                    highest: '#e5e5e5',
                 },
-                // Borders
+                // Borders (Pencil: border #E5E5E5)
                 border: {
-                    subtle: '#1e293b',
-                    DEFAULT: '#334155',
-                    focus: '#475569',
+                    subtle: '#eeeeee',
+                    DEFAULT: '#e5e5e5',
+                    focus: '#d4d4d4',
                 },
-                // Brand and semantic colors
+                // Brand and semantic colors (Pencil Duolingo palette)
                 brand: {
                     primary: {
-                        DEFAULT: '#10b981',
-                        hover: '#059669',
-                        light: '#4edea3',
-                        dark: '#003824',
+                        DEFAULT: '#2f6e00',
+                        hover: '#46a302',
+                        light: '#2f6e00',
+                        dark: '#46a302',
                     },
                     secondary: {
-                        DEFAULT: '#f59e0b',
-                        hover: '#d97706',
-                        light: '#ffb95f',
-                        dark: '#472a00',
+                        DEFAULT: '#ff9600',
+                        hover: '#e08600',
+                        light: '#a35c00',
+                        dark: '#e08600',
                     },
                     tertiary: {
-                        DEFAULT: '#38bdf8',
-                        hover: '#0284c7',
-                        light: '#7bd0ff',
-                        dark: '#00354a',
+                        DEFAULT: '#1cb0f6',
+                        hover: '#1899d6',
+                        light: '#095f8f',
+                        dark: '#1899d6',
                     },
                     danger: {
-                        DEFAULT: '#ef4444',
-                        hover: '#dc2626',
-                        light: '#ffb4ab',
-                        dark: '#690005',
+                        DEFAULT: '#ff4b4b',
+                        hover: '#ea2b2b',
+                        light: '#c42b2b',
+                        dark: '#c42b2b',
                     },
                 },
-                // Text hierarchy
+                // Text hierarchy (Pencil: #4B4B4B / #6B6B6B / #767676, headlines ink #100F3E)
                 text: {
-                    primary: '#f8fafc',
-                    secondary: '#cbd5e1',
-                    muted: '#94a3b8',
-                    dim: '#64748b',
+                    primary: '#4b4b4b',
+                    secondary: '#6b6b6b',
+                    muted: '#767676',
+                    dim: '#9e9e9e',
                 },
+                ink: '#100f3e',
             },
             borderRadius: {
-                card: '0.75rem',   // 12px
-                button: '0.5rem',  // 8px
-                input: '0.5rem',   // 8px
+                card: '1rem',       // 16px
+                button: '1rem',     // 16px
+                input: '1rem',      // 16px
                 badge: '9999px',
-                panel: '1rem',     // 16px
+                panel: '1.5rem',    // 24px
             },
         },
     },

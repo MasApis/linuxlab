@@ -96,7 +96,7 @@ const deleteModule = (mod: ModuleItem) => {
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-surface-card p-6 rounded-card border border-border">
                 <div>
                     <div class="flex items-center gap-2 mb-1">
-                        <svg class="w-6 h-6 text-brand-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg class="w-6 h-6 text-brand-primary-light" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                         </svg>
                         <h1 class="text-xl sm:text-2xl font-bold text-text-primary tracking-tight">
@@ -120,7 +120,7 @@ const deleteModule = (mod: ModuleItem) => {
                     <button
                         type="button"
                         @click="openCreateModal"
-                        class="px-4 py-2.5 text-sm font-semibold rounded-button bg-brand-primary text-brand-primary-dark hover:bg-brand-primary-hover transition-colors shadow-sm inline-flex items-center gap-2"
+                        class="px-4 py-2.5 text-sm font-semibold rounded-button bg-brand-primary text-white hover:bg-brand-primary-hover transition-colors shadow-sm inline-flex items-center gap-2"
                     >
                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
@@ -134,7 +134,7 @@ const deleteModule = (mod: ModuleItem) => {
             <AppCard>
                 <div class="overflow-x-auto">
                     <table class="w-full text-left text-sm">
-                        <thead class="bg-surface-elevated/70 text-text-dim text-[11px] font-mono uppercase tracking-wider border-b border-border">
+                        <thead class="bg-surface-high text-text-dim text-[11px] font-mono uppercase tracking-wider border-b border-border">
                             <tr>
                                 <th class="py-3 px-4">Urutan</th>
                                 <th class="py-3 px-4">Judul Modul</th>
@@ -155,14 +155,14 @@ const deleteModule = (mod: ModuleItem) => {
                                     <div class="font-semibold text-text-primary">{{ mod.title }}</div>
                                     <div class="text-xs text-text-muted line-clamp-1 max-w-md">{{ mod.description }}</div>
                                 </td>
-                                <td class="py-3.5 px-4 font-mono text-xs text-brand-primary">{{ mod.slug }}</td>
+                                <td class="py-3.5 px-4 font-mono text-xs text-brand-primary-light">{{ mod.slug }}</td>
                                 <td class="py-3.5 px-4 text-xs text-text-muted">
                                     <span class="font-mono text-text-primary">{{ mod.lessons_count }}</span> pelajaran
                                 </td>
                                 <td class="py-3.5 px-4">
                                     <span
                                         class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-mono font-semibold"
-                                        :class="mod.is_published ? 'bg-brand-primary/10 text-brand-primary border border-brand-primary/30' : 'bg-surface-elevated text-text-dim border border-border'"
+                                        :class="mod.is_published ? 'bg-brand-primary/10 text-brand-primary-light border border-brand-primary/30' : 'bg-surface-elevated text-text-dim border border-border'"
                                     >
                                         {{ mod.is_published ? 'Diterbitkan' : 'Draf' }}
                                     </span>
@@ -171,7 +171,7 @@ const deleteModule = (mod: ModuleItem) => {
                                     <div class="flex items-center justify-end gap-2">
                                         <Link
                                             :href="`/admin/lessons?module_id=${mod.id}`"
-                                            class="px-2.5 py-1 text-xs font-mono rounded bg-surface-elevated hover:bg-surface-high text-brand-tertiary border border-border"
+                                            class="px-2.5 py-1 text-xs font-mono rounded bg-surface-elevated hover:bg-surface-high text-brand-tertiary-light border border-border"
                                             title="Kelola Pelajaran"
                                         >
                                             Pelajaran →
@@ -189,7 +189,7 @@ const deleteModule = (mod: ModuleItem) => {
                                         <button
                                             type="button"
                                             @click="deleteModule(mod)"
-                                            class="p-1.5 rounded hover:bg-surface-elevated text-brand-danger/70 hover:text-brand-danger"
+                                            class="p-1.5 rounded hover:bg-surface-elevated text-brand-danger-light/70 hover:text-brand-danger-light"
                                             title="Hapus Modul"
                                         >
                                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -239,7 +239,7 @@ const deleteModule = (mod: ModuleItem) => {
                                 class="w-full bg-surface-elevated px-3 py-2 rounded-input border border-border text-sm text-text-primary focus:border-brand-primary outline-none"
                                 required
                             />
-                            <div v-if="form.errors.title" class="text-xs text-brand-danger mt-1">{{ form.errors.title }}</div>
+                            <div v-if="form.errors.title" class="text-xs text-brand-danger-light mt-1">{{ form.errors.title }}</div>
                         </div>
 
                         <div>
@@ -248,9 +248,9 @@ const deleteModule = (mod: ModuleItem) => {
                                 v-model="form.slug"
                                 type="text"
                                 placeholder="contoh: file-system"
-                                class="w-full bg-surface-elevated px-3 py-2 rounded-input border border-border font-mono text-sm text-brand-primary focus:border-brand-primary outline-none"
+                                class="w-full bg-surface-elevated px-3 py-2 rounded-input border border-border font-mono text-sm text-brand-primary-light focus:border-brand-primary outline-none"
                             />
-                            <div v-if="form.errors.slug" class="text-xs text-brand-danger mt-1">{{ form.errors.slug }}</div>
+                            <div v-if="form.errors.slug" class="text-xs text-brand-danger-light mt-1">{{ form.errors.slug }}</div>
                         </div>
 
                         <div>
@@ -262,7 +262,7 @@ const deleteModule = (mod: ModuleItem) => {
                                 class="w-full bg-surface-elevated px-3 py-2 rounded-input border border-border text-sm text-text-primary focus:border-brand-primary outline-none"
                                 required
                             ></textarea>
-                            <div v-if="form.errors.description" class="text-xs text-brand-danger mt-1">{{ form.errors.description }}</div>
+                            <div v-if="form.errors.description" class="text-xs text-brand-danger-light mt-1">{{ form.errors.description }}</div>
                         </div>
 
                         <div class="grid grid-cols-2 gap-4">
@@ -276,7 +276,7 @@ const deleteModule = (mod: ModuleItem) => {
                                     required
                                 />
                                 <p class="text-[11px] text-text-dim mt-1">💡 Isi 1 jika ingin modul ini tampil pertama di kurikulum siswa.</p>
-                                <div v-if="form.errors.order" class="text-xs text-brand-danger mt-1">{{ form.errors.order }}</div>
+                                <div v-if="form.errors.order" class="text-xs text-brand-danger-light mt-1">{{ form.errors.order }}</div>
                             </div>
 
                             <div class="flex items-center pt-6">
@@ -284,7 +284,7 @@ const deleteModule = (mod: ModuleItem) => {
                                     <input
                                         v-model="form.is_published"
                                         type="checkbox"
-                                        class="rounded bg-surface-elevated border-border text-brand-primary focus:ring-brand-primary"
+                                        class="rounded bg-surface-elevated border-border text-brand-primary-light focus:ring-brand-primary"
                                     />
                                     <span class="text-xs font-semibold text-text-primary">Terbitkan Modul</span>
                                 </label>

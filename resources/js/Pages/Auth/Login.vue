@@ -33,11 +33,10 @@ const submit = () => {
     <AuthLayout active-tab="login">
         <Head title="Masuk - LinuxLab" />
 
-        <!-- Header Teks Form -->
         <div class="mb-6">
-            <h2 class="text-xl font-bold text-white tracking-tight">Selamat Datang Kembali</h2>
+            <h2 class="font-display text-xl sm:text-2xl font-bold text-ink tracking-tight">Selamat Datang Kembali</h2>
             <p class="text-xs sm:text-sm text-text-muted mt-1">
-                Masukkan email atau username Anda untuk melanjutkan sesi pembelajaran.
+                Masukkan email atau username untuk melanjutkan belajar.
             </p>
         </div>
 
@@ -73,14 +72,14 @@ const submit = () => {
 
             <!-- Password -->
             <div>
-                <div class="flex items-center justify-between mb-1.5">
-                    <label for="password" class="text-xs font-semibold uppercase tracking-wider text-text-muted">
+                <div class="flex items-center justify-between gap-3 mb-1.5">
+                    <label for="password" class="text-xs font-semibold text-text-muted">
                         Password <span class="text-brand-danger ml-0.5">*</span>
                     </label>
                     <Link
                         v-if="canResetPassword"
                         :href="route('password.request')"
-                        class="text-xs font-medium text-brand-primary-light hover:underline transition-colors"
+                        class="min-h-11 inline-flex items-center text-xs font-medium text-brand-primary-light hover:underline transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary rounded-button"
                     >
                         Lupa password?
                     </Link>
@@ -97,17 +96,17 @@ const submit = () => {
                         v-model="form.password"
                         placeholder="••••••••"
                         required
-                        class="w-full rounded-input border bg-surface-card text-text-primary placeholder:text-text-dim transition-colors duration-150 focus:outline-none text-sm pl-9 pr-10 py-2.5 font-mono"
+                        class="w-full rounded-input border-2 bg-surface-card text-text-primary placeholder:text-text-dim transition-colors duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary text-sm pl-9 pr-12 py-3"
                         :class="form.errors.password
-                            ? 'border-brand-danger focus:border-brand-danger focus:ring-1 focus:ring-brand-danger'
-                            : 'border-border focus:border-brand-primary focus:ring-1 focus:ring-brand-primary'"
+                            ? 'border-brand-danger focus:border-brand-danger focus:ring-brand-danger/30'
+                            : 'border-border focus:border-brand-primary focus:ring-brand-primary/30'"
                     />
                     <button
                         type="button"
                         @click="showPassword = !showPassword"
-                        class="absolute right-3 text-text-dim hover:text-white transition-colors"
-                        tabindex="-1"
-                        aria-label="Lihat password"
+                        class="absolute right-1 top-1/2 -translate-y-1/2 min-h-10 min-w-10 flex items-center justify-center text-text-dim hover:text-text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary rounded-button"
+                        :aria-label="showPassword ? 'Sembunyikan password' : 'Tampilkan password'"
+                        :aria-pressed="showPassword"
                     >
                         <svg v-if="!showPassword" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -125,7 +124,7 @@ const submit = () => {
 
             <!-- Ingat Saya -->
             <div class="flex items-center">
-                <label class="flex items-center gap-2 cursor-pointer select-none">
+                <label class="flex min-h-11 items-center gap-2 cursor-pointer select-none">
                     <Checkbox name="remember" v-model:checked="form.remember" />
                     <span class="text-xs sm:text-sm text-text-muted">Ingat saya di perangkat ini</span>
                 </label>
@@ -137,7 +136,7 @@ const submit = () => {
                 variant="primary"
                 size="md"
                 class="w-full justify-center"
-                :is-loading="form.processing"
+                :loading="form.processing"
                 :disabled="form.processing"
             >
                 Masuk ke LinuxLab
@@ -147,7 +146,7 @@ const submit = () => {
             <div class="text-center pt-2">
                 <p class="text-xs sm:text-sm text-text-muted">
                     Belum punya akun?
-                    <Link :href="route('register')" class="text-brand-primary-light font-semibold hover:underline ml-1">
+                    <Link :href="route('register')" class="min-h-11 inline-flex items-center text-brand-primary-light font-semibold hover:underline ml-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary rounded-button">
                         Daftar sekarang
                     </Link>
                 </p>

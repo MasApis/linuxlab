@@ -66,26 +66,26 @@ const markBestAnswer = (answer: Answer) => {
         <div class="py-8 space-y-6">
             <!-- Breadcrumbs Navigation -->
             <nav class="flex items-center flex-wrap gap-2 text-xs sm:text-sm text-text-muted font-medium">
-                <Link :href="route('dashboard')" class="hover:text-brand-primary transition-colors flex items-center gap-1">
+                <Link :href="route('dashboard')" class="hover:text-brand-primary-light transition-colors flex items-center gap-1">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                     </svg>
                     <span>Beranda</span>
                 </Link>
                 <span class="text-text-dim">/</span>
-                <Link :href="route('modules.show', lesson.module.slug)" class="hover:text-brand-primary transition-colors">
+                <Link :href="route('modules.show', lesson.module.slug)" class="hover:text-brand-primary-light transition-colors">
                     {{ lesson.module.title }}
                 </Link>
                 <span class="text-text-dim">/</span>
-                <Link :href="route('lessons.show', [lesson.module.slug, lesson.slug])" class="hover:text-brand-primary transition-colors">
+                <Link :href="route('lessons.show', [lesson.module.slug, lesson.slug])" class="hover:text-brand-primary-light transition-colors">
                     {{ lesson.title }}
                 </Link>
                 <span class="text-text-dim">/</span>
-                <Link :href="route('forum.index', lesson.slug)" class="hover:text-brand-primary transition-colors">
+                <Link :href="route('forum.index', lesson.slug)" class="hover:text-brand-primary-light transition-colors">
                     Forum
                 </Link>
                 <span class="text-text-dim">/</span>
-                <span class="text-white font-semibold truncate max-w-xs sm:max-w-md">
+                <span class="text-ink font-semibold truncate max-w-xs sm:max-w-md">
                     {{ question.title }}
                 </span>
             </nav>
@@ -101,6 +101,9 @@ const markBestAnswer = (answer: Answer) => {
                 <span>{{ page.props.flash.success }}</span>
             </div>
 
+            <!-- Grid Konten + Sidebar Konteks Pelajaran -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+                <div class="lg:col-span-2 space-y-6">
             <!-- Kartu Pertanyaan Utama -->
             <AppCard class="p-6 sm:p-8 bg-surface-card border-border shadow-md">
                 <div class="space-y-4">
@@ -108,12 +111,12 @@ const markBestAnswer = (answer: Answer) => {
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-border">
                         <div class="flex items-center gap-3">
                             <!-- Avatar inisial -->
-                            <div class="w-10 h-10 rounded-full bg-surface-elevated border border-border flex items-center justify-center font-bold font-mono text-sm text-brand-primary">
+                            <div class="w-10 h-10 rounded-full bg-surface-high border border-border flex items-center justify-center font-bold text-sm text-brand-primary-light">
                                 {{ question.user.name.charAt(0).toUpperCase() }}
                             </div>
                             <div>
                                 <div class="flex items-center gap-2">
-                                    <span class="font-bold text-white text-sm sm:text-base">{{ question.user.name }}</span>
+                                    <span class="font-bold text-ink text-sm sm:text-base">{{ question.user.name }}</span>
                                     <span class="text-xs font-mono text-text-dim">@{{ question.user.username }}</span>
                                     <span
                                         v-if="question.is_owner"
@@ -152,7 +155,7 @@ const markBestAnswer = (answer: Answer) => {
                     </div>
 
                     <!-- Judul Pertanyaan (di-escape via {{ }}) -->
-                    <h1 class="text-xl sm:text-2xl font-extrabold text-white tracking-tight leading-snug">
+                    <h1 class="font-display text-xl sm:text-2xl font-bold text-ink tracking-tight leading-snug">
                         {{ question.title }}
                     </h1>
 
@@ -169,7 +172,7 @@ const markBestAnswer = (answer: Answer) => {
                         </span>
                         <Link
                             :href="route('forum.index', lesson.slug)"
-                            class="text-brand-primary hover:underline flex items-center gap-1"
+                            class="text-brand-primary-light hover:underline flex items-center gap-1"
                         >
                             <span>&larr; Kembali ke daftar diskusi</span>
                         </Link>
@@ -182,7 +185,7 @@ const markBestAnswer = (answer: Answer) => {
                 <!-- Header Daftar Jawaban -->
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-2">
-                        <h2 class="text-lg sm:text-xl font-bold text-white">
+                        <h2 class="font-display text-lg sm:text-xl font-bold text-ink">
                             {{ answers.length }} Jawaban
                         </h2>
                         <span class="text-xs text-text-muted">
@@ -222,12 +225,12 @@ const markBestAnswer = (answer: Answer) => {
                         <!-- Info Penulis Jawaban -->
                         <div class="flex items-center justify-between gap-3 mb-3">
                             <div class="flex items-center gap-2.5">
-                                <div class="w-8 h-8 rounded-full bg-surface-elevated border border-border flex items-center justify-center font-bold font-mono text-xs text-brand-primary">
+                                <div class="w-8 h-8 rounded-full bg-surface-high border border-border flex items-center justify-center font-bold text-xs text-brand-primary-light">
                                     {{ ans.user.name.charAt(0).toUpperCase() }}
                                 </div>
                                 <div>
                                     <div class="flex items-center gap-1.5">
-                                        <span class="font-bold text-white text-xs sm:text-sm">{{ ans.user.name }}</span>
+                                        <span class="font-bold text-ink text-xs sm:text-sm">{{ ans.user.name }}</span>
                                         <span class="text-[11px] font-mono text-text-dim">@{{ ans.user.username }}</span>
                                         <span
                                             v-if="ans.is_own_answer"
@@ -283,7 +286,7 @@ const markBestAnswer = (answer: Answer) => {
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
                                     </svg>
                                     <span>{{ ans.has_voted ? 'Di-upvote' : 'Upvote' }}</span>
-                                    <span class="ml-1 px-1.5 py-0.2 rounded-full font-mono text-[11px] bg-black/20">
+                                    <span class="ml-1 px-1.5 py-0.2 rounded-full tabular-nums text-[11px] font-bold bg-black/20">
                                         {{ ans.votes_count }}
                                     </span>
                                 </button>
@@ -312,7 +315,7 @@ const markBestAnswer = (answer: Answer) => {
                         <svg class="w-5 h-5 text-brand-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                         </svg>
-                        <h3 class="text-base font-bold text-white">Tulis Jawaban Anda</h3>
+                        <h3 class="font-display text-base font-bold text-ink">Tulis Jawaban Anda</h3>
                     </div>
 
                     <form @submit.prevent="submitAnswer" class="space-y-4">
@@ -321,10 +324,10 @@ const markBestAnswer = (answer: Answer) => {
                                 v-model="answerForm.body"
                                 rows="4"
                                 placeholder="Tuliskan solusi, penjelasan langkah demi langkah, atau perintah alternatif yang dapat membantu penanya..."
-                                class="w-full px-4 py-3 rounded-xl bg-surface-base border border-border text-white text-sm placeholder:text-text-dim focus:outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary transition-all font-sans leading-relaxed"
+                                class="w-full px-4 py-3 rounded-xl bg-surface-card border-2 border-border text-text-primary text-sm placeholder:text-text-dim focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/30 transition-all font-sans leading-relaxed"
                                 required
                             ></textarea>
-                            <p v-if="answerForm.errors.body" class="mt-1 text-xs text-accent-danger">
+                            <p v-if="answerForm.errors.body" class="mt-1 text-xs text-brand-danger">
                                 {{ answerForm.errors.body }}
                             </p>
                         </div>
@@ -344,6 +347,29 @@ const markBestAnswer = (answer: Answer) => {
                         </div>
                     </form>
                 </AppCard>
+                </div>
+                </div>
+
+                <!-- Sidebar Konteks Pelajaran -->
+                <aside class="lg:col-span-1 lg:sticky lg:top-20">
+                    <AppCard class="p-5 sm:p-6 bg-brand-primary/10 border-brand-primary/30 space-y-4">
+                        <div class="space-y-1">
+                            <span class="text-[11px] font-bold uppercase tracking-wider text-brand-primary-light">Pelajaran</span>
+                            <h3 class="font-display text-lg font-bold text-ink leading-snug">{{ lesson.title }}</h3>
+                            <p class="text-xs text-text-muted">{{ lesson.module.title }}</p>
+                        </div>
+                        <div class="pt-3 border-t border-brand-primary/20 space-y-3">
+                            <p class="text-xs text-text-secondary leading-relaxed">
+                                Punya pertanyaan lain seputar pelajaran ini? Sampaikan di forum pelajaran.
+                            </p>
+                            <Link :href="route('forum.index', lesson.slug)" class="block">
+                                <AppButton variant="primary" size="sm" class="w-full justify-center">
+                                    Kirim Pertanyaan
+                                </AppButton>
+                            </Link>
+                        </div>
+                    </AppCard>
+                </aside>
             </div>
         </div>
     </UserLayout>

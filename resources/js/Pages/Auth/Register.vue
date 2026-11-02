@@ -30,7 +30,7 @@ const submit = () => {
 
         <!-- Header Teks Form -->
         <div class="mb-6">
-            <h2 class="text-xl font-bold text-white tracking-tight">Mulai Belajar Sekarang</h2>
+            <h2 class="font-display text-[28px] font-extrabold text-ink tracking-tight">Mulai Belajar Sekarang</h2>
             <p class="text-xs sm:text-sm text-text-muted mt-1">
                 Daftarkan akun gratis untuk mengakses materi modul dan terminal Linux nyata di browser.
             </p>
@@ -95,7 +95,7 @@ const submit = () => {
 
             <!-- Password -->
             <div>
-                <label for="password" class="block text-xs font-semibold uppercase tracking-wider text-text-muted mb-1.5">
+                <label for="password" class="block text-xs font-semibold text-text-muted mb-1.5">
                     Password <span class="text-brand-danger ml-0.5">*</span>
                 </label>
                 <div class="relative flex items-center">
@@ -110,18 +110,18 @@ const submit = () => {
                         v-model="form.password"
                         placeholder="Minimal 8 karakter"
                         required
-                        class="w-full rounded-input border bg-surface-card text-text-primary placeholder:text-text-dim transition-colors duration-150 focus:outline-none text-sm pl-9 pr-10 py-2.5 font-mono"
+                        class="w-full rounded-input border-2 bg-surface-card text-text-primary placeholder:text-text-dim transition-colors duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary text-sm pl-9 pr-12 py-3"
                         :class="form.errors.password
-                            ? 'border-brand-danger focus:border-brand-danger focus:ring-1 focus:ring-brand-danger'
-                            : 'border-border focus:border-brand-primary focus:ring-1 focus:ring-brand-primary'"
+                            ? 'border-brand-danger focus:border-brand-danger focus:ring-brand-danger/30'
+                            : 'border-border focus:border-brand-primary focus:ring-brand-primary/30'"
                         autocomplete="new-password"
                     />
                     <button
                         type="button"
                         @click="showPassword = !showPassword"
-                        class="absolute right-3 text-text-dim hover:text-white transition-colors"
-                        tabindex="-1"
-                        aria-label="Lihat password"
+                        class="absolute right-1 top-1/2 -translate-y-1/2 min-h-10 min-w-10 flex items-center justify-center text-text-dim hover:text-text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary rounded-button"
+                        :aria-label="showPassword ? 'Sembunyikan password' : 'Tampilkan password'"
+                        :aria-pressed="showPassword"
                     >
                         <svg v-if="!showPassword" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -160,9 +160,9 @@ const submit = () => {
             <AppButton
                 type="submit"
                 variant="primary"
-                size="md"
+                size="lg"
                 class="w-full justify-center mt-2"
-                :is-loading="form.processing"
+                :loading="form.processing"
                 :disabled="form.processing"
             >
                 Daftar Akun Baru
@@ -172,7 +172,7 @@ const submit = () => {
             <div class="text-center pt-2">
                 <p class="text-xs sm:text-sm text-text-muted">
                     Sudah memiliki akun?
-                    <Link :href="route('login')" class="text-brand-primary-light font-semibold hover:underline ml-1">
+                    <Link :href="route('login')" class="min-h-11 inline-flex items-center text-brand-tertiary-light font-extrabold hover:underline ml-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary rounded-button">
                         Masuk di sini
                     </Link>
                 </p>

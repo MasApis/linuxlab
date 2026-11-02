@@ -42,7 +42,7 @@ const toggleButtonLoading = () => {
             <div class="p-4 rounded-card border border-border bg-surface-elevated/90 backdrop-blur-md flex flex-col sm:flex-row items-center justify-between gap-4 sticky top-20 z-20 shadow-xl">
                 <div>
                     <h2 class="text-sm font-bold text-text-primary flex items-center gap-2">
-                        <span class="inline-block w-2.5 h-2.5 rounded-full bg-brand-primary animate-pulse"></span>
+                        <span class="inline-block w-2.5 h-2.5 rounded-full bg-brand-primary"></span>
                         Pengujian Fondasi Visual LinuxLab
                     </h2>
                     <p class="text-xs text-text-muted">
@@ -55,7 +55,7 @@ const toggleButtonLoading = () => {
                         type="button"
                         @click="activeLayout = 'public'"
                         class="px-3 py-1.5 text-xs font-medium rounded-button transition-colors"
-                        :class="activeLayout === 'public' ? 'bg-brand-primary text-brand-primary-dark font-bold' : 'text-text-muted hover:text-text-primary'"
+                        :class="activeLayout === 'public' ? 'bg-brand-primary text-white font-bold' : 'text-text-muted hover:text-text-primary'"
                     >
                         Layout Publik
                     </button>
@@ -63,7 +63,7 @@ const toggleButtonLoading = () => {
                         type="button"
                         @click="activeLayout = 'user'"
                         class="px-3 py-1.5 text-xs font-medium rounded-button transition-colors"
-                        :class="activeLayout === 'user' ? 'bg-brand-primary text-brand-primary-dark font-bold' : 'text-text-muted hover:text-text-primary'"
+                        :class="activeLayout === 'user' ? 'bg-brand-primary text-white font-bold' : 'text-text-muted hover:text-text-primary'"
                     >
                         Layout Pengguna
                     </button>
@@ -71,7 +71,7 @@ const toggleButtonLoading = () => {
                         type="button"
                         @click="activeLayout = 'admin'"
                         class="px-3 py-1.5 text-xs font-medium rounded-button transition-colors"
-                        :class="activeLayout === 'admin' ? 'bg-brand-primary text-brand-primary-dark font-bold' : 'text-text-muted hover:text-text-primary'"
+                        :class="activeLayout === 'admin' ? 'bg-brand-primary text-white font-bold' : 'text-text-muted hover:text-text-primary'"
                     >
                         Layout Admin
                     </button>
@@ -81,7 +81,7 @@ const toggleButtonLoading = () => {
             <!-- Section 1: Palette Warna & Desain Token -->
             <section class="space-y-4">
                 <div class="border-b border-border pb-2">
-                    <h2 class="text-xl font-bold text-text-primary">1. Gaya Visual & Token Desain</h2>
+                    <h2 class="font-display text-xl font-bold text-ink">1. Gaya Visual & Token Desain</h2>
                     <p class="text-xs text-text-muted">Ditetapkan satu kali di konfigurasi tema (Tailwind & CSS Utama) tanpa pengulangan nilai warna hex/ukuran.</p>
                 </div>
 
@@ -89,32 +89,32 @@ const toggleButtonLoading = () => {
                     <div class="p-3 rounded-card bg-surface-base border border-border">
                         <div class="h-8 rounded bg-surface-base border border-border mb-2"></div>
                         <p class="text-xs font-semibold text-text-primary">Surface Base</p>
-                        <p class="text-[10px] font-mono text-text-dim">#0b1326</p>
+                        <p class="text-[10px] font-mono text-text-dim">#f7f7f7</p>
                     </div>
                     <div class="p-3 rounded-card bg-surface-card border border-border">
                         <div class="h-8 rounded bg-surface-card border border-border mb-2"></div>
                         <p class="text-xs font-semibold text-text-primary">Surface Card</p>
-                        <p class="text-[10px] font-mono text-text-dim">#131b2e</p>
+                        <p class="text-[10px] font-mono text-text-dim">#ffffff</p>
                     </div>
                     <div class="p-3 rounded-card bg-surface-elevated border border-border">
                         <div class="h-8 rounded bg-surface-elevated border border-border mb-2"></div>
                         <p class="text-xs font-semibold text-text-primary">Surface Elevated</p>
-                        <p class="text-[10px] font-mono text-text-dim">#171f33</p>
+                        <p class="text-[10px] font-mono text-text-dim">#ffffff</p>
                     </div>
                     <div class="p-3 rounded-card bg-surface-card border border-border">
                         <div class="h-8 rounded bg-brand-primary mb-2"></div>
-                        <p class="text-xs font-semibold text-text-primary">Primary (Emerald)</p>
-                        <p class="text-[10px] font-mono text-text-dim">#10b981</p>
+                        <p class="text-xs font-semibold text-text-primary">Primary (Hijau)</p>
+                        <p class="text-[10px] font-mono text-text-dim">#2f6e00</p>
                     </div>
                     <div class="p-3 rounded-card bg-surface-card border border-border">
                         <div class="h-8 rounded bg-brand-secondary mb-2"></div>
-                        <p class="text-xs font-semibold text-text-primary">Secondary (Amber)</p>
-                        <p class="text-[10px] font-mono text-text-dim">#f59e0b</p>
+                        <p class="text-xs font-semibold text-text-primary">Secondary (Jingga)</p>
+                        <p class="text-[10px] font-mono text-text-dim">#ff9600</p>
                     </div>
                     <div class="p-3 rounded-card bg-surface-card border border-border">
                         <div class="h-8 rounded bg-brand-danger mb-2"></div>
-                        <p class="text-xs font-semibold text-text-primary">Danger (Red)</p>
-                        <p class="text-[10px] font-mono text-text-dim">#ef4444</p>
+                        <p class="text-xs font-semibold text-text-primary">Danger (Merah)</p>
+                        <p class="text-[10px] font-mono text-text-dim">#ff4b4b</p>
                     </div>
                 </div>
             </section>
@@ -122,7 +122,7 @@ const toggleButtonLoading = () => {
             <!-- Section 2: Tombol (AppButton) -->
             <section class="space-y-4">
                 <div class="border-b border-border pb-2">
-                    <h2 class="text-xl font-bold text-text-primary">2. Komponen Tombol (`AppButton.vue`)</h2>
+                    <h2 class="font-display text-xl font-bold text-ink">2. Komponen Tombol (`AppButton.vue`)</h2>
                     <p class="text-xs text-text-muted">Varian semantik, skala ukuran, dan status interaktif (normal, loading, disabled).</p>
                 </div>
 
@@ -159,7 +159,7 @@ const toggleButtonLoading = () => {
             <!-- Section 3: Kolom Input & Pesan Error -->
             <section class="space-y-4">
                 <div class="border-b border-border pb-2">
-                    <h2 class="text-xl font-bold text-text-primary">3. Komponen Form Input (`FormInput.vue` & `InputError.vue`)</h2>
+                    <h2 class="font-display text-xl font-bold text-ink">3. Komponen Form Input (`FormInput.vue` & `InputError.vue`)</h2>
                     <p class="text-xs text-text-muted">Mendukung label, teks petunjuk (hint), mode monospace untuk perintah Linux, dan pesan error validasi.</p>
                 </div>
 
@@ -187,7 +187,7 @@ const toggleButtonLoading = () => {
                                 hint="Format input monospace sesuai sintaks CLI."
                             >
                                 <template #prefix>
-                                    <span class="font-mono text-brand-primary font-bold text-xs">$</span>
+                                    <span class="font-mono text-brand-primary-light font-bold text-xs">$</span>
                                 </template>
                             </FormInput>
                         </div>
@@ -220,7 +220,7 @@ const toggleButtonLoading = () => {
             <!-- Section 4: Kartu (AppCard) -->
             <section class="space-y-4">
                 <div class="border-b border-border pb-2">
-                    <h2 class="text-xl font-bold text-text-primary">4. Komponen Kartu (`AppCard.vue`)</h2>
+                    <h2 class="font-display text-xl font-bold text-ink">4. Komponen Kartu (`AppCard.vue`)</h2>
                     <p class="text-xs text-text-muted">Kontainer visual konsisten dengan dukungan header, aksi header, isi body, dan footer.</p>
                 </div>
 
@@ -249,7 +249,7 @@ const toggleButtonLoading = () => {
                         subtitle="Struktur lengkap"
                     >
                         <template #header-action>
-                            <span class="text-[10px] font-semibold px-2 py-0.5 rounded-badge bg-brand-primary/15 text-brand-primary border border-brand-primary/30">
+                            <span class="text-[10px] font-semibold px-2 py-0.5 rounded-badge bg-brand-primary/15 text-brand-primary-light border border-brand-primary/30">
                                 Aktif
                             </span>
                         </template>
@@ -260,7 +260,7 @@ const toggleButtonLoading = () => {
 
                         <template #footer>
                             <span>Dibuat: 19 Okt 2026</span>
-                            <AppButton size="sm" variant="ghost">Detail &rarr;</AppButton>
+                            <AppButton size="sm" variant="ghost">Detail</AppButton>
                         </template>
                     </AppCard>
                 </div>
@@ -269,7 +269,7 @@ const toggleButtonLoading = () => {
             <!-- Section 5: Bar Progres (ProgressBar) -->
             <section class="space-y-4">
                 <div class="border-b border-border pb-2">
-                    <h2 class="text-xl font-bold text-text-primary">5. Komponen Bar Progres (`ProgressBar.vue`)</h2>
+                    <h2 class="font-display text-xl font-bold text-ink">5. Komponen Bar Progres (`ProgressBar.vue`)</h2>
                     <p class="text-xs text-text-muted">Menampilkan kemajuan modul dan latihan dalam persentase terukur.</p>
                 </div>
 
@@ -291,16 +291,16 @@ const toggleButtonLoading = () => {
                                     v-model.number="dynamicProgress"
                                     class="w-full accent-brand-primary cursor-pointer"
                                 />
-                                <span class="text-xs font-mono font-bold text-brand-primary w-10 text-right">{{ dynamicProgress }}%</span>
+                                <span class="text-xs font-mono font-bold text-brand-primary-light w-10 text-right">{{ dynamicProgress }}%</span>
                             </div>
                         </div>
                     </AppCard>
 
                     <AppCard title="Variasi Ukuran & Varian Warna">
                         <div class="space-y-4">
-                            <ProgressBar :value="25" label="Ukuran Kecil (sm) - Varian Sky" size="sm" variant="tertiary" />
-                            <ProgressBar :value="60" label="Ukuran Standar (md) - Varian Emerald" size="md" variant="primary" />
-                            <ProgressBar :value="90" label="Ukuran Besar (lg) - Varian Amber XP" size="lg" variant="secondary" />
+                            <ProgressBar :value="25" label="Ukuran Kecil (sm) - Varian Biru" size="sm" variant="tertiary" />
+                            <ProgressBar :value="60" label="Ukuran Standar (md) - Varian Hijau" size="md" variant="primary" />
+                            <ProgressBar :value="90" label="Ukuran Besar (lg) - Varian Jingga XP" size="lg" variant="secondary" />
                         </div>
                     </AppCard>
                 </div>
@@ -309,7 +309,7 @@ const toggleButtonLoading = () => {
             <!-- Section 6: Kartu Lencana (BadgeCard) -->
             <section class="space-y-4">
                 <div class="border-b border-border pb-2">
-                    <h2 class="text-xl font-bold text-text-primary">6. Komponen Kartu Lencana (`BadgeCard.vue`)</h2>
+                    <h2 class="font-display text-xl font-bold text-ink">6. Komponen Kartu Lencana (`BadgeCard.vue`)</h2>
                     <p class="text-xs text-text-muted">Status pencapaian gamifikasi sesuai SPEC Bagian 12 (keadaan terbuka vs terkunci).</p>
                 </div>
 
@@ -347,7 +347,7 @@ const toggleButtonLoading = () => {
             <!-- Section 7: Keadaan Kosong (EmptyState) -->
             <section class="space-y-4">
                 <div class="border-b border-border pb-2">
-                    <h2 class="text-xl font-bold text-text-primary">7. Keadaan Kosong (`EmptyState.vue` - SPEC UI-02)</h2>
+                    <h2 class="font-display text-xl font-bold text-ink">7. Keadaan Kosong (`EmptyState.vue` - SPEC UI-02)</h2>
                     <p class="text-xs text-text-muted">Empat kasus wajib keadaan kosong sesuai ketentuan UI-02.</p>
                 </div>
 

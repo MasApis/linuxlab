@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import GuestLayout from '@/Layouts/GuestLayout.vue';
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
+import AuthLayout from '@/Layouts/AuthLayout.vue';
+import FormInput from '@/Components/FormInput.vue';
+import AppButton from '@/Components/AppButton.vue';
 import { Head, useForm } from '@inertiajs/vue3';
 
 const form = useForm({
@@ -20,38 +18,39 @@ const submit = () => {
 </script>
 
 <template>
-    <GuestLayout>
-        <Head title="Confirm Password" />
+    <AuthLayout hide-tabs>
+        <Head title="Konfirmasi Password - LinuxLab" />
 
-        <div class="mb-4 text-sm text-gray-600">
-            This is a secure area of the application. Please confirm your
-            password before continuing.
+        <div class="mb-6">
+            <h2 class="font-display text-xl sm:text-2xl font-bold text-ink tracking-tight">Konfirmasi Password</h2>
+            <p class="text-xs sm:text-sm text-text-muted mt-1">
+                Ini area aman aplikasi. Masukkan password Anda untuk melanjutkan.
+            </p>
         </div>
 
-        <form @submit.prevent="submit">
-            <div>
-                <InputLabel for="password" value="Password" />
-                <TextInput
-                    id="password"
-                    type="password"
-                    class="mt-1 block w-full"
-                    v-model="form.password"
-                    required
-                    autocomplete="current-password"
-                    autofocus
-                />
-                <InputError class="mt-2" :message="form.errors.password" />
-            </div>
+        <form @submit.prevent="submit" class="space-y-4">
+            <FormInput
+                id="password"
+                v-model="form.password"
+                type="password"
+                label="Password"
+                placeholder="••••••••"
+                :error="form.errors.password"
+                required
+                autofocus
+                autocomplete="current-password"
+            />
 
-            <div class="mt-4 flex justify-end">
-                <PrimaryButton
-                    class="ms-4"
-                    :class="{ 'opacity-25': form.processing }"
-                    :disabled="form.processing"
-                >
-                    Confirm
-                </PrimaryButton>
-            </div>
+            <AppButton
+                type="submit"
+                variant="primary"
+                size="md"
+                class="w-full justify-center"
+                :loading="form.processing"
+                :disabled="form.processing"
+            >
+                Konfirmasi
+            </AppButton>
         </form>
-    </GuestLayout>
+    </AuthLayout>
 </template>

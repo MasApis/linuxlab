@@ -77,43 +77,42 @@ const getCriteriaText = (badge: BadgeItem): string => {
             <!-- Header Banner -->
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-2 border-b border-border">
                 <div>
-                    <h1 class="text-2xl sm:text-3xl font-extrabold text-text-primary tracking-tight">
+                    <h1 class="font-display text-2xl sm:text-3xl font-bold text-ink tracking-tight">
                         Pencapaian & Sertifikasi
                     </h1>
                     <p class="text-sm text-text-muted mt-1">
-                        Koleksi lencana penguasaan Linux dan sertifikat kelulusan resmi Anda.
+                        Koleksi lencana penguasaan Linux dan sertifikat kelulusan Anda.
                     </p>
                 </div>
                 <div class="flex items-center gap-3">
-                    <span class="text-xs font-mono px-3 py-1.5 rounded-full bg-surface-card border border-border text-brand-secondary font-semibold">
+                    <span class="text-xs px-3 py-1.5 rounded-full bg-surface-card border border-border text-brand-secondary-light font-semibold">
                         {{ earnedCount }} / {{ totalBadges }} Lencana Diraih
                     </span>
                 </div>
             </div>
 
             <!-- Kartu Sertifikat Kelulusan (FR-CERT-03 & FR-CERT-05) -->
-            <AppCard class="p-6 sm:p-8 bg-gradient-to-r from-surface-card via-surface-elevated to-surface-card border-border relative overflow-hidden">
+            <div class="p-6 sm:p-8 rounded-card bg-[#2f6e00] text-white relative overflow-hidden shadow-md">
                 <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
                     <div class="space-y-3 max-w-2xl">
                         <div class="flex items-center gap-2">
                             <span
-                                class="text-xs font-mono font-bold px-2.5 py-1 rounded"
-                                :class="certificate ? 'bg-brand-primary/15 text-brand-primary border border-brand-primary/30' : 'bg-surface-highest text-text-dim border border-border/40'"
+                                class="text-xs font-bold px-2.5 py-1 rounded bg-white/20 text-white border border-white/30"
                             >
-                                {{ certificate ? 'SERTIFIKAT RESMI TERBIT' : 'SERTIFIKAT KELULUSAN TERKUNCI' }}
+                                {{ certificate ? 'SERTIFIKAT TERBIT' : 'SERTIFIKAT KELULUSAN TERKUNCI' }}
                             </span>
-                            <span v-if="certificate" class="text-xs font-mono text-text-dim">
+                            <span v-if="certificate" class="text-xs text-white/80">
                                 Kode: {{ certificate.certificate_code }}
                             </span>
                         </div>
 
-                        <h2 class="text-2xl font-bold text-text-primary">
+                        <h2 class="font-display text-2xl font-bold text-white">
                             Sertifikat Penyelesaian Kurikulum LinuxLab
                         </h2>
 
-                        <p class="text-xs sm:text-sm text-text-muted leading-relaxed">
+                        <p class="text-xs sm:text-sm text-white/85 leading-relaxed">
                             <template v-if="certificate">
-                                Selamat! Anda telah menyelesaikan seluruh modul pembelajaran LinuxLab. Sertifikat Anda telah diterbitkan secara resmi atas nama <strong>{{ certificate.recipient_name }}</strong> pada tanggal <strong>{{ certificate.issued_at }}</strong>.
+                                Selamat! Anda telah menyelesaikan seluruh modul pembelajaran LinuxLab. Sertifikat Anda telah diterbitkan atas nama <strong>{{ certificate.recipient_name }}</strong> pada tanggal <strong>{{ certificate.issued_at }}</strong>.
                             </template>
                             <template v-else>
                                 Sertifikat penyelesaian diterbitkan otomatis setelah Anda menyelesaikan 100% seluruh modul pembelajaran LinuxLab (Dasar File System, Permission, dan Text Processing).
@@ -122,16 +121,16 @@ const getCriteriaText = (badge: BadgeItem): string => {
 
                         <!-- Module completion status when locked (FR-CERT-05) -->
                         <div v-if="!certificate" class="pt-2">
-                            <p class="text-xs font-semibold text-brand-secondary mb-1.5">
+                            <p class="text-xs font-semibold text-white/90 mb-1.5">
                                 Modul yang belum diselesaikan:
                             </p>
                             <div class="flex flex-wrap gap-2">
                                 <span
                                     v-for="uncompleted in uncompletedModules"
                                     :key="uncompleted"
-                                    class="text-xs px-2.5 py-1 rounded bg-surface-high border border-border text-text-muted flex items-center gap-1.5"
+                                    class="text-xs px-2.5 py-1 rounded bg-white/15 border border-white/25 text-white flex items-center gap-1.5"
                                 >
-                                    <svg class="w-3.5 h-3.5 text-text-dim" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <svg class="w-3.5 h-3.5 text-white/80" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                                     </svg>
                                     <span>{{ uncompleted }}</span>
@@ -144,14 +143,14 @@ const getCriteriaText = (badge: BadgeItem): string => {
                     <div class="flex flex-col sm:flex-row lg:flex-col items-stretch sm:items-center lg:items-end gap-3 flex-shrink-0">
                         <template v-if="certificate">
                             <a :href="certificate.download_url" class="inline-block">
-                                <AppButton variant="primary" size="md" class="w-full justify-center">
+                                <AppButton variant="secondary" size="md" class="w-full justify-center">
                                     <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                                     </svg>
                                     <span>Unduh PDF Sertifikat</span>
                                 </AppButton>
                             </a>
-                            <Link :href="certificate.verify_url" class="text-xs text-brand-primary hover:underline flex items-center gap-1 justify-center">
+                            <Link :href="certificate.verify_url" class="text-xs text-white/90 hover:text-white hover:underline flex items-center gap-1 justify-center">
                                 <span>Verifikasi Keabsahan</span>
                                 <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
@@ -159,8 +158,8 @@ const getCriteriaText = (badge: BadgeItem): string => {
                             </Link>
                         </template>
                         <template v-else>
-                            <div class="px-4 py-2.5 rounded bg-surface-highest/60 border border-border/50 text-center text-xs text-text-dim flex items-center gap-2">
-                                <svg class="w-4 h-4 text-text-dim flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <div class="px-4 py-2.5 rounded bg-white/15 border border-white/25 text-center text-xs text-white/90 flex items-center gap-2">
+                                <svg class="w-4 h-4 text-white/80 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                                 </svg>
                                 <span>Selesaikan semua modul untuk membuka unduh PDF</span>
@@ -168,13 +167,13 @@ const getCriteriaText = (badge: BadgeItem): string => {
                         </template>
                     </div>
                 </div>
-            </AppCard>
+            </div>
 
             <!-- Badges Grid Section (FR-PROG-05) -->
             <div class="space-y-4">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div>
-                        <h2 class="text-xl font-bold text-text-primary">
+                        <h2 class="font-display text-xl font-bold text-ink">
                             Daftar Lencana Keahlian
                         </h2>
                         <p class="text-xs sm:text-sm text-text-muted">
@@ -188,7 +187,7 @@ const getCriteriaText = (badge: BadgeItem): string => {
                             type="button"
                             @click="filter = 'all'"
                             class="px-3 py-1 text-xs font-medium rounded transition-colors"
-                            :class="filter === 'all' ? 'bg-surface-elevated text-brand-primary font-semibold shadow-sm' : 'text-text-muted hover:text-text-primary'"
+                            :class="filter === 'all' ? 'bg-brand-primary text-white font-bold shadow-sm' : 'text-text-muted hover:text-text-primary'"
                         >
                             Semua ({{ totalBadges }})
                         </button>
@@ -196,7 +195,7 @@ const getCriteriaText = (badge: BadgeItem): string => {
                             type="button"
                             @click="filter = 'earned'"
                             class="px-3 py-1 text-xs font-medium rounded transition-colors"
-                            :class="filter === 'earned' ? 'bg-surface-elevated text-brand-primary font-semibold shadow-sm' : 'text-text-muted hover:text-text-primary'"
+                            :class="filter === 'earned' ? 'bg-brand-primary text-white font-bold shadow-sm' : 'text-text-muted hover:text-text-primary'"
                         >
                             Diperoleh ({{ earnedCount }})
                         </button>
@@ -204,7 +203,7 @@ const getCriteriaText = (badge: BadgeItem): string => {
                             type="button"
                             @click="filter = 'locked'"
                             class="px-3 py-1 text-xs font-medium rounded transition-colors"
-                            :class="filter === 'locked' ? 'bg-surface-elevated text-brand-primary font-semibold shadow-sm' : 'text-text-muted hover:text-text-primary'"
+                            :class="filter === 'locked' ? 'bg-brand-primary text-white font-bold shadow-sm' : 'text-text-muted hover:text-text-primary'"
                         >
                             Terkunci ({{ totalBadges - earnedCount }})
                         </button>
@@ -227,10 +226,10 @@ const getCriteriaText = (badge: BadgeItem): string => {
 
                 <!-- Empty State (UI-02) -->
                 <div v-else class="rounded-card border border-dashed border-border p-12 text-center space-y-3">
-                    <div class="w-12 h-12 rounded-full bg-surface-elevated text-text-dim mx-auto flex items-center justify-center font-mono text-xl">
+                    <div class="w-12 h-12 rounded-full bg-surface-high text-text-dim mx-auto flex items-center justify-center text-xl">
                         ★
                     </div>
-                    <h3 class="text-base font-bold text-text-primary">Tidak Ada Lencana yang Sesuai</h3>
+                    <h3 class="text-base font-bold text-ink">Tidak Ada Lencana yang Sesuai</h3>
                     <p class="text-xs text-text-muted max-w-sm mx-auto">
                         {{ filter === 'earned' ? 'Anda belum memperoleh lencana. Selesaikan latihan pertama Anda untuk mulai mengoleksi lencana!' : 'Semua lencana telah berhasil Anda peroleh!' }}
                     </p>

@@ -71,7 +71,7 @@ const formattedContent = computed(() => {
         // Inline code `code`
         escaped = escaped.replace(/`([^`]+)`/g, '<code class="px-1.5 py-0.5 rounded bg-surface-base text-brand-primary-light font-mono text-xs border border-border/80">$1</code>');
         // Bold **text**
-        escaped = escaped.replace(/\*\*([^*]+)\*\*/g, '<strong class="text-white font-semibold">$1</strong>');
+        escaped = escaped.replace(/\*\*([^*]+)\*\*/g, '<strong class="text-ink font-semibold">$1</strong>');
         // Italic *text*
         escaped = escaped.replace(/\*([^*]+)\*/g, '<em class="text-text-primary">$1</em>');
         return escaped;
@@ -83,7 +83,7 @@ const formattedContent = computed(() => {
         // Code block toggle ```
         if (line.trim().startsWith('```')) {
             if (inCodeBlock) {
-                html += `<pre class="my-4 p-4 rounded-xl bg-surface-base border border-border overflow-x-auto font-mono text-xs text-brand-primary-light leading-relaxed"><code>${escapeHtml(codeBlockContent.trim())}</code></pre>`;
+                html += `<pre class="my-4 p-4 rounded-xl bg-ink border border-ink overflow-x-auto font-mono text-xs text-[#58cc02] leading-relaxed"><code>${escapeHtml(codeBlockContent.trim())}</code></pre>`;
                 codeBlockContent = '';
                 inCodeBlock = false;
             } else {
@@ -111,11 +111,11 @@ const formattedContent = computed(() => {
 
         // Headings
         if (line.startsWith('# ')) {
-            html += `<h1 class="text-2xl sm:text-3xl font-extrabold text-white mt-6 mb-3 tracking-tight">${parseInline(line.substring(2))}</h1>`;
+            html += `<h1 class="font-display text-2xl sm:text-3xl font-bold text-ink mt-6 mb-3 tracking-tight">${parseInline(line.substring(2))}</h1>`;
             continue;
         }
         if (line.startsWith('## ')) {
-            html += `<h2 class="text-xl sm:text-2xl font-bold text-white mt-6 mb-3 flex items-center gap-2 border-b border-border/50 pb-2">${parseInline(line.substring(3))}</h2>`;
+            html += `<h2 class="font-display text-xl sm:text-2xl font-bold text-ink mt-6 mb-3 flex items-center gap-2 border-b border-border pb-2">${parseInline(line.substring(3))}</h2>`;
             continue;
         }
         if (line.startsWith('### ')) {
@@ -192,22 +192,22 @@ const formattedContent = computed(() => {
         <div class="py-6 space-y-6">
             <!-- Breadcrumbs -->
             <nav class="flex items-center gap-2 text-xs sm:text-sm text-text-muted font-medium overflow-x-auto whitespace-nowrap">
-                <Link :href="route('dashboard')" class="hover:text-brand-primary transition-colors flex items-center gap-1">
+                <Link :href="route('dashboard')" class="hover:text-brand-primary-light transition-colors flex items-center gap-1">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                     </svg>
                     <span>Beranda</span>
                 </Link>
                 <span class="text-text-dim">/</span>
-                <Link :href="route('modules.index')" class="hover:text-brand-primary transition-colors">
+                <Link :href="route('modules.index')" class="hover:text-brand-primary-light transition-colors">
                     Modul
                 </Link>
                 <span class="text-text-dim">/</span>
-                <Link :href="route('modules.show', module.slug)" class="hover:text-brand-primary transition-colors">
+                <Link :href="route('modules.show', module.slug)" class="hover:text-brand-primary-light transition-colors">
                     {{ module.title }}
                 </Link>
                 <span class="text-text-dim">/</span>
-                <span class="text-white font-semibold truncate">{{ lesson.title }}</span>
+                <span class="text-ink font-semibold truncate">{{ lesson.title }}</span>
             </nav>
 
             <!-- Main Content Area: 2 Columns Grid -->
@@ -226,14 +226,14 @@ const formattedContent = computed(() => {
                                 </span>
                             </div>
 
-                            <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+                            <h1 class="font-display text-2xl sm:text-3xl font-bold text-ink tracking-tight">
                                 {{ lesson.title }}
                             </h1>
                         </div>
                     </AppCard>
 
                     <!-- Rendered Lesson Body (Markdown) -->
-                    <AppCard class="border-border prose-invert max-w-none">
+                    <AppCard class="border-border max-w-none">
                         <!-- eslint-disable-next-line vue/no-v-html -->
                         <div class="text-text-primary" v-html="formattedContent"></div>
                     </AppCard>
@@ -241,7 +241,7 @@ const formattedContent = computed(() => {
                     <!-- Example Commands Block (lessons.example_commands) -->
                     <div v-if="lesson.example_commands" class="space-y-3">
                         <div class="flex items-center justify-between">
-                            <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                            <h3 class="font-display text-lg font-bold text-ink flex items-center gap-2">
                                 <svg class="w-5 h-5 text-brand-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                 </svg>
@@ -250,7 +250,7 @@ const formattedContent = computed(() => {
                             <button
                                 type="button"
                                 @click="copyExampleCommands"
-                                class="inline-flex items-center gap-1.5 px-3 py-1 rounded bg-surface-card hover:bg-surface-elevated border border-border text-xs text-text-muted hover:text-white transition-colors"
+                                class="inline-flex items-center gap-1.5 px-3 py-1 rounded bg-surface-card hover:bg-surface-high border border-border text-xs text-text-muted hover:text-text-primary transition-colors"
                             >
                                 <svg v-if="!copiedCommands" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
@@ -263,8 +263,8 @@ const formattedContent = computed(() => {
                         </div>
 
                         <!-- Stylized Terminal Output Window -->
-                        <div class="rounded-xl overflow-hidden bg-surface-base border border-border shadow-lg">
-                            <div class="bg-surface-elevated px-4 py-2 border-b border-border flex items-center justify-between">
+                        <div class="rounded-xl overflow-hidden bg-ink border border-ink shadow-lg">
+                            <div class="bg-white/5 px-4 py-2 border-b border-white/10 flex items-center justify-between">
                                 <div class="flex items-center gap-2">
                                     <div class="flex items-center gap-1.5">
                                         <span class="w-2.5 h-2.5 rounded-full bg-red-500/80"></span>
@@ -274,7 +274,7 @@ const formattedContent = computed(() => {
                                     <span class="font-mono text-xs text-text-dim ml-2">bash terminal — simulasi interaktif</span>
                                 </div>
                             </div>
-                            <pre class="p-4 font-mono text-xs sm:text-sm text-text-primary overflow-x-auto leading-relaxed whitespace-pre"><code>{{ lesson.example_commands }}</code></pre>
+                            <pre class="p-4 font-mono text-xs sm:text-sm text-white/90 overflow-x-auto leading-relaxed whitespace-pre"><code>{{ lesson.example_commands }}</code></pre>
                         </div>
                     </div>
 
@@ -282,7 +282,7 @@ const formattedContent = computed(() => {
                     <AppCard class="border-border space-y-4">
                         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-border/60">
                             <div>
-                                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                                <h3 class="font-display text-lg font-bold text-ink flex items-center gap-2">
                                     <svg class="w-5 h-5 text-brand-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
                                     </svg>
@@ -294,7 +294,7 @@ const formattedContent = computed(() => {
                             </div>
                             <span
                                 class="text-xs font-mono font-semibold px-2.5 py-1 rounded-full self-start sm:self-auto border"
-                                :class="lesson.is_completed ? 'bg-brand-primary/15 text-brand-primary border-brand-primary/30' : 'bg-surface-elevated text-brand-secondary border-brand-secondary/30'"
+                                :class="lesson.is_completed ? 'bg-brand-primary/15 text-brand-primary-light border border-brand-primary/30' : 'bg-surface-high text-brand-secondary-light border border-brand-secondary/30'"
                             >
                                 {{ lesson.is_completed ? 'Pelajaran Selesai 100%' : 'Latihan Belum Tuntas' }}
                             </span>
@@ -315,7 +315,7 @@ const formattedContent = computed(() => {
                                         {{ ex.has_passed ? '✓' : index + 1 }}
                                     </div>
                                     <div>
-                                        <h4 class="text-sm font-semibold text-white">{{ ex.title }}</h4>
+                                        <h4 class="text-sm font-semibold text-ink">{{ ex.title }}</h4>
                                         <p class="text-xs text-text-muted line-clamp-1">{{ ex.instruction }}</p>
                                     </div>
                                 </div>
@@ -324,7 +324,7 @@ const formattedContent = computed(() => {
                                     <span class="text-xs font-mono text-text-dim">{{ ex.points }} poin</span>
                                     <span
                                         class="text-[11px] font-semibold px-2 py-0.5 rounded font-mono"
-                                        :class="ex.has_passed ? 'bg-brand-primary/15 text-brand-primary' : 'bg-surface-elevated text-text-dim'"
+                                        :class="ex.has_passed ? 'bg-brand-primary/15 text-brand-primary-light' : 'bg-surface-high text-text-dim'"
                                     >
                                         {{ ex.has_passed ? 'Selesai' : 'Belum' }}
                                     </span>
@@ -349,7 +349,7 @@ const formattedContent = computed(() => {
                     <AppCard class="border-border bg-surface-card/60">
                         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                             <div class="space-y-1">
-                                <h4 class="font-semibold text-white flex items-center gap-2">
+                                <h4 class="font-semibold text-ink flex items-center gap-2">
                                     <svg class="w-4 h-4 text-brand-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                                     </svg>
@@ -407,7 +407,7 @@ const formattedContent = computed(() => {
                             <span class="text-xs font-mono font-bold text-brand-primary-light uppercase tracking-wider">
                                 Latihan Mandiri
                             </span>
-                            <h3 class="text-lg font-bold text-white">
+                            <h3 class="font-display text-lg font-bold text-ink">
                                 Praktikkan di Terminal
                             </h3>
                             <p class="text-xs text-text-muted leading-relaxed">
@@ -432,7 +432,7 @@ const formattedContent = computed(() => {
                     <!-- Cheatsheet Card (lessons.cheat_sheet) -->
                     <AppCard v-if="lesson.cheat_sheet" class="border-border space-y-3">
                         <div class="flex items-center justify-between pb-2 border-b border-border/60">
-                            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                            <h3 class="text-sm font-bold text-ink flex items-center gap-2">
                                 <svg class="w-4 h-4 text-brand-tertiary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                 </svg>
@@ -444,7 +444,7 @@ const formattedContent = computed(() => {
                         </div>
 
                         <div class="space-y-2">
-                            <pre class="p-3 rounded-lg bg-surface-base border border-border/80 font-mono text-xs text-text-primary whitespace-pre-wrap leading-relaxed"><code>{{ lesson.cheat_sheet }}</code></pre>
+                            <pre class="p-3 rounded-lg bg-surface-high border border-border/80 font-mono text-xs text-text-primary whitespace-pre-wrap leading-relaxed"><code>{{ lesson.cheat_sheet }}</code></pre>
                         </div>
                     </AppCard>
 
@@ -462,15 +462,15 @@ const formattedContent = computed(() => {
                                 class="flex items-center justify-between py-2 px-2.5 rounded-lg text-xs transition-colors"
                                 :class="[
                                     item.slug === lesson.slug
-                                        ? 'bg-brand-primary/15 text-brand-primary font-semibold border border-brand-primary/30'
-                                        : 'text-text-muted hover:text-white hover:bg-surface-elevated',
+                                        ? 'bg-brand-primary/15 text-brand-primary-light font-semibold border border-brand-primary/30'
+                                        : 'text-text-muted hover:text-text-primary hover:bg-surface-high',
                                 ]"
                             >
                                 <span class="truncate">0{{ item.order }}. {{ item.title }}</span>
-                                <span v-if="item.is_completed" class="text-[10px] font-mono text-brand-primary ml-2 shrink-0">
+                                <span v-if="item.is_completed" class="text-[10px] font-bold text-brand-primary-light ml-2 shrink-0">
                                     ✓ Selesai
                                 </span>
-                                <span v-else-if="item.slug === lesson.slug" class="text-[10px] font-mono uppercase text-brand-secondary ml-2 shrink-0">
+                                <span v-else-if="item.slug === lesson.slug" class="text-[11px] font-semibold text-brand-secondary-light ml-2 shrink-0">
                                     Aktif
                                 </span>
                             </Link>

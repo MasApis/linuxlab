@@ -35,10 +35,10 @@ const handleSearch = () => {
         <div class="py-12 max-w-3xl mx-auto space-y-8">
             <!-- Header Section -->
             <div class="text-center space-y-3">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-primary/10 text-brand-primary text-xs font-mono font-medium border border-brand-primary/20">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-primary/10 text-brand-primary-light text-xs font-bold border border-brand-primary/20">
                     <span>VERIFIKASI PUBLIK</span>
                 </div>
-                <h1 class="text-3xl sm:text-4xl font-extrabold text-text-primary tracking-tight">
+                <h1 class="font-display text-3xl sm:text-4xl font-bold text-ink tracking-tight">
                     Verifikasi Keaslian Sertifikat LinuxLab
                 </h1>
                 <p class="text-sm text-text-muted max-w-xl mx-auto leading-relaxed">
@@ -57,7 +57,7 @@ const handleSearch = () => {
                             v-model="searchInput"
                             type="text"
                             placeholder="Contoh: LLAB-2026-X8K9M2"
-                            class="w-full pl-10 pr-4 py-2.5 bg-surface-base border border-border rounded-button text-sm font-mono text-text-primary placeholder:text-text-dim focus:outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary uppercase"
+                            class="w-full pl-10 pr-4 py-3 bg-surface-card border-2 border-border rounded-button text-sm font-mono text-text-primary placeholder:text-text-dim focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/30 uppercase"
                             required
                         />
                     </div>
@@ -76,16 +76,16 @@ const handleSearch = () => {
                 >
                     <div class="flex items-center justify-between border-b border-border/80 pb-4">
                         <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-full bg-brand-primary/15 text-brand-primary flex items-center justify-center font-bold text-lg border border-brand-primary/30">
+                            <div class="w-10 h-10 rounded-full bg-brand-primary/15 text-brand-primary-light flex items-center justify-center font-bold text-lg border border-brand-primary/30">
                                 ✓
                             </div>
                             <div>
-                                <span class="text-xs font-mono uppercase tracking-wider text-text-dim">Hasil Verifikasi</span>
-                                <h2 class="text-xl font-bold text-brand-primary">Sertifikat Sah & Terdaftar</h2>
+                                <span class="text-xs uppercase tracking-wider text-text-dim">Hasil Verifikasi</span>
+                                <h2 class="font-display text-xl font-bold text-brand-primary-light">Sertifikat Sah & Terdaftar</h2>
                             </div>
                         </div>
 
-                        <span class="px-3 py-1 rounded-full text-xs font-mono font-bold bg-brand-primary/15 text-brand-primary border border-brand-primary/30">
+                        <span class="px-3 py-1 rounded-full text-xs font-bold bg-brand-primary/15 text-brand-primary-light border border-brand-primary/30">
                             TERVERIFIKASI
                         </span>
                     </div>
@@ -98,7 +98,7 @@ const handleSearch = () => {
 
                         <div class="space-y-1">
                             <span class="text-xs text-text-dim block">Kode Sertifikat:</span>
-                            <span class="text-base font-mono font-bold text-brand-primary block">{{ result.certificate_code }}</span>
+                            <span class="text-base font-mono font-bold text-brand-primary-light block">{{ result.certificate_code }}</span>
                         </div>
 
                         <div class="space-y-1">
@@ -121,7 +121,7 @@ const handleSearch = () => {
                             <span
                                 v-for="mod in result.completed_modules"
                                 :key="mod"
-                                class="text-xs font-medium px-3 py-1 rounded bg-surface-elevated border border-border text-text-primary flex items-center gap-1.5"
+                                class="text-xs font-medium px-3 py-1 rounded bg-surface-high border border-border text-text-primary flex items-center gap-1.5"
                             >
                                 <span class="w-1.5 h-1.5 rounded-full bg-brand-primary"></span>
                                 <span>{{ mod }}</span>
@@ -133,15 +133,15 @@ const handleSearch = () => {
                 <!-- Result: NOT FOUND (TIDAK DITEMUKAN) -->
                 <AppCard
                     v-else
-                    class="p-8 border-red-500/40 bg-surface-card/90 space-y-4 shadow-xl text-center"
+                    class="p-8 border-brand-danger/40 bg-surface-card/90 space-y-4 shadow-xl text-center"
                 >
-                    <div class="w-12 h-12 rounded-full bg-red-500/15 text-red-400 mx-auto flex items-center justify-center font-bold text-xl border border-red-500/30">
+                    <div class="w-12 h-12 rounded-full bg-brand-danger/10 text-brand-danger mx-auto flex items-center justify-center font-bold text-xl border border-brand-danger/30">
                         ✕
                     </div>
                     <div class="space-y-1">
-                        <h2 class="text-xl font-bold text-red-400">Sertifikat Tidak Ditemukan</h2>
+                        <h2 class="font-display text-xl font-bold text-ink">Sertifikat Tidak Ditemukan</h2>
                         <p class="text-xs sm:text-sm text-text-muted max-w-md mx-auto leading-relaxed">
-                            Kode sertifikat <code class="font-mono text-text-primary bg-surface-elevated px-1.5 py-0.5 rounded">{{ code }}</code> tidak terdaftar dalam basis data LinuxLab. Pastikan format kode sudah benar atau hubungi pihak terkait.
+                            Kode sertifikat <code class="font-mono text-text-primary bg-surface-high px-1.5 py-0.5 rounded">{{ code }}</code> tidak terdaftar dalam basis data LinuxLab. Pastikan format kode sudah benar atau hubungi pihak terkait.
                         </p>
                     </div>
                 </AppCard>

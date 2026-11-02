@@ -21,12 +21,25 @@ const navLinks = [
 const logout = () => {
     router.post('/logout');
 };
+
+// Penanda navigasi aktif: cocok persis/awalan, plus kasus khusus
+// - Forum aktif di /forum/* dan /lessons/*/forum (tujuan redirect /forum)
+// - Modul aktif di materi & praktik (/modules/*, /lessons/*) kecuali halaman forum
+const isLinkActive = (link: { name: string; href: string }) => {
+    const url = page.url;
+    if (url === link.href) return true;
+    const isForumPage = /\/forum(\/|$)/.test(url);
+    if (link.name === 'Forum') return isForumPage;
+    if (link.name === 'Modul' && url.startsWith('/lessons/') && !isForumPage) return true;
+    if (link.href !== '/' && url.startsWith(link.href)) return true;
+    return false;
+};
 </script>
 
 <template>
     <div class="min-h-screen bg-surface-base text-text-primary flex flex-col font-sans">
         <!-- Top Navbar -->
-        <header class="sticky top-0 z-40 bg-surface-base/90 backdrop-blur-md border-b border-border">
+        <header class="sticky top-0 z-40 bg-surface-card/95 backdrop-blur-md border-b-2 border-border">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
                 <!-- Brand / Logo & Main Nav -->
                 <div class="flex items-center gap-6 lg:gap-8">
@@ -38,10 +51,10 @@ const logout = () => {
                             v-for="link in navLinks"
                             :key="link.name"
                             :href="link.href"
-                            class="px-3 py-1.5 text-sm font-medium rounded-button transition-colors"
+                            class="px-3 py-1.5 min-h-11 inline-flex items-center justify-center text-sm font-medium rounded-button transition-colors"
                             :class="[
-                                page.url === link.href || (link.href !== '/' && page.url.startsWith(link.href))
-                                    ? 'text-brand-primary bg-surface-elevated font-semibold'
+                                isLinkActive(link)
+                                    ? 'text-brand-primary-light bg-surface-high font-semibold'
                                     : 'text-text-muted hover:text-text-primary hover:bg-surface-card',
                             ]"
                         >
@@ -123,7 +136,7 @@ const logout = () => {
                         type="button"
                         @click="mobileMenuOpen = !mobileMenuOpen"
                         class="p-2 rounded-button text-text-muted hover:text-text-primary hover:bg-surface-elevated focus:outline-none"
-                        aria-label="Toggle menu"
+                        aria-label="Buka atau tutup menu"
                     >
                         <svg
                             v-if="!mobileMenuOpen"
@@ -158,8 +171,8 @@ const logout = () => {
                     :href="link.href"
                     class="block px-3 py-2 text-sm font-medium rounded-button"
                     :class="[
-                        page.url === link.href || (link.href !== '/' && page.url.startsWith(link.href))
-                            ? 'text-brand-primary bg-surface-elevated'
+                        isLinkActive(link)
+                            ? 'text-brand-primary-light bg-surface-high'
                             : 'text-text-muted hover:text-text-primary hover:bg-surface-elevated',
                     ]"
                     @click="mobileMenuOpen = false"
@@ -206,7 +219,7 @@ const logout = () => {
         </main>
 
         <!-- Footer -->
-        <footer class="border-t border-border bg-surface-card/40 text-text-muted text-xs py-6 mt-auto">
+        <footer class="border-t-2 border-border bg-surface-card text-text-muted text-xs py-6 mt-auto">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div class="flex items-center gap-2">
                     <span class="font-bold text-text-primary">LinuxLab</span>

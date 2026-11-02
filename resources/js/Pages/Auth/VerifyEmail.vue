@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import GuestLayout from '@/Layouts/GuestLayout.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
+import AuthLayout from '@/Layouts/AuthLayout.vue';
+import AppButton from '@/Components/AppButton.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 
 const props = defineProps<{
@@ -20,40 +20,49 @@ const verificationLinkSent = computed(
 </script>
 
 <template>
-    <GuestLayout>
-        <Head title="Email Verification" />
+    <AuthLayout hide-tabs>
+        <Head title="Verifikasi Email - LinuxLab" />
 
-        <div class="mb-4 text-sm text-gray-600">
-            Thanks for signing up! Before getting started, could you verify your
-            email address by clicking on the link we just emailed to you? If you
-            didn't receive the email, we will gladly send you another.
+        <div class="mb-6">
+            <h2 class="font-display text-xl sm:text-2xl font-bold text-ink tracking-tight">Verifikasi Email</h2>
+            <p class="text-xs sm:text-sm text-text-muted mt-1">
+                Terima kasih sudah mendaftar. Klik tautan verifikasi yang kami kirim ke email Anda sebelum mulai belajar. Belum menerima email? Kami kirim ulang.
+            </p>
         </div>
 
         <div
-            class="mb-4 text-sm font-medium text-green-600"
             v-if="verificationLinkSent"
+            class="mb-4 p-3 rounded-button bg-brand-primary/10 border border-brand-primary/30 text-brand-primary-light text-xs sm:text-sm flex items-center gap-2"
+            role="status"
         >
-            A new verification link has been sent to the email address you
-            provided during registration.
+            <svg class="w-4 h-4 shrink-0 text-brand-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            <span>Tautan verifikasi baru sudah dikirim ke email Anda.</span>
         </div>
 
-        <form @submit.prevent="submit">
-            <div class="mt-4 flex items-center justify-between">
-                <PrimaryButton
-                    :class="{ 'opacity-25': form.processing }"
-                    :disabled="form.processing"
-                >
-                    Resend Verification Email
-                </PrimaryButton>
+        <form @submit.prevent="submit" class="space-y-4">
+            <AppButton
+                type="submit"
+                variant="primary"
+                size="md"
+                class="w-full justify-center"
+                :loading="form.processing"
+                :disabled="form.processing"
+            >
+                Kirim Ulang Email Verifikasi
+            </AppButton>
 
+            <div class="text-center">
                 <Link
                     :href="route('logout')"
                     method="post"
                     as="button"
-                    class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                    >Log Out</Link
+                    class="min-h-11 inline-flex items-center text-xs sm:text-sm font-medium text-text-muted hover:text-text-primary underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary rounded-button"
                 >
+                    Keluar
+                </Link>
             </div>
         </form>
-    </GuestLayout>
+    </AuthLayout>
 </template>

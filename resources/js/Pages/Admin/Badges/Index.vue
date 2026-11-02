@@ -100,7 +100,7 @@ const deleteBadge = (badge: BadgeItem) => {
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-surface-card p-6 rounded-card border border-border">
                 <div>
                     <div class="flex items-center gap-2 mb-1">
-                        <svg class="w-6 h-6 text-brand-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg class="w-6 h-6 text-brand-primary-light" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
                         </svg>
                         <h1 class="text-xl sm:text-2xl font-bold text-text-primary tracking-tight">
@@ -115,7 +115,7 @@ const deleteBadge = (badge: BadgeItem) => {
                 <button
                     type="button"
                     @click="openCreateModal"
-                    class="px-4 py-2.5 text-sm font-semibold rounded-button bg-brand-primary text-brand-primary-dark hover:bg-brand-primary-hover transition-colors shadow-sm inline-flex items-center gap-2"
+                    class="px-4 py-2.5 text-sm font-semibold rounded-button bg-brand-primary text-white hover:bg-brand-primary-hover transition-colors shadow-sm inline-flex items-center gap-2"
                 >
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
@@ -128,7 +128,7 @@ const deleteBadge = (badge: BadgeItem) => {
             <AppCard>
                 <div class="overflow-x-auto">
                     <table class="w-full text-left text-sm">
-                        <thead class="bg-surface-elevated/70 text-text-dim text-[11px] font-mono uppercase tracking-wider border-b border-border">
+                        <thead class="bg-surface-high text-text-dim text-[11px] font-mono uppercase tracking-wider border-b border-border">
                             <tr>
                                 <th class="py-3 px-4">IKON</th>
                                 <th class="py-3 px-4">NAMA LENCANA</th>
@@ -154,7 +154,7 @@ const deleteBadge = (badge: BadgeItem) => {
                                     <div class="text-xs text-text-muted max-w-sm">{{ badge.description }}</div>
                                 </td>
                                 <td class="py-3.5 px-4 font-mono text-xs">
-                                    <span class="px-2 py-0.5 rounded bg-brand-primary/10 text-brand-primary border border-brand-primary/30">
+                                    <span class="px-2 py-0.5 rounded bg-brand-primary/10 text-brand-primary-light border border-brand-primary/30">
                                         {{ badge.criteria_type }}
                                     </span>
                                 </td>
@@ -182,7 +182,7 @@ const deleteBadge = (badge: BadgeItem) => {
                                         <button
                                             type="button"
                                             @click="deleteBadge(badge)"
-                                            class="p-1.5 rounded hover:bg-surface-elevated text-brand-danger/70 hover:text-brand-danger"
+                                            class="p-1.5 rounded hover:bg-surface-elevated text-brand-danger-light/70 hover:text-brand-danger-light"
                                             title="Hapus Lencana"
                                         >
                                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -238,7 +238,7 @@ const deleteBadge = (badge: BadgeItem) => {
                                         required
                                     />
                                 </div>
-                                <div v-if="badgeForm.errors.icon" class="text-xs text-brand-danger mt-1">{{ badgeForm.errors.icon }}</div>
+                                <div v-if="badgeForm.errors.icon" class="text-xs text-brand-danger-light mt-1">{{ badgeForm.errors.icon }}</div>
                                 <div class="flex items-center gap-1 mt-1.5 flex-wrap">
                                     <button
                                         v-for="sym in ['🏆', '🚀', '📁', '🛡️', '💻', '🎓', '💡', '⭐']"
@@ -262,7 +262,7 @@ const deleteBadge = (badge: BadgeItem) => {
                                     class="w-full bg-surface-elevated px-3 py-2 rounded-input border border-border text-sm text-text-primary focus:border-brand-primary outline-none"
                                     required
                                 />
-                                <div v-if="badgeForm.errors.name" class="text-xs text-brand-danger mt-1">{{ badgeForm.errors.name }}</div>
+                                <div v-if="badgeForm.errors.name" class="text-xs text-brand-danger-light mt-1">{{ badgeForm.errors.name }}</div>
                             </div>
                         </div>
 
@@ -275,21 +275,21 @@ const deleteBadge = (badge: BadgeItem) => {
                                 class="w-full bg-surface-elevated px-3 py-2 rounded-input border border-border text-sm text-text-primary focus:border-brand-primary outline-none"
                                 required
                             ></textarea>
-                            <div v-if="badgeForm.errors.description" class="text-xs text-brand-danger mt-1">{{ badgeForm.errors.description }}</div>
+                            <div v-if="badgeForm.errors.description" class="text-xs text-brand-danger-light mt-1">{{ badgeForm.errors.description }}</div>
                         </div>
 
                         <div>
                             <label class="block text-xs font-semibold text-text-primary mb-1">Tipe Kriteria Evaluasi Otomatis</label>
                             <select
                                 v-model="badgeForm.criteria_type"
-                                class="w-full bg-surface-elevated px-3 py-2 rounded-input border border-border text-sm font-mono text-brand-primary focus:border-brand-primary outline-none"
+                                class="w-full bg-surface-elevated px-3 py-2 rounded-input border border-border text-sm font-mono text-brand-primary-light focus:border-brand-primary outline-none"
                                 required
                             >
                                 <option v-for="opt in criteriaOptions" :key="opt.value" :value="opt.value">
                                     {{ opt.label }}
                                 </option>
                             </select>
-                            <div v-if="badgeForm.errors.criteria_type" class="text-xs text-brand-danger mt-1">{{ badgeForm.errors.criteria_type }}</div>
+                            <div v-if="badgeForm.errors.criteria_type" class="text-xs text-brand-danger-light mt-1">{{ badgeForm.errors.criteria_type }}</div>
                         </div>
 
                         <div>
@@ -300,7 +300,7 @@ const deleteBadge = (badge: BadgeItem) => {
                                 placeholder='Contoh: {"module_id": 1} atau {"count": 10}'
                                 class="w-full bg-surface-elevated px-3 py-2 rounded-input border border-border font-mono text-xs text-text-primary focus:border-brand-primary outline-none"
                             />
-                            <div v-if="badgeForm.errors.criteria_value" class="text-xs text-brand-danger mt-1">{{ badgeForm.errors.criteria_value }}</div>
+                            <div v-if="badgeForm.errors.criteria_value" class="text-xs text-brand-danger-light mt-1">{{ badgeForm.errors.criteria_value }}</div>
                         </div>
 
                         <div class="flex items-center justify-end gap-3 pt-4 border-t border-border">

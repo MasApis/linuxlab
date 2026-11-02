@@ -4,33 +4,44 @@
 
 @layer base {
     html {
-        color-scheme: dark;
-        background-color: #0b1326;
-        color: #f8fafc;
-        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        color-scheme: light;
+        background-color: #f7f7f7;
+        color: #4b4b4b;
+        font-family: 'Nunito', system-ui, -apple-system, sans-serif;
     }
 
     body {
         @apply bg-surface-base text-text-primary min-h-screen antialiased;
     }
 
-    /* Developer Dark Scrollbar */
+    /* Light scrollbar */
     ::-webkit-scrollbar {
         width: 8px;
         height: 8px;
     }
 
     ::-webkit-scrollbar-track {
-        background: #0b1326;
+        background: #f7f7f7;
     }
 
     ::-webkit-scrollbar-thumb {
-        background: #222a3d;
+        background: #d4d4d4;
         border-radius: 4px;
-        border: 2px solid #0b1326;
+        border: 2px solid #f7f7f7;
     }
 
     ::-webkit-scrollbar-thumb:hover {
-        background: #334155;
+        background: #a3a3a3;
+    }
+}
+
+/* Hormati preferensi gerak pengguna: matikan transisi & animasi non-esensial. */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
     }
 }

@@ -95,7 +95,7 @@ const formatDate = (dateStr: string) => {
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-surface-card p-6 rounded-card border border-border">
                 <div>
                     <div class="flex items-center gap-2 mb-1">
-                        <svg class="w-6 h-6 text-brand-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg class="w-6 h-6 text-brand-primary-light" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                         </svg>
                         <h1 class="text-xl sm:text-2xl font-bold text-text-primary tracking-tight">
@@ -111,7 +111,11 @@ const formatDate = (dateStr: string) => {
             <!-- Toolbar Pencarian & Filter -->
             <div class="bg-surface-card rounded-card border border-border p-4 flex flex-col sm:flex-row gap-3 items-center justify-between">
                 <form @submit.prevent="applyFilters" class="relative w-full sm:w-80">
-                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted text-xs font-mono">🔍</span>
+                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-text-dim pointer-events-none">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </span>
                     <input
                         v-model="searchInput"
                         type="text"
@@ -145,7 +149,7 @@ const formatDate = (dateStr: string) => {
             <AppCard>
                 <div class="overflow-x-auto">
                     <table class="w-full text-left text-sm">
-                        <thead class="bg-surface-elevated/70 text-text-dim text-[11px] font-mono uppercase tracking-wider border-b border-border">
+                        <thead class="bg-surface-high text-text-dim text-[11px] font-mono uppercase tracking-wider border-b border-border">
                             <tr>
                                 <th class="py-3 px-4">PENGGUNA</th>
                                 <th class="py-3 px-4">EMAIL</th>
@@ -163,13 +167,13 @@ const formatDate = (dateStr: string) => {
                             >
                                 <td class="py-3.5 px-4">
                                     <div class="flex items-center gap-3">
-                                        <div class="w-8 h-8 rounded-full bg-surface-elevated border border-border flex items-center justify-center font-mono text-xs font-bold text-brand-primary shrink-0">
+                                        <div class="w-8 h-8 rounded-full bg-surface-elevated border border-border flex items-center justify-center font-mono text-xs font-bold text-brand-primary-light shrink-0">
                                             {{ u.name.charAt(0).toUpperCase() }}
                                         </div>
                                         <div>
                                             <div class="font-semibold text-text-primary flex items-center gap-1.5">
                                                 <span>{{ u.name }}</span>
-                                                <span v-if="u.id === currentAdminId" class="text-[10px] px-1.5 py-0.2 rounded bg-brand-primary/10 text-brand-primary font-mono font-normal">
+                                                <span v-if="u.id === currentAdminId" class="text-[10px] px-1.5 py-0.2 rounded bg-brand-primary/10 text-brand-primary-light font-mono font-normal">
                                                     (Anda)
                                                 </span>
                                             </div>
@@ -183,7 +187,7 @@ const formatDate = (dateStr: string) => {
                                 <td class="py-3.5 px-4">
                                     <span
                                         class="px-2 py-0.5 rounded text-[11px] font-mono uppercase font-semibold"
-                                        :class="u.role === 'admin' ? 'bg-amber-400/10 text-amber-400 border border-amber-400/30' : 'bg-surface-elevated text-text-muted border border-border'"
+                                        :class="u.role === 'admin' ? 'bg-amber-100 text-amber-800 border border-amber-300' : 'bg-surface-elevated text-text-muted border border-border'"
                                     >
                                         {{ u.role }}
                                     </span>
@@ -191,7 +195,7 @@ const formatDate = (dateStr: string) => {
                                 <td class="py-3.5 px-4">
                                     <span
                                         class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-mono font-semibold"
-                                        :class="u.is_active ? 'bg-brand-primary/10 text-brand-primary border border-brand-primary/30' : 'bg-brand-danger/10 text-brand-danger border border-brand-danger/30'"
+                                        :class="u.is_active ? 'bg-brand-primary/10 text-brand-primary-light border border-brand-primary/30' : 'bg-brand-danger/10 text-brand-danger-light border border-brand-danger/30'"
                                     >
                                         <span class="w-1.5 h-1.5 rounded-full" :class="u.is_active ? 'bg-brand-primary' : 'bg-brand-danger'"></span>
                                         {{ u.is_active ? 'Aktif' : 'Nonaktif' }}
@@ -219,8 +223,8 @@ const formatDate = (dateStr: string) => {
                                         @click="toggleUserStatus(u)"
                                         class="px-3 py-1 rounded text-xs font-semibold font-mono transition-colors border"
                                         :class="u.is_active
-                                            ? 'bg-brand-danger/10 hover:bg-brand-danger/20 text-brand-danger border-brand-danger/30'
-                                            : 'bg-brand-primary/10 hover:bg-brand-primary/20 text-brand-primary border-brand-primary/30'"
+                                            ? 'bg-brand-danger/10 hover:bg-brand-danger/20 text-brand-danger-light border-brand-danger/30'
+                                            : 'bg-brand-primary/10 hover:bg-brand-primary/20 text-brand-primary-light border-brand-primary/30'"
                                     >
                                         {{ u.is_active ? 'Nonaktifkan' : 'Aktifkan' }}
                                     </button>

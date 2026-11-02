@@ -110,7 +110,7 @@ const formatDate = (dateStr: string) => {
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-surface-card p-6 rounded-card border border-border">
                 <div>
                     <div class="flex items-center gap-2 mb-1">
-                        <svg class="w-6 h-6 text-brand-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg class="w-6 h-6 text-brand-primary-light" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                         </svg>
                         <h1 class="text-xl sm:text-2xl font-bold text-text-primary tracking-tight">
@@ -126,7 +126,11 @@ const formatDate = (dateStr: string) => {
             <!-- Toolbar Pencarian & Filter -->
             <div class="bg-surface-card rounded-card border border-border p-4 flex flex-col sm:flex-row gap-3 items-center justify-between">
                 <form @submit.prevent="applyFilters" class="relative w-full sm:w-80">
-                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted text-xs font-mono">🔍</span>
+                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-text-dim pointer-events-none">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </span>
                     <input
                         v-model="searchInput"
                         type="text"
@@ -160,7 +164,7 @@ const formatDate = (dateStr: string) => {
                             <div class="flex items-center gap-2 flex-wrap text-xs">
                                 <span
                                     class="px-2 py-0.5 rounded text-[10px] font-mono font-semibold"
-                                    :class="question.is_resolved ? 'bg-brand-primary/15 text-brand-primary border border-brand-primary/30' : 'bg-amber-400/15 text-amber-400 border border-amber-400/30'"
+                                    :class="question.is_resolved ? 'bg-brand-primary/15 text-brand-primary-light border border-brand-primary/30' : 'bg-amber-400/15 text-amber-700 border border-amber-400/30'"
                                 >
                                     {{ question.is_resolved ? '✓ Selesai' : '⏳ Terbuka' }}
                                 </span>
@@ -188,14 +192,14 @@ const formatDate = (dateStr: string) => {
                             <button
                                 type="button"
                                 @click="toggleExpand(question.id)"
-                                class="px-2.5 py-1 text-xs font-mono rounded bg-surface-elevated hover:bg-surface-high border border-border text-brand-tertiary"
+                                class="px-2.5 py-1 text-xs font-mono rounded bg-surface-elevated hover:bg-surface-high border border-border text-brand-tertiary-light"
                             >
                                 {{ expandedQuestionIds.includes(question.id) ? 'Tutup Jawaban' : `Lihat Jawaban (${question.answers_count})` }}
                             </button>
                             <button
                                 type="button"
                                 @click="deleteQuestion(question)"
-                                class="px-2.5 py-1 text-xs font-semibold rounded bg-brand-danger/10 hover:bg-brand-danger/20 text-brand-danger border border-brand-danger/30 inline-flex items-center gap-1"
+                                class="px-2.5 py-1 text-xs font-semibold rounded bg-brand-danger/10 hover:bg-brand-danger/20 text-brand-danger-light border border-brand-danger/30 inline-flex items-center gap-1"
                                 title="Hapus Pertanyaan Beserta Jawaban"
                             >
                                 <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -231,7 +235,7 @@ const formatDate = (dateStr: string) => {
                                         <span class="text-text-dim">{{ formatDate(ans.created_at) }}</span>
                                         <span
                                             v-if="ans.is_best_answer"
-                                            class="px-1.5 py-0.5 rounded text-[10px] bg-brand-primary/15 text-brand-primary font-mono font-bold border border-brand-primary/30"
+                                            class="px-1.5 py-0.5 rounded text-[10px] bg-brand-primary/15 text-brand-primary-light font-mono font-bold border border-brand-primary/30"
                                         >
                                             ★ Jawaban Terbaik
                                         </span>
@@ -245,7 +249,7 @@ const formatDate = (dateStr: string) => {
                                 <button
                                     type="button"
                                     @click="deleteAnswer(ans)"
-                                    class="p-1 rounded text-brand-danger hover:bg-surface-elevated shrink-0"
+                                    class="p-1 rounded text-brand-danger-light hover:bg-surface-elevated shrink-0"
                                     title="Hapus Jawaban"
                                 >
                                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

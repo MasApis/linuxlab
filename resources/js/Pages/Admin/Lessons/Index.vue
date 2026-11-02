@@ -123,7 +123,7 @@ const deleteLesson = (lesson: LessonItem) => {
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-surface-card p-6 rounded-card border border-border">
                 <div>
                     <div class="flex items-center gap-2 mb-1">
-                        <svg class="w-6 h-6 text-brand-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg class="w-6 h-6 text-brand-primary-light" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                         </svg>
                         <h1 class="text-xl sm:text-2xl font-bold text-text-primary tracking-tight">
@@ -157,7 +157,7 @@ const deleteLesson = (lesson: LessonItem) => {
                     <button
                         type="button"
                         @click="openCreateModal"
-                        class="px-4 py-2.5 text-sm font-semibold rounded-button bg-brand-primary text-brand-primary-dark hover:bg-brand-primary-hover transition-colors shadow-sm inline-flex items-center gap-2"
+                        class="px-4 py-2.5 text-sm font-semibold rounded-button bg-brand-primary text-white hover:bg-brand-primary-hover transition-colors shadow-sm inline-flex items-center gap-2"
                     >
                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
@@ -171,7 +171,7 @@ const deleteLesson = (lesson: LessonItem) => {
             <AppCard>
                 <div class="overflow-x-auto">
                     <table class="w-full text-left text-sm">
-                        <thead class="bg-surface-elevated/70 text-text-dim text-[11px] font-mono uppercase tracking-wider border-b border-border">
+                        <thead class="bg-surface-high text-text-dim text-[11px] font-mono uppercase tracking-wider border-b border-border">
                             <tr>
                                 <th class="py-3 px-4">Urutan</th>
                                 <th class="py-3 px-4">Modul Induk</th>
@@ -197,7 +197,7 @@ const deleteLesson = (lesson: LessonItem) => {
                                     <div class="font-semibold text-text-primary">{{ lesson.title }}</div>
                                     <div class="text-xs text-text-dim line-clamp-1 max-w-sm">{{ lesson.content }}</div>
                                 </td>
-                                <td class="py-3.5 px-4 font-mono text-xs text-brand-primary">{{ lesson.slug }}</td>
+                                <td class="py-3.5 px-4 font-mono text-xs text-brand-primary-light">{{ lesson.slug }}</td>
                                 <td class="py-3.5 px-4 text-xs text-text-muted">
                                     <span class="font-mono text-text-primary">{{ lesson.exercises_count }}</span> latihan
                                 </td>
@@ -205,7 +205,7 @@ const deleteLesson = (lesson: LessonItem) => {
                                     <div class="flex items-center justify-end gap-2">
                                         <Link
                                             :href="`/admin/exercises?lesson_id=${lesson.id}`"
-                                            class="px-2.5 py-1 text-xs font-mono rounded bg-surface-elevated hover:bg-surface-high text-brand-tertiary border border-border"
+                                            class="px-2.5 py-1 text-xs font-mono rounded bg-surface-elevated hover:bg-surface-high text-brand-tertiary-light border border-border"
                                             title="Kelola Latihan"
                                         >
                                             Latihan →
@@ -223,7 +223,7 @@ const deleteLesson = (lesson: LessonItem) => {
                                         <button
                                             type="button"
                                             @click="deleteLesson(lesson)"
-                                            class="p-1.5 rounded hover:bg-surface-elevated text-brand-danger/70 hover:text-brand-danger"
+                                            class="p-1.5 rounded hover:bg-surface-elevated text-brand-danger-light/70 hover:text-brand-danger-light"
                                             title="Hapus Pelajaran"
                                         >
                                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -276,7 +276,7 @@ const deleteLesson = (lesson: LessonItem) => {
                                         {{ m.title }}
                                     </option>
                                 </select>
-                                <div v-if="form.errors.module_id" class="text-xs text-brand-danger mt-1">{{ form.errors.module_id }}</div>
+                                <div v-if="form.errors.module_id" class="text-xs text-brand-danger-light mt-1">{{ form.errors.module_id }}</div>
                             </div>
 
                             <div>
@@ -289,7 +289,7 @@ const deleteLesson = (lesson: LessonItem) => {
                                     required
                                 />
                                 <p class="text-[11px] text-text-dim mt-1">💡 Isi 1 jika ingin pelajaran ini menjadi materi pertama di modulnya.</p>
-                                <div v-if="form.errors.order" class="text-xs text-brand-danger mt-1">{{ form.errors.order }}</div>
+                                <div v-if="form.errors.order" class="text-xs text-brand-danger-light mt-1">{{ form.errors.order }}</div>
                             </div>
                         </div>
 
@@ -303,7 +303,7 @@ const deleteLesson = (lesson: LessonItem) => {
                                     class="w-full bg-surface-elevated px-3 py-2 rounded-input border border-border text-sm text-text-primary focus:border-brand-primary outline-none"
                                     required
                                 />
-                                <div v-if="form.errors.title" class="text-xs text-brand-danger mt-1">{{ form.errors.title }}</div>
+                                <div v-if="form.errors.title" class="text-xs text-brand-danger-light mt-1">{{ form.errors.title }}</div>
                             </div>
 
                             <div>
@@ -312,9 +312,9 @@ const deleteLesson = (lesson: LessonItem) => {
                                     v-model="form.slug"
                                     type="text"
                                     placeholder="contoh: navigasi-direktori"
-                                    class="w-full bg-surface-elevated px-3 py-2 rounded-input border border-border font-mono text-sm text-brand-primary focus:border-brand-primary outline-none"
+                                    class="w-full bg-surface-elevated px-3 py-2 rounded-input border border-border font-mono text-sm text-brand-primary-light focus:border-brand-primary outline-none"
                                 />
-                                <div v-if="form.errors.slug" class="text-xs text-brand-danger mt-1">{{ form.errors.slug }}</div>
+                                <div v-if="form.errors.slug" class="text-xs text-brand-danger-light mt-1">{{ form.errors.slug }}</div>
                             </div>
                         </div>
 
@@ -327,7 +327,7 @@ const deleteLesson = (lesson: LessonItem) => {
                                 class="w-full bg-surface-elevated px-3 py-2 rounded-input border border-border text-sm text-text-primary focus:border-brand-primary outline-none font-mono"
                                 required
                             ></textarea>
-                            <div v-if="form.errors.content" class="text-xs text-brand-danger mt-1">{{ form.errors.content }}</div>
+                            <div v-if="form.errors.content" class="text-xs text-brand-danger-light mt-1">{{ form.errors.content }}</div>
                         </div>
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -339,7 +339,7 @@ const deleteLesson = (lesson: LessonItem) => {
                                     placeholder="Contoh: ls -la&#10;pwd&#10;cd /var/log"
                                     class="w-full bg-surface-elevated px-3 py-2 rounded-input border border-border text-xs font-mono text-text-primary focus:border-brand-primary outline-none"
                                 ></textarea>
-                                <div v-if="form.errors.example_commands" class="text-xs text-brand-danger mt-1">{{ form.errors.example_commands }}</div>
+                                <div v-if="form.errors.example_commands" class="text-xs text-brand-danger-light mt-1">{{ form.errors.example_commands }}</div>
                             </div>
 
                             <div>
@@ -350,7 +350,7 @@ const deleteLesson = (lesson: LessonItem) => {
                                     placeholder="Rangkuman cepat opsi perintah Linux..."
                                     class="w-full bg-surface-elevated px-3 py-2 rounded-input border border-border text-xs font-mono text-text-primary focus:border-brand-primary outline-none"
                                 ></textarea>
-                                <div v-if="form.errors.cheat_sheet" class="text-xs text-brand-danger mt-1">{{ form.errors.cheat_sheet }}</div>
+                                <div v-if="form.errors.cheat_sheet" class="text-xs text-brand-danger-light mt-1">{{ form.errors.cheat_sheet }}</div>
                             </div>
                         </div>
 

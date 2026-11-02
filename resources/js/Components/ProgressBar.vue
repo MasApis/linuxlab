@@ -61,7 +61,7 @@ const trackHeight = computed(() => {
             </span>
             <span
                 v-if="showPercentage"
-                class="font-mono font-semibold text-text-primary ml-auto"
+                class="font-semibold tabular-nums text-text-primary ml-auto"
             >
                 {{ percentage }}%
             </span>

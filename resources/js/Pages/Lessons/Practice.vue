@@ -357,23 +357,23 @@ onBeforeUnmount(() => {
             <!-- Breadcrumbs Navigasi yang Elegan -->
             <nav class="flex items-center justify-between gap-3 text-xs sm:text-sm text-text-muted font-medium pb-1 border-b border-border/40">
                 <div class="flex items-center gap-2 overflow-x-auto whitespace-nowrap py-0.5">
-                    <Link :href="route('dashboard')" class="hover:text-brand-primary transition-colors flex items-center gap-1.5">
+                    <Link :href="route('dashboard')" class="hover:text-brand-primary-light transition-colors flex items-center gap-1.5">
                         <svg class="w-4 h-4 text-text-dim" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                         </svg>
                         <span>Dashboard</span>
                     </Link>
                     <span class="text-text-dim">/</span>
-                    <Link :href="route('modules.show', module.slug)" class="hover:text-brand-primary transition-colors">
+                    <Link :href="route('modules.show', module.slug)" class="hover:text-brand-primary-light transition-colors">
                         {{ module.title }}
                     </Link>
                     <span class="text-text-dim">/</span>
-                    <Link :href="route('lessons.show', [module.slug, lesson.slug])" class="hover:text-brand-primary transition-colors">
+                    <Link :href="route('lessons.show', [module.slug, lesson.slug])" class="hover:text-brand-primary-light transition-colors">
                         {{ lesson.title }}
                     </Link>
                     <span class="text-text-dim">/</span>
-                    <span class="text-white font-semibold flex items-center gap-2">
-                        <span class="w-2 h-2 rounded-full bg-brand-primary inline-block animate-pulse"></span>
+                    <span class="text-ink font-semibold flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-brand-primary inline-block"></span>
                         <span>Ruang Praktik & Latihan</span>
                     </span>
                 </div>
@@ -381,7 +381,7 @@ onBeforeUnmount(() => {
                 <div class="hidden md:flex items-center gap-3">
                     <Link
                         :href="route('lessons.show', [module.slug, lesson.slug])"
-                        class="text-xs text-text-muted hover:text-white transition-colors flex items-center gap-1.5"
+                        class="text-xs text-text-muted hover:text-text-primary transition-colors flex items-center gap-1.5"
                     >
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
@@ -394,10 +394,10 @@ onBeforeUnmount(() => {
             <!-- Error Banner Global -->
             <div
                 v-if="errorMessage"
-                class="p-4 rounded-xl bg-red-950/60 border border-red-500/40 text-red-200 text-sm flex items-start justify-between gap-4 shadow-lg"
+                class="p-4 rounded-xl bg-red-50 border border-red-200 text-red-800 text-sm flex items-start justify-between gap-4 shadow-sm"
             >
                 <div class="flex items-center gap-3">
-                    <svg class="w-5 h-5 text-red-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-5 h-5 text-red-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                     </svg>
                     <span class="leading-relaxed">{{ errorMessage }}</span>
@@ -414,23 +414,23 @@ onBeforeUnmount(() => {
             <!-- Warning Gateway Offline Banner Jika Koneksi WebSocket Gagal -->
             <div
                 v-if="connectionStatus === 'error' && currentSession?.status === 'active'"
-                class="p-4 rounded-xl bg-amber-950/40 border border-amber-500/40 text-amber-200 text-xs sm:text-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-md"
+                class="p-4 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 text-xs sm:text-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-sm"
             >
                 <div class="flex items-start gap-3">
-                    <svg class="w-5 h-5 text-amber-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-5 h-5 text-amber-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                     <div class="space-y-1">
-                        <div class="font-bold text-amber-300">Layanan Terminal Gateway (WebSocket Port 3001) Belum Aktif</div>
+                        <div class="font-bold text-amber-800">Layanan Terminal Gateway (WebSocket Port 3001) Belum Aktif</div>
                         <p class="text-text-muted text-xs leading-relaxed">
                             Container sudah aktif di latar belakang, namun shell belum terhubung ke browser. Jalankan perintah berikut pada terminal server Anda:
-                            <code class="px-2 py-0.5 ml-1 bg-surface-base text-brand-primary-light font-mono rounded border border-border/80 font-bold">npm run terminal-gateway</code>
+                            <code class="px-2 py-0.5 ml-1 bg-white text-brand-primary-light font-mono rounded border border-amber-200 font-bold">npm run terminal-gateway</code>
                         </p>
                     </div>
                 </div>
                 <button
                     @click="retryTerminalConnection"
-                    class="px-3.5 py-1.5 bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 rounded-lg text-xs font-semibold shrink-0 transition-colors flex items-center justify-center gap-1.5"
+                    class="px-3.5 py-1.5 bg-amber-100 hover:bg-amber-200 text-amber-800 border border-amber-300 rounded-lg text-xs font-semibold shrink-0 transition-colors flex items-center justify-center gap-1.5"
                 >
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -453,15 +453,15 @@ onBeforeUnmount(() => {
                                 class="flex-1 py-2 px-3 rounded-lg text-xs font-semibold transition-all flex items-center justify-center gap-2"
                                 :class="[
                                     activeExerciseIndex === idx
-                                        ? 'bg-brand-primary text-black shadow-md font-bold'
-                                        : 'text-text-muted hover:text-white hover:bg-surface-elevated'
+                                        ? 'bg-brand-primary text-white shadow-md font-bold'
+                                        : 'text-text-muted hover:text-text-primary hover:bg-surface-high'
                                 ]"
                             >
                                 <span>Latihan {{ ex.order }}</span>
                                 <span
                                     v-if="ex.has_passed"
                                     class="w-4 h-4 rounded-full flex items-center justify-center text-[10px]"
-                                    :class="activeExerciseIndex === idx ? 'bg-black text-brand-primary' : 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'"
+                                    :class="activeExerciseIndex === idx ? 'bg-white text-brand-primary-light' : 'bg-brand-primary/15 text-brand-primary-light border border-brand-primary/30'"
                                     title="Latihan ini telah selesai"
                                 >
                                     ✓
@@ -473,11 +473,11 @@ onBeforeUnmount(() => {
                         <AppCard v-if="currentExercise" class="p-6 border-border space-y-5">
                             <!-- Baris Tag Tingkat & XP/Poin -->
                             <div class="flex items-center justify-between">
-                                <span class="px-2.5 py-1 rounded-md text-xs font-mono font-semibold bg-brand-primary/10 text-brand-primary border border-brand-primary/20">
+                                <span class="px-2.5 py-1 rounded-md text-xs font-semibold bg-brand-primary/10 text-brand-primary-light border border-brand-primary/20">
                                     Tingkat: Pemula
                                 </span>
-                                <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-amber-500/10 border border-amber-500/20 text-amber-400 font-mono text-xs font-semibold">
-                                    <svg class="w-4 h-4 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
+                                <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-amber-100 border border-amber-200 text-amber-800 text-xs font-semibold">
+                                    <svg class="w-4 h-4 text-amber-600" fill="currentColor" viewBox="0 0 20 20">
                                         <path d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" />
                                     </svg>
                                     <span>+{{ currentExercise.points }} Poin</span>
@@ -486,18 +486,18 @@ onBeforeUnmount(() => {
 
                             <!-- Judul & Status Selesai -->
                             <div class="space-y-1.5">
-                                <h1 class="text-lg sm:text-xl font-bold text-white tracking-tight leading-snug">
+                                <h1 class="font-display text-lg sm:text-xl font-bold text-ink tracking-tight leading-snug">
                                     Latihan {{ currentExercise.order }}: {{ currentExercise.title }}
                                 </h1>
-                                <div v-if="currentExercise.has_passed" class="inline-flex items-center gap-1.5 text-xs text-emerald-400 font-medium">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                                <div v-if="currentExercise.has_passed" class="inline-flex items-center gap-1.5 text-xs text-brand-primary-light font-medium">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-brand-primary"></span>
                                     <span>Latihan ini telah Anda selesaikan dengan benar</span>
                                 </div>
                             </div>
 
                             <!-- Kotak Tujuan & Instruksi Tugas (FR-EX-01) -->
                             <div class="p-4 sm:p-5 rounded-xl bg-surface-elevated border border-border/80 space-y-3">
-                                <div class="flex items-center gap-2 text-brand-primary font-semibold text-xs tracking-wide uppercase">
+                                <div class="flex items-center gap-2 text-brand-primary-light font-semibold text-xs tracking-wide uppercase">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                                     </svg>
@@ -517,7 +517,7 @@ onBeforeUnmount(() => {
                                     @click="isHintAccordionOpen = !isHintAccordionOpen"
                                     class="w-full flex items-center justify-between p-4 hover:bg-surface-elevated/70 transition-colors text-left"
                                 >
-                                    <div class="flex items-center gap-2.5 text-amber-300 font-semibold text-xs sm:text-sm">
+                                    <div class="flex items-center gap-2.5 text-amber-700 font-semibold text-xs sm:text-sm">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
                                         </svg>
@@ -547,10 +547,10 @@ onBeforeUnmount(() => {
                                         <div
                                             v-for="h in currentExercise.unlocked_hints"
                                             :key="h.id"
-                                            class="p-3.5 rounded-lg bg-surface-elevated border border-amber-500/20 text-xs sm:text-sm text-text-muted space-y-1.5"
+                                            class="p-3.5 rounded-lg bg-amber-50 border border-amber-200 text-xs sm:text-sm text-text-secondary space-y-1.5"
                                         >
-                                            <div class="font-bold text-amber-300 text-xs flex items-center gap-1.5">
-                                                <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+                                            <div class="font-bold text-amber-800 text-xs flex items-center gap-1.5">
+                                                <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
                                                 <span>Petunjuk #{{ h.order }}</span>
                                             </div>
                                             <div class="leading-relaxed pl-3" v-html="formatInstruction(h.content)"></div>
@@ -569,7 +569,7 @@ onBeforeUnmount(() => {
                                             v-if="remainingHintsCount > 0"
                                             @click="requestHint"
                                             :disabled="isRequestingHint"
-                                            class="px-3 py-1.5 rounded-lg bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 border border-amber-500/30 text-xs font-semibold transition-all disabled:opacity-50 flex items-center justify-center gap-1.5 shrink-0 active:scale-95 shadow-sm"
+                                            class="px-3 py-1.5 rounded-lg bg-amber-100 hover:bg-amber-200 text-amber-800 border border-amber-300 text-xs font-semibold transition-all disabled:opacity-50 flex items-center justify-center gap-1.5 shrink-0 shadow-sm"
                                         >
                                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -589,8 +589,8 @@ onBeforeUnmount(() => {
                                 class="p-5 rounded-xl border space-y-3.5 transition-all shadow-md"
                                 :class="[
                                     lastCheckResult.is_correct
-                                        ? 'bg-emerald-950/40 border-emerald-500/40 text-emerald-200'
-                                        : 'bg-red-950/40 border-red-500/40 text-red-200'
+                                        ? 'bg-brand-primary/10 border-brand-primary/40 text-text-primary'
+                                        : 'bg-red-50 border-red-200 text-red-800'
                                 ]"
                             >
                                 <div class="flex items-center justify-between gap-3">
@@ -598,18 +598,18 @@ onBeforeUnmount(() => {
                                         <span
                                             class="w-7 h-7 rounded-full flex items-center justify-center font-bold text-sm shadow-sm"
                                             :class="[
-                                                lastCheckResult.is_correct ? 'bg-emerald-500 text-black' : 'bg-red-500 text-white'
+                                                lastCheckResult.is_correct ? 'bg-brand-primary-dark text-white' : 'bg-brand-danger text-white'
                                             ]"
                                         >
                                             {{ lastCheckResult.is_correct ? '✓' : '✗' }}
                                         </span>
-                                        <span class="font-bold text-sm sm:text-base text-white">
+                                        <span class="font-bold text-sm sm:text-base text-ink">
                                             {{ lastCheckResult.is_correct ? 'Jawaban Benar! Latihan Selesai' : 'Jawaban Belum Sesuai' }}
                                         </span>
                                     </div>
                                     <span
                                         v-if="lastCheckResult.is_correct"
-                                        class="px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 font-mono text-xs font-bold border border-emerald-500/30 shrink-0"
+                                        class="px-2.5 py-1 rounded-full bg-brand-primary/15 text-brand-primary-light text-xs font-bold border border-brand-primary/30 shrink-0"
                                     >
                                         +{{ lastCheckResult.score }} Poin
                                     </span>
@@ -624,7 +624,7 @@ onBeforeUnmount(() => {
                                 <div v-if="lastCheckResult.is_correct && activeExerciseIndex < exercisesList.length - 1" class="pt-2">
                                     <button
                                         @click="goToNextExercise"
-                                        class="w-full py-2.5 px-4 bg-emerald-500 hover:bg-emerald-400 text-black font-bold rounded-lg text-xs sm:text-sm transition-all flex items-center justify-center gap-2 shadow-md active:scale-98"
+                                        class="w-full py-2.5 px-4 bg-brand-primary hover:bg-brand-primary-hover text-white font-bold rounded-button text-xs sm:text-sm transition-all flex items-center justify-center gap-2 shadow-[0_4px_0_0_#245700] active:translate-y-[4px] active:shadow-none"
                                     >
                                         <span>Lanjut ke Latihan {{ exercisesList[activeExerciseIndex + 1].order }}</span>
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -641,8 +641,8 @@ onBeforeUnmount(() => {
                         </AppCard>
 
                         <!-- Peringatan Berkas Non-Persisten (FR-TERM-05) yang Bersahabat -->
-                        <div class="p-3.5 rounded-xl bg-amber-950/20 border border-amber-500/20 text-amber-200/80 text-xs space-y-1">
-                            <div class="flex items-center gap-1.5 font-bold text-amber-400">
+                        <div class="p-3.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 text-xs space-y-1">
+                            <div class="flex items-center gap-1.5 font-bold text-amber-700">
                                 <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
@@ -691,7 +691,7 @@ onBeforeUnmount(() => {
                             <AppButton
                                 variant="secondary"
                                 size="md"
-                                class="w-full justify-center text-xs text-red-400 hover:text-red-300 hover:border-red-500/50"
+                                class="w-full justify-center text-xs text-brand-danger hover:text-brand-danger-hover hover:border-brand-danger/50"
                                 :disabled="isLoading"
                                 @click="endSession"
                             >
@@ -723,24 +723,24 @@ onBeforeUnmount(() => {
                     ]"
                 >
                     <!-- macOS/Linux Window Header Bar -->
-                    <div class="bg-surface-elevated px-4 py-3 flex items-center justify-between border-b border-border select-none shrink-0">
+                    <div class="bg-white/5 px-4 py-3 flex items-center justify-between border-b border-white/10 select-none shrink-0">
                         <div class="flex items-center gap-3">
                             <div class="flex items-center gap-1.5">
                                 <button @click="endSession" title="Tutup / Akhiri Sesi" class="w-3 h-3 rounded-full bg-red-500/90 hover:opacity-80 transition-opacity cursor-pointer"></button>
                                 <button @click="resetSession" title="Reset Sesi" class="w-3 h-3 rounded-full bg-yellow-500/90 hover:opacity-80 transition-opacity cursor-pointer"></button>
                                 <button @click="toggleFullscreen" title="Layar Penuh" class="w-3 h-3 rounded-full bg-green-500/90 hover:opacity-80 transition-opacity cursor-pointer"></button>
                             </div>
-                            <div class="h-4 w-px bg-border"></div>
-                            <span class="font-mono text-xs text-text-muted flex items-center gap-1.5">
-                                <span class="text-brand-primary">&gt;_</span>
+                            <div class="h-4 w-px bg-white/10"></div>
+                            <span class="font-mono text-xs text-white/60 flex items-center gap-1.5">
+                                <span class="text-[#58cc02]">&gt;_</span>
                                 <span>bash — student@linuxlab: ~ (Ubuntu 22.04 LTS)</span>
                             </span>
                         </div>
 
-                        <div class="flex items-center gap-2 text-text-dim">
+                        <div class="flex items-center gap-2 text-white/40">
                             <button
                                 @click="clearTerminal"
-                                class="p-1.5 hover:text-brand-primary hover:bg-surface-card rounded-md transition-colors text-xs flex items-center gap-1.5"
+                                class="p-1.5 hover:text-[#58cc02] hover:bg-white/10 rounded-md transition-colors text-xs flex items-center gap-1.5"
                                 title="Bersihkan Layar Terminal (Ctrl + L)"
                             >
                                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -751,7 +751,7 @@ onBeforeUnmount(() => {
 
                             <button
                                 @click="toggleFullscreen"
-                                class="p-1.5 hover:text-brand-primary hover:bg-surface-card rounded-md transition-colors"
+                                class="p-1.5 hover:text-[#58cc02] hover:bg-white/10 rounded-md transition-colors"
                                 :title="isFullscreen ? 'Keluar Layar Penuh' : 'Layar Penuh'"
                             >
                                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -763,22 +763,22 @@ onBeforeUnmount(() => {
                     </div>
 
                     <!-- Sub-Header: Indikator Status Koneksi Real-Time & Countdown Timer -->
-                    <div class="bg-surface-card/60 px-4 py-2.5 border-b border-border/80 flex items-center justify-between text-xs font-mono shrink-0">
+                    <div class="bg-black/30 px-4 py-2.5 border-b border-white/10 flex items-center justify-between text-xs font-mono shrink-0">
                         <!-- Indikator Status Akurat (Tidak Macet di 'Menghubungkan') -->
                         <div class="flex items-center gap-2.5">
                             <span
                                 class="w-2.5 h-2.5 rounded-full"
                                 :class="[
                                     connectionStatus === 'connected'
-                                        ? 'bg-emerald-400 animate-pulse'
+                                        ? 'bg-emerald-400'
                                         : connectionStatus === 'connecting'
                                         ? 'bg-amber-400 animate-pulse'
                                         : connectionStatus === 'error'
                                         ? 'bg-red-400'
-                                        : 'bg-zinc-500'
+                                        : 'bg-white/30'
                                 ]"
                             ></span>
-                            <span class="text-text-muted">
+                            <span class="text-white/60">
                                 Status Terminal:
                                 <strong v-if="connectionStatus === 'connected'" class="text-emerald-400 font-semibold">Tersambung (Aktif)</strong>
                                 <strong v-else-if="connectionStatus === 'connecting'" class="text-amber-300">Menghubungkan...</strong>
@@ -798,12 +798,12 @@ onBeforeUnmount(() => {
 
                         <!-- Real-time Countdown Timer (SEC-TERM-05) -->
                         <div class="flex items-center gap-3">
-                            <div class="flex items-center gap-1.5" :class="[isUrgentTime ? 'text-amber-400 font-bold animate-pulse' : 'text-text-muted']">
+                            <div class="flex items-center gap-1.5" :class="[isUrgentTime ? 'text-amber-400 font-bold animate-pulse' : 'text-white/60']">
                                 <svg class="w-3.5 h-3.5 text-text-dim" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                                 <span>Sisa Waktu:</span>
-                                <span class="font-bold text-white bg-surface-elevated px-2 py-0.5 rounded border border-border">
+                                <span class="font-bold text-white bg-white/10 px-2 py-0.5 rounded border border-white/10">
                                     {{ formattedTime }}
                                 </span>
                             </div>
@@ -811,7 +811,7 @@ onBeforeUnmount(() => {
                             <button
                                 v-if="currentSession?.status === 'active'"
                                 @click="resetSession"
-                                class="hidden sm:inline-flex items-center gap-1 text-[11px] text-text-dim hover:text-white transition-colors"
+                                class="hidden sm:inline-flex items-center gap-1 text-[11px] text-white/50 hover:text-white transition-colors"
                             >
                                 <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -835,21 +835,21 @@ onBeforeUnmount(() => {
                     </div>
 
                     <!-- Footer Status Bar Terminal Sesuai Wireframe -->
-                    <div class="bg-surface-elevated px-4 py-2.5 border-t border-border flex items-center justify-between text-xs font-mono text-text-dim select-none shrink-0">
+                    <div class="bg-white/5 px-4 py-2.5 border-t border-white/10 flex items-center justify-between text-xs font-mono text-white/50 select-none shrink-0">
                         <div class="flex items-center gap-3">
                             <span class="text-emerald-400/90 flex items-center gap-1.5">
                                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
                                 <span>Container Sandbox Terisolasi (Ubuntu 22.04 LTS)</span>
                             </span>
-                            <span class="hidden sm:inline text-border">|</span>
+                            <span class="hidden sm:inline text-white/20">|</span>
                             <span class="hidden sm:inline">Shell: /bin/bash</span>
                         </div>
 
                         <div class="flex items-center gap-4">
                             <span class="hidden md:inline">User: student (non-root)</span>
-                            <span class="hidden md:inline text-border">|</span>
-                            <span class="text-[11px] text-text-muted">
-                                Tips: <kbd class="px-1.5 py-0.5 bg-surface-card rounded border border-border text-white font-sans font-semibold">Ctrl</kbd> + <kbd class="px-1.5 py-0.5 bg-surface-card rounded border border-border text-white font-sans font-semibold">L</kbd> untuk bersihkan
+                            <span class="hidden md:inline text-white/20">|</span>
+                            <span class="text-[11px] text-white/60">
+                                Tips: <kbd class="px-1.5 py-0.5 bg-white/10 rounded border border-white/10 text-white font-sans font-semibold">Ctrl</kbd> + <kbd class="px-1.5 py-0.5 bg-white/10 rounded border border-white/10 text-white font-sans font-semibold">L</kbd> untuk bersihkan
                             </span>
                         </div>
                     </div>

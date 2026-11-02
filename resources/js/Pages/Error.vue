@@ -34,20 +34,20 @@ const description = computed(() => {
 
 <template>
     <Head :title="title" />
-    <div class="min-h-screen bg-slate-900 text-slate-100 flex flex-col items-center justify-center p-6">
+    <div class="min-h-screen bg-surface-base flex flex-col items-center justify-center p-6">
         <div class="text-center max-w-md mx-auto">
-            <p class="text-6xl font-extrabold text-emerald-400 font-mono mb-2">
+            <p class="font-display text-6xl font-bold text-brand-primary mb-2">
                 {{ status }}
             </p>
-            <h1 class="text-2xl font-bold text-slate-100 mb-3">
+            <h1 class="font-display text-2xl font-bold text-ink mb-3">
                 {{ title }}
             </h1>
-            <p class="text-slate-400 text-sm mb-6">
+            <p class="text-text-muted text-sm mb-6">
                 {{ description }}
             </p>
             <Link
                 href="/"
-                class="inline-flex items-center px-4 py-2 border border-emerald-500/30 rounded-lg text-sm font-medium text-emerald-400 bg-emerald-500/10 hover:bg-emerald-500/20 transition-colors"
+                class="inline-flex items-center px-4 py-2 border-2 border-brand-primary/30 rounded-button text-sm font-bold text-brand-primary-light bg-brand-primary/10 hover:bg-brand-primary/20 transition-colors"
             >
                 Kembali ke Beranda
             </Link>

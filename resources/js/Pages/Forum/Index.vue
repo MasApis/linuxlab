@@ -77,22 +77,22 @@ const filteredQuestions = computed(() => {
         <div class="py-8 space-y-6">
             <!-- Breadcrumbs Navigation -->
             <nav class="flex items-center flex-wrap gap-2 text-xs sm:text-sm text-text-muted font-medium">
-                <Link :href="route('dashboard')" class="hover:text-brand-primary transition-colors flex items-center gap-1">
+                <Link :href="route('dashboard')" class="hover:text-brand-primary-light transition-colors flex items-center gap-1">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                     </svg>
                     <span>Beranda</span>
                 </Link>
                 <span class="text-text-dim">/</span>
-                <Link :href="route('modules.show', lesson.module.slug)" class="hover:text-brand-primary transition-colors">
+                <Link :href="route('modules.show', lesson.module.slug)" class="hover:text-brand-primary-light transition-colors">
                     Modul 0{{ lesson.module.order }}: {{ lesson.module.title }}
                 </Link>
                 <span class="text-text-dim">/</span>
-                <Link :href="route('lessons.show', [lesson.module.slug, lesson.slug])" class="hover:text-brand-primary transition-colors">
+                <Link :href="route('lessons.show', [lesson.module.slug, lesson.slug])" class="hover:text-brand-primary-light transition-colors">
                     Pelajaran 0{{ lesson.order }}: {{ lesson.title }}
                 </Link>
                 <span class="text-text-dim">/</span>
-                <span class="text-white font-semibold flex items-center gap-1.5">
+                <span class="text-ink font-semibold flex items-center gap-1.5">
                     <span class="w-2 h-2 rounded-full bg-brand-primary"></span>
                     Forum Diskusi
                 </span>
@@ -110,7 +110,7 @@ const filteredQuestions = computed(() => {
                                 {{ lesson.module.title }}
                             </span>
                         </div>
-                        <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+                        <h1 class="font-display text-2xl sm:text-3xl font-bold text-ink tracking-tight">
                             Forum Diskusi: {{ lesson.title }}
                         </h1>
                         <p class="text-sm text-text-muted max-w-2xl leading-relaxed">
@@ -167,12 +167,12 @@ const filteredQuestions = computed(() => {
                     <div class="flex items-center justify-between pb-4 mb-4 border-b border-border">
                         <div class="flex items-center gap-2">
                             <span class="w-2.5 h-2.5 rounded-full bg-brand-primary"></span>
-                            <h2 class="text-lg font-bold text-white">Ajukan Pertanyaan Baru</h2>
+                            <h2 class="font-display text-lg font-bold text-ink">Ajukan Pertanyaan Baru</h2>
                         </div>
                         <button
                             type="button"
                             @click="isAsking = false"
-                            class="text-xs text-text-muted hover:text-white transition-colors"
+                            class="text-xs text-text-muted hover:text-text-primary transition-colors"
                         >
                             Batal
                         </button>
@@ -182,16 +182,16 @@ const filteredQuestions = computed(() => {
                         <!-- Judul Pertanyaan -->
                         <div>
                             <label class="block text-xs font-semibold text-text-muted uppercase tracking-wider mb-1.5">
-                                Judul Pertanyaan <span class="text-accent-danger">*</span>
+                                Judul Pertanyaan <span class="text-brand-danger">*</span>
                             </label>
                             <input
                                 v-model="form.title"
                                 type="text"
                                 placeholder="Contoh: Mengapa perintah cd .. membawa saya ke root bukannya folder sebelumnya?"
-                                class="w-full px-4 py-2.5 rounded-xl bg-surface-base border border-border text-white text-sm placeholder:text-text-dim focus:outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary transition-all"
+                                class="w-full px-4 py-2.5 rounded-xl bg-surface-card border-2 border-border text-text-primary text-sm placeholder:text-text-dim focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/30 transition-all"
                                 required
                             />
-                            <p v-if="form.errors.title" class="mt-1 text-xs text-accent-danger">
+                            <p v-if="form.errors.title" class="mt-1 text-xs text-brand-danger">
                                 {{ form.errors.title }}
                             </p>
                         </div>
@@ -199,16 +199,16 @@ const filteredQuestions = computed(() => {
                         <!-- Isi Pertanyaan -->
                         <div>
                             <label class="block text-xs font-semibold text-text-muted uppercase tracking-wider mb-1.5">
-                                Rincian Pertanyaan & Konteks <span class="text-accent-danger">*</span>
+                                Rincian Pertanyaan & Konteks <span class="text-brand-danger">*</span>
                             </label>
                             <textarea
                                 v-model="form.body"
                                 rows="5"
                                 placeholder="Jelaskan apa yang Anda coba jalankan, hasil yang diharapkan, pesan kesalahan yang muncul, atau letak kebingungan Anda..."
-                                class="w-full px-4 py-3 rounded-xl bg-surface-base border border-border text-white text-sm placeholder:text-text-dim focus:outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary transition-all font-sans leading-relaxed"
+                                class="w-full px-4 py-3 rounded-xl bg-surface-card border-2 border-border text-text-primary text-sm placeholder:text-text-dim focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/30 transition-all font-sans leading-relaxed"
                                 required
                             ></textarea>
-                            <p v-if="form.errors.body" class="mt-1 text-xs text-accent-danger">
+                            <p v-if="form.errors.body" class="mt-1 text-xs text-brand-danger">
                                 {{ form.errors.body }}
                             </p>
                         </div>
@@ -257,7 +257,7 @@ const filteredQuestions = computed(() => {
                         v-model="searchQuery"
                         type="text"
                         placeholder="Cari pertanyaan diskusi..."
-                        class="w-full pl-9 pr-4 py-2 rounded-lg bg-surface-base border border-border text-sm text-white placeholder:text-text-dim focus:outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary transition-colors"
+                        class="w-full pl-9 pr-4 py-2 rounded-lg bg-surface-card border-2 border-border text-sm text-text-primary placeholder:text-text-dim focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/30 transition-colors"
                     />
                 </div>
 
@@ -270,7 +270,7 @@ const filteredQuestions = computed(() => {
                         :class="[
                             activeFilter === 'all'
                                 ? 'bg-brand-primary text-surface-base'
-                                : 'text-text-muted hover:text-white',
+                                : 'text-text-muted hover:text-text-primary',
                         ]"
                     >
                         Semua ({{ questions.length }})
@@ -282,7 +282,7 @@ const filteredQuestions = computed(() => {
                         :class="[
                             activeFilter === 'resolved'
                                 ? 'bg-brand-primary text-surface-base'
-                                : 'text-text-muted hover:text-white',
+                                : 'text-text-muted hover:text-text-primary',
                         ]"
                     >
                         Terjawab ({{ resolvedCount }})
@@ -294,7 +294,7 @@ const filteredQuestions = computed(() => {
                         :class="[
                             activeFilter === 'unresolved'
                                 ? 'bg-brand-primary text-surface-base'
-                                : 'text-text-muted hover:text-white',
+                                : 'text-text-muted hover:text-text-primary',
                         ]"
                     >
                         Menunggu ({{ unresolvedCount }})
@@ -341,7 +341,7 @@ const filteredQuestions = computed(() => {
                                 </div>
 
                                 <!-- Judul Pertanyaan (di-escape via {{ }}) -->
-                                <h3 class="text-base sm:text-lg font-bold text-white group-hover:text-brand-primary transition-colors leading-snug">
+                                <h3 class="font-display text-base sm:text-lg font-bold text-ink group-hover:text-brand-primary-light transition-colors leading-snug">
                                     {{ q.title }}
                                 </h3>
 
@@ -353,7 +353,7 @@ const filteredQuestions = computed(() => {
 
                             <!-- Jawaban Counter Pill -->
                             <div class="sm:text-right shrink-0 flex sm:flex-col items-center sm:items-end gap-1.5 sm:gap-1">
-                                <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-surface-elevated border border-border text-xs font-mono font-medium text-text-primary">
+                                <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-surface-high border border-border text-xs font-semibold tabular-nums text-text-primary">
                                     <svg class="w-4 h-4 text-brand-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                                     </svg>
