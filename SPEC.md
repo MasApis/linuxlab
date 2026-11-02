@@ -3,8 +3,8 @@
 > **Dokumen ini adalah sumber kebenaran (source of truth) untuk pembangunan LinuxLab.**
 > Dokumen ini disusun mengikuti alur *Spec-Driven Development* (SDD): spesifikasi ditulis dan disepakati terlebih dahulu, kemudian implementasi dilakukan fase demi fase mengacu pada dokumen ini.
 >
-> - **Status:** Disetujui untuk implementasi (v1.1)
-> - **Versi:** 1.1 — 19 Oktober 2026 (riwayat perubahan pada Bagian 18.3)
+> - **Status:** Disetujui untuk implementasi (v1.2)
+> - **Versi:** 1.2 — 3 November 2026 (riwayat perubahan pada Bagian 18.3)
 > - **Dokumen induk:** Laporan Proposal LinuxLab (Desain Aplikasi LinuxLab — Platform Belajar Linux Interaktif untuk Pemula Berbasis Web). Jika terjadi perbedaan antara dokumen ini dan laporan proposal, **dokumen ini yang berlaku untuk implementasi**, dan perbedaannya wajib dicatat pada Bagian 18.
 > - **Cara pakai di Antigravity:** letakkan file ini di root proyek sebagai `SPEC.md`. Agen wajib membaca seluruh dokumen ini sebelum menulis kode, mengerjakan **satu fase pada satu waktu** (Bagian 15), dan tidak menandai fase selesai sebelum seluruh *acceptance criteria* fase tersebut terpenuhi dan terverifikasi.
 
@@ -150,6 +150,7 @@ TERMINAL_CPU_LIMIT=        # batas CPU per container
 TERMINAL_MEMORY_LIMIT=     # batas memori per container, mis. 256m
 TERMINAL_SESSION_TTL=      # batas umur sesi dalam menit, mis. 30
 TERMINAL_MAX_SESSIONS=     # batas jumlah sesi aktif bersamaan per server
+TERMINAL_GATEWAY_SECRET=   # secret bersama auth gateway WebSocket internal (SEC-TERM-01); wajib acak & sama di .env dan env gateway
 CERTIFICATE_SIGNATORY_NAME=   # nama penanda tangan pada sertifikat (Bagian 18.2, Q-05)
 CERTIFICATE_SIGNATORY_TITLE=  # jabatan penanda tangan pada sertifikat, mis. Dosen Pengampu
 ```
@@ -712,6 +713,7 @@ Fitur berikut **tidak** dibuat pada v1 dan tidak boleh ditambahkan tanpa menguba
 | D-10 | Nama tabel, kolom kunci, route acuan, dan istilah mengikuti dokumen ini dan laporan proposal; apabila konflik, dokumen ini yang diperbarui lebih dahulu baru kode disesuaikan. |
 | D-11 | Leaderboard bersifat publik dan sepanjang waktu; peringkat dihitung dari skor terbaik per latihan (FR-LEAD-02), tanpa tabel peringkat tersendiri, tanpa akun admin, dan tanpa menampilkan email. |
 | D-12 | Sertifikat diterbitkan otomatis dan gratis tepat satu kali per pengguna setelah seluruh modul yang diterbitkan selesai (FR-CERT-01 s.d. 02), disimpan pada tabel `certificates` — sehingga skema implementasi berjumlah **15 tabel**, memperluas 14 tabel pada laporan proposal. Laporan proposal tidak otomatis berubah; penyesuaian laporan adalah pekerjaan terpisah apabila diminta. |
+| D-13 | Penegakan keamanan hasil audit (tanpa mengubah aturan fitur): gate `is_published` di semua route forum Latihan/check/hint/store-sesi, throttle pembuatan sesi & penilaian, transaksi+kunci baris user saat pembuatan sesi, destroy container sebelum hapus akun, validasi `exercise_id` (exists + published), dan secret bersama gateway `TERMINAL_GATEWAY_SECRET`. |
 
 ### 18.2 Hal Terbuka (memerlukan keputusan pemilik proyek sebelum fase terkait dimulai)
 
@@ -729,6 +731,7 @@ Fitur berikut **tidak** dibuat pada v1 dan tidak boleh ditambahkan tanpa menguba
 |---|---|---|
 | 1.0 | 19 Oktober 2026 | Versi awal sesuai laporan proposal (14 tabel; leaderboard dan sertifikat berada di luar cakupan v1). |
 | 1.1 | 19 Oktober 2026 | Atas keputusan pemilik proyek: **leaderboard publik** (Bagian 6.H, FR-LEAD-01 s.d. 04) dan **sertifikat penyelesaian seluruh modul** (Bagian 6.I, FR-CERT-01 s.d. 05) dimasukkan ke cakupan v1; ditambah tabel `certificates` (skema menjadi 15 tabel), route & halaman leaderboard/verifikasi/unduh sertifikat, cakupan Fase 5 diperluas, dan kedua fitur dikeluarkan dari daftar *out of scope* (Bagian 17). |
+| 1.2 | 3 November 2026 | Hasil audit keamanan: penegakan **gate `is_published`** di forum/check/hint/store-sesi, **throttle** pembuatan sesi & penilaian, **transaksi + kunci baris** saat pembuatan sesi, **destroy container sebelum hapus akun**, validasi `exercise_id` (exists + published), dan **secret bersama gateway** (`TERMINAL_GATEWAY_SECRET`, Bagian 4.2). Tidak ada perubahan skema, aturan penilaian, maupun aturan fitur. |
 
 ---
 

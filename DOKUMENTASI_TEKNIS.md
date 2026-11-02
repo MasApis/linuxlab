@@ -63,7 +63,7 @@ Saat membaca proyek perangkat lunak, pertanyaan terpenting seorang developer pem
 - **Solusi:**  
   Sebuah daemon Node.js kecil (`bin/terminal-gateway.mjs`) dijalankan di port `3001`.
   - Node.js menggunakan arsitektur *non-blocking event loop* yang sempurna untuk menangani ribuan aliran teks dua arah secara real-time.
-  - **Penting:** Gateway ini **tidak memiliki akses langsung** untuk membuat container. Ia hanya menjadi kurir yang memverifikasi token sesi ke Laravel via URL lokal `http://127.0.0.1:8000/internal/terminal/verify` sebelum menyambungkan browser ke PTY container.
+  - **Penting:** Gateway ini **tidak memiliki akses langsung** untuk membuat container. Ia hanya menjadi kurir yang memverifikasi token sesi ke Laravel via URL lokal `http://127.0.0.1:8000/internal/terminal/verify` (cek IP loopback + header rahasia `X-Gateway-Secret` yang dibaca otomatis dari `TERMINAL_GATEWAY_SECRET` di `.env`) sebelum menyambungkan browser ke PTY container. ID container divalidasi pola aman sebelum dipakai dan token tidak pernah ditulis ke log.
 
 ---
 
@@ -133,9 +133,9 @@ Berikut rincian dari kelima berkas *Service* yang menjadi jantung kecerdasan Lin
 - **Tanggung Jawab:** Berkomunikasi dengan mesin Docker host melalui pustaka `Symfony\Component\Process\Process`.
 - **Fungsi Kunci:**
   - `createSession(User $user, ?int $exerciseId)`:
-    - Memeriksa batas kuota server (`TERMINAL_MAX_SESSIONS`).
+    - Memeriksa batas kuota server (`TERMINAL_MAX_SESSIONS`) di dalam transaksi dengan kunci baris user (anti-balapan pembuatan sesi ganda), plus throttle rate-limit di route.
     - Memastikan satu murid hanya punya 1 sesi aktif (menutup sesi lama jika ada).
-    - Menjalankan `docker run` dengan parameter isolasi ketat: `--cpus 0.5`, `-m 256m`, `--pids-limit 64`, `--network none`, `--user student`, `-w /home/student`.
+    - Menjalankan `docker run` dengan parameter isolasi ketat: `--cpus 0.5`, `-m 256m`, `--pids-limit 64`, `--network none`, `--cap-drop ALL`, `--security-opt no-new-privileges:true`, `--user student`, `-w /home/student`.
     - Membuat baris di database `terminal_sessions` lengkap dengan `ws_token` sepanjang 64 karakter acak.
   - `destroySession(TerminalSession $session)`: Menjalankan `docker rm -f <container_id>` dan mengubah status menjadi `terminated`/`expired`.
   - `executeCommand(TerminalSession $session, string $command)`: Menjalankan perintah evaluasi di dalam kontainer murid (`docker exec -u student ...`) dan menangkap kode keluaran (*exit code*), stdout, dan stderr.

@@ -89,6 +89,7 @@ Buka 3 jendela terminal terpisah untuk menjalankan seluruh komponen:
 php artisan serve
 
 # Terminal 2: Jalankan WebSocket Terminal Gateway (Port 3001)
+# Secret dibaca otomatis dari TERMINAL_GATEWAY_SECRET di .env
 node bin/terminal-gateway.mjs
 
 # Terminal 3 (Opsional): Jalankan Vite untuk hot-reload frontend saat koding

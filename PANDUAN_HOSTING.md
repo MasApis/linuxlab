@@ -191,12 +191,19 @@ TERMINAL_MEMORY_LIMIT=256m
 TERMINAL_SESSION_TTL=30
 TERMINAL_MAX_SESSIONS=10
 TERMINAL_WS_PORT=3001
+TERMINAL_GATEWAY_SECRET=   # WAJIB diisi acak (lihat langkah generate di bawah); auth lapis kedua gateway
 
 # Penanda Tangan Sertifikat
 CERTIFICATE_SIGNATORY_NAME="Dosen Pengampu / Tim LinuxLab"
 CERTIFICATE_SIGNATORY_TITLE="Kepala Laboratorium Komputer"
 ```
 *(Tekan `Ctrl + O` lalu `Enter` untuk menyimpan, lalu `Ctrl + X` untuk keluar dari nano).*
+
+Buat secret acak untuk gateway, lalu tempelkan sebagai nilai `TERMINAL_GATEWAY_SECRET` di atas:
+```bash
+openssl rand -hex 32
+```
+*(Gateway membaca `.env` ini secara otomatis, jadi tidak perlu meng-export variabel manual.)*
 
 ### D. Generate Key & Persiapan Database
 ```bash
@@ -231,7 +238,7 @@ WebSocket Terminal Gateway adalah jembatan yang menghubungkan ketikan browser mu
 ```bash
 cd /var/www/linuxlab
 
-# Jalankan gateway dengan PM2
+# Jalankan gateway dengan PM2 (secret dibaca otomatis dari .env via TERMINAL_GATEWAY_SECRET)
 pm2 start bin/terminal-gateway.mjs --name "linuxlab-gateway"
 
 # Simpan agar otomatis hidup saat server di-reboot

@@ -291,6 +291,7 @@ TERMINAL_MEMORY_LIMIT=256m
 TERMINAL_SESSION_TTL=30
 TERMINAL_MAX_SESSIONS=10
 TERMINAL_WS_PORT=3001
+TERMINAL_GATEWAY_SECRET=rahasia_acak_anda  # wajib diisi acak (openssl rand -hex 32); auth gateway
 ```
 
 ---
@@ -332,7 +333,7 @@ Untuk menjalankan sistem secara utuh pada tahap pengembangan, buka 3 tab termina
   ```bash
   node bin/terminal-gateway.mjs
   ```
-  *(Jembatan terminal aktif di port 3001)*
+  *(Jembatan terminal aktif di port 3001; secret dibaca otomatis dari `TERMINAL_GATEWAY_SECRET` di `.env`, tidak perlu export manual)*
 
 - **Tab 3: Pembersih Sesi Kedaluwarsa Otomatis (Opsional / Background)**
   ```bash
@@ -346,7 +347,7 @@ Untuk memastikan seluruh fitur dan keamanan berfungsi dengan sempurna:
 ```bash
 php artisan test
 ```
-*Hasil yang diharapkan: 94 tests passed, 550 assertions sukses tanpa error.*
+*Hasil yang diharapkan: 100 tests passed, 575 assertions sukses tanpa error.*
 
 ---
 
